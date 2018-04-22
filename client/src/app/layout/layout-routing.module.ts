@@ -17,7 +17,12 @@ const routes: Routes = [
             { path: 'components', loadChildren: './bs-component/bs-component.module#BsComponentModule' },
             { path: 'blank-page', loadChildren: './blank-page/blank-page.module#BlankPageModule' },
             { path: 'monitoreo', loadChildren: './monitoreo/monitoreo.module#MonitoreoModule' },
-            { path: 'experiencias', loadChildren: './experiencias/experiencias.module#ExperienciasModule' }
+            { path: 'experiencias', loadChildren: './experiencias/experiencias.module#ExperienciasModule' },
+            { path: 'bus', loadChildren: './CRUD/bus/bus.module#BusModule' },
+            { path: 'coperativa', loadChildren: './CRUD/coperativa/coperativa.module#CoperativaModule' },
+            { path: 'parada', loadChildren: './CRUD/parada/parada.module#ParadaModule' },
+            { path: 'persona', loadChildren: './CRUD/persona/persona.module#PersonaModule' },
+            { path: 'ruta', loadChildren: './CRUD/ruta/ruta.module#RutaModule' }
         ]
     }
 ];
