@@ -1,3 +1,5 @@
+import { RutaService } from './../ruta/ruta.service';
+import { CoperativaService } from './../coperativa/coperativa.service';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -12,7 +14,7 @@ import { BusService } from './bus.service';
       FormsModule,
       BusRoutingModule
    ],
-   providers: [BusService],
+   providers: [BusService, CoperativaService, RutaService],
    declarations: [BusComponent],
 })
 export class BusModule { }

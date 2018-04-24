@@ -74,8 +74,8 @@
                      <i class="fa fa-hand-o-right" [hidden]="!estaSeleccionado(actual)"></i>
                   </td>
                   <td>{{actual.id}}</td>
-                  <td>{{actual.idCoperativa}}</td>
-                  <td>{{actual.idRuta}}</td>
+                  <td>{{actual.Coperativa}}</td>
+                  <td>{{actual.Ruta}}</td>
                   <td>{{actual.placa}}</td>
                   <td>{{actual.numero}}</td>
                   <td>{{actual.anoFabricacion}}</td>
@@ -129,13 +129,19 @@
          <div class="form-group row">
             <label for="idCoperativa" class="col-sm-4 col-form-label">Coperativa</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" id="idCoperativa" name="idCoperativa" placeholder="idCoperativa" [(ngModel)]="entidadSeleccionada.idCoperativa">
+                <select class="form-control" id="idCoperativa" name="idCoperativa" [(ngModel)]="entidadSeleccionada.idCoperativa">
+                    <option value="" selected>Seleccione...</option>
+                    <option *ngFor="let coperativa of coperativas" value={{coperativa.id}}>{{coperativa.nombre}}</option>
+                </select>
             </div>
          </div>
          <div class="form-group row">
             <label for="idRuta" class="col-sm-4 col-form-label">Ruta</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" id="idRuta" name="idRuta" placeholder="idRuta" [(ngModel)]="entidadSeleccionada.idRuta">
+                <select class="form-control" id="idRuta" name="idRuta" [(ngModel)]="entidadSeleccionada.idRuta">
+                    <option value="" selected>Seleccione...</option>
+                    <option *ngFor="let ruta of rutas" value={{ruta.id}}>{{ruta.desde}} - {{ruta.hasta}}</option>
+                </select>
             </div>
          </div>
          <div class="form-group row">

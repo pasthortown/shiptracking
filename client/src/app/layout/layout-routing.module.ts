@@ -20,7 +20,6 @@ const routes: Routes = [
             { path: 'experiencias', loadChildren: './experiencias/experiencias.module#ExperienciasModule' },
             { path: 'bus', loadChildren: './CRUD/bus/bus.module#BusModule' },
             { path: 'coperativa', loadChildren: './CRUD/coperativa/coperativa.module#CoperativaModule' },
-            { path: 'parada', loadChildren: './CRUD/parada/parada.module#ParadaModule' },
             { path: 'persona', loadChildren: './CRUD/persona/persona.module#PersonaModule' },
             { path: 'ruta', loadChildren: './CRUD/ruta/ruta.module#RutaModule' }
         ]

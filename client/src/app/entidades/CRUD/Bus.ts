@@ -4,6 +4,8 @@ export class Bus {
    idRuta: number;
    placa: string;
    numero: number;
-   anoFabricacion: Date;
+   anoFabricacion: number;
    registroMunicipal: string;
+   Coperativa: string;
+   Ruta: string;
 }

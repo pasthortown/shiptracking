@@ -1,3 +1,7 @@
+import { RutaService } from './../ruta/ruta.service';
+import { CoperativaService } from './../coperativa/coperativa.service';
+import { Ruta } from './../../../entidades/CRUD/Ruta';
+import { Coperativa } from './../../../entidades/CRUD/Coperativa';
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { Bus } from '../../../entidades/CRUD/Bus';
@@ -25,8 +29,10 @@ export class BusComponent implements OnInit {
    paginaUltima: number;
    registrosPorPagina: number;
    esVisibleVentanaEdicion: boolean;
+   coperativas: Coperativa[];
+   rutas: Ruta[];
 
-   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private dataService: BusService, private modalService: NgbModal) {
+   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private coperativaService: CoperativaService, private rutaService: RutaService, private dataService: BusService, private modalService: NgbModal) {
       this.toastr.setRootViewContainerRef(vcr);
    }
 
@@ -67,6 +73,28 @@ export class BusComponent implements OnInit {
 
    resetEntidadSeleccionada(): void {
       this.entidadSeleccionada = this.crearEntidad();
+   }
+
+   getCoperativas(): void {
+      this.busy = this.coperativaService
+      .getAll()
+      .then(entidadesRecuperadas => {
+         this.coperativas = entidadesRecuperadas;
+      })
+      .catch(error => {
+
+      });
+   }
+
+   getRutas(): void {
+      this.busy = this.rutaService
+      .getAll()
+      .then(entidadesRecuperadas => {
+         this.rutas = entidadesRecuperadas;
+      })
+      .catch(error => {
+
+      });
    }
 
    getAll(): void {
@@ -182,6 +210,8 @@ export class BusComponent implements OnInit {
       this.getPagina(this.paginaActual,this.registrosPorPagina);
       this.entidades = Bus[0];
       this.entidadSeleccionada = this.crearEntidad();
+      this.getCoperativas();
+      this.getRutas();
    }
 
    getPaginaPrimera():void {
