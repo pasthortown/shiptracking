@@ -3,7 +3,7 @@ export class Parada {
    idRuta: number;
    numero: number;
    nombre: string;
-   latitud: number;
-   longitud: number;
+   latitud: string;
+   longitud: string;
    tiempoEstimado: number;
 }

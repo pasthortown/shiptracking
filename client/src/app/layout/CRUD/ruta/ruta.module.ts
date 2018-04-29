@@ -5,14 +5,15 @@ import { CommonModule } from '@angular/common';
 import { RutaRoutingModule } from './ruta-routing.module';
 import { RutaComponent } from './ruta.component';
 import { RutaService } from './ruta.service';
+import { ParadaService } from '../parada/parada.service';
 
 @NgModule({
    imports: [
       CommonModule,
       FormsModule,
-      RutaRoutingModule
+      RutaRoutingModule,
    ],
-   providers: [RutaService],
+   providers: [RutaService, ParadaService],
    declarations: [RutaComponent],
 })
 export class RutaModule { }

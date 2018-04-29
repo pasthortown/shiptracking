@@ -1,3 +1,5 @@
+import { Parada } from './../../../entidades/CRUD/Parada';
+import { ParadaService } from './../parada/parada.service';
 import { element } from 'protractor';
 import { Component, OnInit, ViewContainerRef, ViewChild } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
@@ -9,7 +11,6 @@ import 'rxjs/add/operator/toPromise';
 import { ModalComponent } from '../../bs-component/components';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-
 @Component({
    selector: 'app-ruta',
    templateUrl: './ruta.component.html',
@@ -29,10 +30,10 @@ export class RutaComponent implements OnInit {
    paginaUltima: number;
    registrosPorPagina: number;
    esVisibleVentanaEdicion: boolean;
-   editando:boolean;
-   paradas: google.maps.Marker[];
+   paradas: Parada[];
+   poly: google.maps.Polyline;
 
-   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private dataService: RutaService, private modalService: NgbModal) {
+   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private paradaService: ParadaService, private dataService: RutaService, private modalService: NgbModal) {
       this.toastr.setRootViewContainerRef(vcr);
    }
 
@@ -188,6 +189,8 @@ export class RutaComponent implements OnInit {
       this.getPagina(this.paginaActual,this.registrosPorPagina);
       this.entidades = Ruta[0];
       this.entidadSeleccionada = this.crearEntidad();
+      this.paradas = [];
+      this.startGoogleMap();
    }
 
    getPaginaPrimera():void {
@@ -215,12 +218,9 @@ export class RutaComponent implements OnInit {
    }
 
    ngOnInit() {
-        this.editando = false;
-        this.paradas = [];
         this.paginaActual=1;
         this.registrosPorPagina = 5;
         this.refresh();
-        this.startGoogleMap();
    }
 
    startGoogleMap() {
@@ -241,6 +241,14 @@ export class RutaComponent implements OnInit {
         let image = './../../../../assets/images/parada.png';
         let mapa = this.map;
         let paradas = this.paradas;
+        this.poly = new google.maps.Polyline({
+            strokeColor: '#79b7f2',
+            strokeOpacity: 0,
+            strokeWeight: 3,
+            geodesic: true,
+            map: this.map
+         });
+        let poly = this.poly;
         if(this.paradas.length>0){
             let paradas = this.paradas;
         }else {
@@ -248,6 +256,7 @@ export class RutaComponent implements OnInit {
         }
         this.map.addListener('click', function(event) {
             let location = event.latLng;
+            poly.getPath().push(location);
             let marker = new google.maps.Marker({
                 position: location,
                 map: mapa,
@@ -255,76 +264,117 @@ export class RutaComponent implements OnInit {
                 icon: image,
                 title: 'nuevo'
             });
+            let numeroParada = poly.getPath().getLength();
             let infowindow = new google.maps.InfoWindow({
-                content: '<div><h3>' + marker.getTitle() + '</h3></div>'
+                content: '<div><h3>' + numeroParada + ' - ' + marker.getTitle() + '</h3></div>'
             });
             marker.addListener('click', function() {
                 infowindow.open(this.map, marker);
             });
-            paradas.push(marker);
+            marker.addListener('drag', function(e) {
+                poly.getPath().setAt(numeroParada, e.latLng);
+                location = e.latLng;
+                paradas.forEach(element => {
+                    if(element.numero === numeroParada) {
+                        element.latitud = marker.getPosition().toJSON().lat.toString();
+                        element.longitud = marker.getPosition().toJSON().lng.toString();
+                    }
+                });
+            });
+            let paradaNueva = new Parada();
+            paradaNueva.numero = numeroParada;
+            paradaNueva.latitud = marker.getPosition().toJSON().lat.toString();
+            paradaNueva.longitud = marker.getPosition().toJSON().lng.toString();
+            paradaNueva.nombre = marker.getTitle();
+            paradaNueva.tiempoEstimado = 300;
+            paradas.push(paradaNueva);
         });
+        this.poly = poly;
         this.paradas = paradas;
-   }
-
-   addMarker(position:google.maps.LatLng, titulo: string, popUpContent: string, image: string, draggable: boolean) {
-        let infowindow = new google.maps.InfoWindow({
-            content: popUpContent
-        });
-        let marker = new google.maps.Marker({
-            position: position,
-            map: this.map,
-            draggable: draggable,
-            icon: image,
-            title: titulo
-        });
-        marker.addListener('click', function() {
-            infowindow.open(this.map, marker);
-        });
-   }
-
-   editar(): void {
-      if(this.editando) {
-          this.editando = false;
-      }else{
-          this.editando = true;
-      }
    }
 
    onSelect(entidadActual: Ruta): void {
       this.entidadSeleccionada = entidadActual;
+      this.refreshMarkers();
    }
 
    refreshMarkers(): void {
       this.startGoogleMap();
-      let poly = new google.maps.Polyline({
-        strokeColor: '#79b7f2',
-        strokeOpacity: 0.75,
-        strokeWeight: 3,
-        geodesic: true,
-        map: this.map
-      });
-      let image = './../../../../assets/images/parada.png';
       let marcadorAnterior: google.maps.Marker;
       let map = this.map;
-      this.paradas.forEach(element => {
-          var path = poly.getPath();
-          path.push(element.getPosition());
-          if (marcadorAnterior== null){
-              marcadorAnterior = element;
-          }
-          this.addMarker(element.getPosition(),element.getTitle(),'<div><h3>' + element.getTitle() + '</h3></div>',image,false);
-          marcadorAnterior = element;
+      let image = './../../../../assets/images/parada.png';
+      this.getParadas(this.entidadSeleccionada.id);
+      this.paradas.forEach(paradaBDD => {
+        let location = new google.maps.LatLng(JSON.parse(paradaBDD.latitud) as number,JSON.parse(paradaBDD.longitud) as number);
+        let marker = new google.maps.Marker({
+            position: location,
+            map: map,
+            draggable: false,
+            icon: image,
+            title: paradaBDD.numero + ' - ' + paradaBDD.nombre
+        });
+        let infowindow = new google.maps.InfoWindow({
+            content: '<div><h3>' + marker.getTitle() + '</h3></div>'
+        });
+        marker.addListener('click', function() {
+            infowindow.open(this.map, marker);
+        });
+        this.poly.getPath().push(marker.getPosition());
       });
    }
 
-   deleteMarker(marker:google.maps.Marker): void {
-       let nuevosMarcadores = [];
-       this.paradas.forEach(element => {
-          if(element.getTitle() !== marker.getTitle()){
-              nuevosMarcadores.push(element);
-          }
-       });
-       this.paradas = nuevosMarcadores;
-       this.refreshMarkers();
+   saveMarkers(): void {
+      let cuenta = 0;
+      console.log(this.paradas);
+      this.paradas.forEach(parada => {
+        this.busy = this.paradaService.getFiltrado('idRuta','coincide',this.entidadSeleccionada.id.toString())
+        .then(respuesta => {
+            if (JSON.stringify(respuesta) !== '[0]') {
+                respuesta.forEach(element => {
+                    this.busy = this.paradaService.remove(element.id);
+                });
+            }
+            parada.idRuta = this.entidadSeleccionada.id;
+            this.busy = this.paradaService.create(parada)
+            .then(respuesta => {
+                cuenta++;
+                if(cuenta == this.paradas.length){
+                    this.toastr.success('Paradas Guardadas Satisfactoriamente', 'Guardar Paradas');
+                    this.refreshMarkers();
+                }
+            })
+            .catch(error => {
+
+            });
+        })
+        .catch(error => {
+
+        });
+      });
+   }
+
+   getParadas(id: number): void {
+      this.busy = this.paradaService.getFiltrado('idRuta','coincide',id.toString())
+        .then(respuesta => {
+            if (JSON.stringify(respuesta) === '[0]') {
+                this.paradas = [];
+                return;
+            }
+            this.paradas = respuesta;
+        })
+        .catch(error => {
+
+        });
+   }
+
+   deleteMarker(parada:number): void {
+        this.busy = this.paradaService.remove(parada)
+        .then(respuesta => {
+            this.toastr.success('Parada Borrada Satisfactoriamente', 'Borrar Parada');
+            this.refreshMarkers();
+        })
+        .catch(error => {
+
+        });
    }
 }
