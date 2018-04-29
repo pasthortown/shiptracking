@@ -30,7 +30,6 @@ sudo a2enmod rewrite
 
 sudo service apache2 restart
 
-
 git pull upstream master
 
 npm run build
