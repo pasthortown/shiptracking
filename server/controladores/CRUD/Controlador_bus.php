@@ -46,10 +46,10 @@ class Controlador_bus extends Controlador_Base
    {
       $id = $args["id"];
       if ($id==""){
-         $sql = "SELECT Bus.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde,' - ',Ruta.hasta) as 'Ruta' FROM Bus INNER JOIN Coperativa ON Bus.idCoperativa = Coperativa.id INNER JOIN Ruta ON Bus.idRuta = Ruta.id;";
+         $sql = "SELECT * FROM Bus;";
       }else{
       $parametros = array($id);
-         $sql = "SELECT Bus.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde,' - ',Ruta.hasta) as 'Ruta' FROM Bus INNER JOIN Coperativa ON Bus.idCoperativa = Coperativa.id INNER JOIN Ruta ON Bus.idRuta = Ruta.id WHERE id = ?;";
+         $sql = "SELECT * FROM Bus WHERE id = ?;";
       }
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       return $respuesta;
@@ -60,7 +60,7 @@ class Controlador_bus extends Controlador_Base
       $pagina = $args["pagina"];
       $registrosPorPagina = $args["registros_por_pagina"];
       $desde = (($pagina-1)*$registrosPorPagina);
-      $sql ="SELECT Bus.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde,' - ',Ruta.hasta) as 'Ruta' FROM Bus INNER JOIN Coperativa ON Bus.idCoperativa = Coperativa.id INNER JOIN Ruta ON Bus.idRuta = Ruta.id LIMIT $desde,$registrosPorPagina;";
+      $sql ="SELECT * FROM Bus LIMIT $desde,$registrosPorPagina;";
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       return $respuesta;
    }
@@ -81,16 +81,16 @@ class Controlador_bus extends Controlador_Base
       switch ($tipoFiltro){
          case "coincide":
             $parametros = array($filtro);
-            $sql = "SELECT Bus.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde,' - ',Ruta.hasta) as 'Ruta' FROM Bus INNER JOIN Coperativa ON Bus.idCoperativa = Coperativa.id INNER JOIN Ruta ON Bus.idRuta = Ruta.id WHERE $nombreColumna = ?;";
+            $sql = "SELECT * FROM Bus WHERE $nombreColumna = ?;";
             break;
          case "inicia":
-            $sql = "SELECT Bus.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde,' - ',Ruta.hasta) as 'Ruta' FROM Bus INNER JOIN Coperativa ON Bus.idCoperativa = Coperativa.id INNER JOIN Ruta ON Bus.idRuta = Ruta.id WHERE $nombreColumna LIKE '$filtro%';";
+            $sql = "SELECT * FROM Bus WHERE $nombreColumna LIKE '$filtro%';";
             break;
          case "termina":
-            $sql = "SELECT Bus.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde,' - ',Ruta.hasta) as 'Ruta' FROM Bus INNER JOIN Coperativa ON Bus.idCoperativa = Coperativa.id INNER JOIN Ruta ON Bus.idRuta = Ruta.id WHERE $nombreColumna LIKE '%$filtro';";
+            $sql = "SELECT * FROM Bus WHERE $nombreColumna LIKE '%$filtro';";
             break;
          default:
-            $sql = "SELECT Bus.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde,' - ',Ruta.hasta) as 'Ruta' FROM Bus INNER JOIN Coperativa ON Bus.idCoperativa = Coperativa.id INNER JOIN Ruta ON Bus.idRuta = Ruta.id WHERE $nombreColumna LIKE '%$filtro%';";
+            $sql = "SELECT * FROM Bus WHERE $nombreColumna LIKE '%$filtro%';";
             break;
       }
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);

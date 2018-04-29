@@ -86,9 +86,94 @@
             <h4 class="text-center" style="border-bottom: 1px solid black;" >Paradas</h4>
         </div>
    </div>
-   <div class="col-12">
-       <div #gmap class="col-12" style="height:500px;"></div>
-   </div>
+   <div class="form-group row">
+        <div class="col-7">
+            <div class="form-group row">
+                <div #gmap class="col-12" style="height:500px;"></div>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="btn-toolbar">
+                        <div>
+                            <button type="button" class="btn btn-default" (click)="refreshMarkers()">
+                            <span class="fa fa-refresh"></span>&nbsp;Actualizar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="col-12 table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>
+                            <span>
+                                <strong>No.</strong>
+                            </span>
+                        </th>
+                        <th>
+                            <span>
+                                <strong>Nombre</strong>
+                            </span>
+                        </th>
+                        <th>
+                            <span>
+                                <strong>Tiempo Estimado</strong>
+                            </span>
+                        </th>
+                        <th>
+                            <span>
+                                <strong>Opciones</strong>
+                            </span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let marcador of paradas">
+                        <td>
+                            <input type="number" #numberID class="form-control" placeholder="No.">
+                        </td>
+                        <td>
+                            <input type="text" #titulo class="form-control" placeholder="Nombre" [ngModel]="marcador.getTitle()" (ngModelChange)="marcador.setTitle(titulo.value)">
+                        </td>
+                        <td>
+                            <input type="time" #timeEstimated class="form-control" placeholder="Tiempo Estimado">
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-danger"><span class="fa fa-trash" (click)="deleteMarker(marcador)"></span></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="col-12 table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>
+                            <span>
+                                <strong>Tiempo Estimado</strong>
+                            </span>
+                        </th>
+                        <td>
+                            15:56
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <span>
+                                <strong>Número de Paradas</strong>
+                            </span>
+                        </th>
+                        <td>
+                            15
+                        </td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
    <ng-template #content let-c="close" let-d="dismiss">
       <div class="modal-header">
          <h4 class="modal-title">

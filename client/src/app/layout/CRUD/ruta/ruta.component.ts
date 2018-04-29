@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { Component, OnInit, ViewContainerRef, ViewChild } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { Ruta } from '../../../entidades/CRUD/Ruta';
@@ -28,6 +29,8 @@ export class RutaComponent implements OnInit {
    paginaUltima: number;
    registrosPorPagina: number;
    esVisibleVentanaEdicion: boolean;
+   editando:boolean;
+   paradas: google.maps.Marker[];
 
    constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private dataService: RutaService, private modalService: NgbModal) {
       this.toastr.setRootViewContainerRef(vcr);
@@ -212,58 +215,116 @@ export class RutaComponent implements OnInit {
    }
 
    ngOnInit() {
-      this.paginaActual=1;
-      this.registrosPorPagina = 5;
-      this.refresh();
+        this.editando = false;
+        this.paradas = [];
+        this.paginaActual=1;
+        this.registrosPorPagina = 5;
+        this.refresh();
+        this.startGoogleMap();
+   }
 
-      const mapProp = {
-        center: new google.maps.LatLng(-0.224710, -78.516763),
-        zoom: 17,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
-    let location = new google.maps.LatLng(-0.224710, -78.516763);
-    var contentString = '<div id="content">'+
-  '<div id="siteNotice">'+
-  '</div>'+
-  '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
-  '<div id="bodyContent">'+
-  '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-  'sandstone rock formation in the southern part of the '+
-  'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
-  'south west of the nearest large town, Alice Springs; 450&#160;km '+
-  '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
-  'features of the Uluru - Kata Tjuta National Park. Uluru is '+
-  'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
-  'Aboriginal people of the area. It has many springs, waterholes, '+
-  'rock caves and ancient paintings. Uluru is listed as a World '+
-  'Heritage Site.</p>'+
-  '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
-  'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
-  '(last visited June 22, 2009).</p>'+
-  '</div>'+
-  '</div>';
+   startGoogleMap() {
+        const mapProp = {
+            center: new google.maps.LatLng(-0.224710, -78.516763),
+            zoom: 17,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
+        this.mapReady();
+   }
 
-  var infowindow = new google.maps.InfoWindow({
-    content: contentString
-  });
+   mapReady() {
+        this.permitirAgregarMarcadoresConClick();
+   }
 
-    var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
-    let marker = new google.maps.Marker({
-      position: location,
-      map: this.map,
-      draggable: true,
-      icon: image,
-      title: 'YAVIRAC'
-    });
+   permitirAgregarMarcadoresConClick() {
+        let image = './../../../../assets/images/parada.png';
+        let mapa = this.map;
+        let paradas = this.paradas;
+        if(this.paradas.length>0){
+            let paradas = this.paradas;
+        }else {
+            paradas = [];
+        }
+        this.map.addListener('click', function(event) {
+            let location = event.latLng;
+            let marker = new google.maps.Marker({
+                position: location,
+                map: mapa,
+                draggable: true,
+                icon: image,
+                title: 'nuevo'
+            });
+            let infowindow = new google.maps.InfoWindow({
+                content: '<div><h3>' + marker.getTitle() + '</h3></div>'
+            });
+            marker.addListener('click', function() {
+                infowindow.open(this.map, marker);
+            });
+            paradas.push(marker);
+        });
+        this.paradas = paradas;
+   }
 
-    marker.addListener('click', function() {
-        infowindow.open(this.map, marker);
-      });
+   addMarker(position:google.maps.LatLng, titulo: string, popUpContent: string, image: string, draggable: boolean) {
+        let infowindow = new google.maps.InfoWindow({
+            content: popUpContent
+        });
+        let marker = new google.maps.Marker({
+            position: position,
+            map: this.map,
+            draggable: draggable,
+            icon: image,
+            title: titulo
+        });
+        marker.addListener('click', function() {
+            infowindow.open(this.map, marker);
+        });
+   }
 
+   editar(): void {
+      if(this.editando) {
+          this.editando = false;
+      }else{
+          this.editando = true;
+      }
    }
 
    onSelect(entidadActual: Ruta): void {
       this.entidadSeleccionada = entidadActual;
+   }
+
+   refreshMarkers(): void {
+      this.startGoogleMap();
+      let poly = new google.maps.Polyline({
+        strokeColor: '#79b7f2',
+        strokeOpacity: 0.75,
+        strokeWeight: 3,
+        geodesic: true,
+        map: this.map
+      });
+      let image = './../../../../assets/images/parada.png';
+      let marcadorAnterior: google.maps.Marker;
+      let map = this.map;
+      this.paradas.forEach(element => {
+          var path = poly.getPath();
+          path.push(element.getPosition());
+          if (marcadorAnterior== null){
+              marcadorAnterior = element;
+          }
+          this.addMarker(element.getPosition(),element.getTitle(),'<div><h3>' + element.getTitle() + '</h3></div>',image,false);
+          marcadorAnterior = element;
+      });
+   }
+
+   deleteMarker(marker:google.maps.Marker): void {
+       let nuevosMarcadores = [];
+       this.paradas.forEach(element => {
+          if(element.getTitle() !== marker.getTitle()){
+              nuevosMarcadores.push(element);
+          }
+       });
+       this.paradas = nuevosMarcadores;
+       this.refreshMarkers();
    }
 }

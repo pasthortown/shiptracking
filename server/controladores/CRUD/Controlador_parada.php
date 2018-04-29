@@ -5,9 +5,9 @@ class Controlador_parada extends Controlador_Base
 {
    function crear($args)
    {
-      $parada = new Parada($args["id"],$args["idRuta"],$args["nombre"],$args["latitud"],$args["longitud"]);
-      $sql = "INSERT INTO Parada (idRuta,nombre,latitud,longitud) VALUES (?,?,?,?);";
-      $parametros = array($parada->idRuta,$parada->nombre,$parada->latitud,$parada->longitud);
+      $parada = new Parada($args["id"],$args["idRuta"],$args["numero"],$args["nombre"],$args["latitud"],$args["longitud"],$args["tiempoEstimado"]);
+      $sql = "INSERT INTO Parada (idRuta,numero,nombre,latitud,longitud,tiempoEstimado) VALUES (?,?,?,?,?,?);";
+      $parametros = array($parada->idRuta,$parada->numero,$parada->nombre,$parada->latitud,$parada->longitud,$parada->tiempoEstimado);
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       if(is_null($respuesta[0])){
          return true;
@@ -18,9 +18,9 @@ class Controlador_parada extends Controlador_Base
 
    function actualizar($args)
    {
-      $parada = new Parada($args["id"],$args["idRuta"],$args["nombre"],$args["latitud"],$args["longitud"]);
-      $parametros = array($parada->idRuta,$parada->nombre,$parada->latitud,$parada->longitud,$parada->id);
-      $sql = "UPDATE Parada SET idRuta = ?,nombre = ?,latitud = ?,longitud = ? WHERE id = ?;";
+      $parada = new Parada($args["id"],$args["idRuta"],$args["numero"],$args["nombre"],$args["latitud"],$args["longitud"],$args["tiempoEstimado"]);
+      $parametros = array($parada->idRuta,$parada->numero,$parada->nombre,$parada->latitud,$parada->longitud,$parada->tiempoEstimado,$parada->id);
+      $sql = "UPDATE Parada SET idRuta = ?,numero = ?,nombre = ?,latitud = ?,longitud = ?,tiempoEstimado = ? WHERE id = ?;";
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       if(is_null($respuesta[0])){
          return true;
