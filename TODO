@@ -2,3 +2,14 @@
 - Autenticación y Login de usuarios del sistema
 - Registro de usuarios del sistema nuevos
 - Perfil de usuarios del sistema
+
+PARA CORRER:
+
+Abrir SSH, unirse al 192.168.1.95
+
+ejecutar:
+
+cd /var/www/html/shiptracking/client
+ng serve -H 192.168.1.95
+
+Abrir el navegador de internet a la direccion 192.168.1.95:4200 y listo
