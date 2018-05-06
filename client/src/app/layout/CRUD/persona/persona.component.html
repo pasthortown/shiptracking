@@ -33,32 +33,12 @@
                   </th>
                   <th scope="col">
                      <span>
-                        <strong>No.</strong>
-                     </span>
-                  </th>
-                  <th scope="col">
-                     <span>
                         <strong>Identificación</strong>
                      </span>
                   </th>
                   <th scope="col">
                      <span>
-                        <strong>Nombres</strong>
-                     </span>
-                  </th>
-                  <th scope="col">
-                     <span>
-                        <strong>Apellidos</strong>
-                     </span>
-                  </th>
-                  <th scope="col">
-                     <span>
-                        <strong>Género</strong>
-                     </span>
-                  </th>
-                  <th scope="col">
-                     <span>
-                        <strong>Dirección</strong>
+                        <strong>Nombre Completo</strong>
                      </span>
                   </th>
                   <th scope="col">
@@ -83,12 +63,8 @@
                   <td>
                      <i class="fa fa-hand-o-right" [hidden]="!estaSeleccionado(actual)"></i>
                   </td>
-                  <td>{{actual.id}}</td>
                   <td>{{actual.identificacion}}</td>
-                  <td>{{actual.nombres}}</td>
-                  <td>{{actual.apellidos}}</td>
-                  <td>{{actual.idGenero}}</td>
-                  <td>{{actual.direccion}}</td>
+                  <td>{{actual.apellidos}} {{actual.nombres}}</td>
                   <td>{{actual.telefono1}}</td>
                   <td>{{actual.telefono2}}</td>
                   <td>{{actual.correoElectronico}}</td>
