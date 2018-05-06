@@ -130,7 +130,7 @@
             <label for="idCoperativa" class="col-sm-4 col-form-label">Coperativa</label>
             <div class="col-sm-8">
                 <select class="form-control" id="idCoperativa" name="idCoperativa" [(ngModel)]="entidadSeleccionada.idCoperativa">
-                    <option value="" selected>Seleccione...</option>
+                    <option value="0" selected>Seleccione...</option>
                     <option *ngFor="let coperativa of coperativas" value={{coperativa.id}}>{{coperativa.nombre}}</option>
                 </select>
             </div>
@@ -139,7 +139,7 @@
             <label for="TipoUnidad" class="col-sm-4 col-form-label">Tipo de Unidad</label>
             <div class="col-sm-8">
                 <select class="form-control" id="idTipoUnidad" name="idTipoUnidad" [(ngModel)]="entidadSeleccionada.idTipoUnidad">
-                    <option value="" selected>Seleccione...</option>
+                    <option value="0" selected>Seleccione...</option>
                     <option *ngFor="let tipoUnidad of tipoUnidades" value={{tipoUnidad.id}}>{{tipoUnidad.descripcion}}</option>
                 </select>
             </div>
@@ -148,7 +148,7 @@
             <label for="idRuta" class="col-sm-4 col-form-label">Ruta</label>
             <div class="col-sm-8">
                 <select class="form-control" id="idRuta" name="idRuta" [(ngModel)]="entidadSeleccionada.idRuta">
-                    <option value="" selected>Seleccione...</option>
+                    <option value="0" selected>Seleccione...</option>
                     <option *ngFor="let ruta of rutas" value={{ruta.id}}>{{ruta.desde}} - {{ruta.hasta}}</option>
                 </select>
             </div>
