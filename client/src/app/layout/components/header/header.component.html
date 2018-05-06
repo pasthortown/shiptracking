@@ -1,5 +1,7 @@
 <nav class="navbar navbar-expand-lg fixed-top">
-    <a class="navbar-brand" href="#">Gestión de Transporte</a>
+    <a [routerLink]="['/dashboard']" [routerLinkActive]="['router-link-active']" class="navbar-brand">
+        <img src="assets/images/LogoGeoTracking.png" style="height:40px;"/>
+    </a>
     <button class="navbar-toggler" type="button" (click)="toggleSidebar()">
         <!-- <span class="navbar-toggler-icon"></span> -->
         <i class="fa fa-bars text-muted" aria-hidden="true"></i>

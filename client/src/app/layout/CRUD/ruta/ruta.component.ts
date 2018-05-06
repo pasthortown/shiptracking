@@ -312,7 +312,10 @@ export class RutaComponent implements OnInit {
 
    saveMarkers(): void {
       let cuenta = 0;
-      console.log(this.paradas);
+      if(this.entidadSeleccionada.id<1){
+          this.toastr.warning('Debe seleccionar una ruta primero', 'Guardar Paradas');
+          return;
+      }
       this.paradas.forEach(parada => {
         this.busy = this.paradaService.getFiltrado('idRuta','coincide',this.entidadSeleccionada.id.toString())
         .then(respuesta => {

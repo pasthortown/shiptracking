@@ -1,3 +1,7 @@
+import { CoperativaService } from './../coperativa/coperativa.service';
+import { Coperativa } from './../../../entidades/CRUD/Coperativa';
+import { CuentaService } from './../cuenta/cuenta.service';
+import { Cuenta } from './../../../entidades/CRUD/Cuenta';
 import { RolService } from './../rol/rol.service';
 import { GeneroService } from './../genero/genero.service';
 import { Genero } from './../../../entidades/CRUD/Genero';
@@ -31,8 +35,13 @@ export class PersonaComponent implements OnInit {
    esVisibleVentanaEdicion: boolean;
    roles: Rol[];
    generos: Genero[];
+   coperativas: Coperativa[];
+   cuenta: Cuenta;
+   validarClave: Boolean;
+   claveConfirm: string;
+   claveNueva: string;
 
-   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private generoService: GeneroService, private rolService: RolService, private dataService: PersonaService, private modalService: NgbModal) {
+   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private coperativaService:CoperativaService, private cuentaService: CuentaService, private generoService: GeneroService, private rolService: RolService, private dataService: PersonaService, private modalService: NgbModal) {
       this.toastr.setRootViewContainerRef(vcr);
    }
 
@@ -43,9 +52,12 @@ export class PersonaComponent implements OnInit {
       this.modalService.open(content)
       .result
       .then((result => {
-         if(result=="save"){
-            this.aceptar();
-         }
+          if(!this.validarClave){
+              return;
+          }
+          if(result=="save"){
+              this.aceptar();
+          }
       }),(result => {
          //Esto se ejecuta si la ventana se cierra sin aceptar los cambios
       }));
@@ -88,6 +100,17 @@ export class PersonaComponent implements OnInit {
       })
       .catch(error => {
          this.toastr.success('Se produjo un error', 'Consulta');
+      });
+   }
+
+   getCoperativas(): void {
+      this.busy = this.coperativaService
+      .getAll()
+      .then(entidadesRecuperadas => {
+         this.coperativas = entidadesRecuperadas;
+      })
+      .catch(error => {
+
       });
    }
 
@@ -165,11 +188,28 @@ export class PersonaComponent implements OnInit {
       this.busy = this.dataService.create(entidadNueva)
       .then(respuesta => {
          if(respuesta){
-            this.toastr.success('La creación fue exitosa', 'Creación');
+            this.busy = this.dataService.getFiltrado('identificacion','coincide',entidadNueva.identificacion)
+            .then(personaCreada => {
+                this.cuenta.idPersona = personaCreada[0].id;
+                this.busy = this.cuentaService.create(this.cuenta)
+                .then(respuestaCuenta => {
+                    if(respuestaCuenta){
+                        this.toastr.success('Datos registrados satisfactoriamente', 'Creación');
+                        this.refresh();
+                    }else{
+                        this.toastr.warning('Se produjo un error', 'Creación');
+                    }
+                })
+                .catch(error => {
+                    this.toastr.warning('Se produjo un error', 'Creación');
+                });
+            })
+            .catch(error => {
+
+            });
          }else{
             this.toastr.warning('Se produjo un error', 'Creación');
          }
-         this.refresh();
       })
       .catch(error => {
          this.toastr.warning('Se produjo un error', 'Creación');
@@ -180,11 +220,21 @@ export class PersonaComponent implements OnInit {
       this.busy = this.dataService.update(entidadParaActualizar)
       .then(respuesta => {
          if(respuesta){
-            this.toastr.success('La actualización fue exitosa', 'Actualización');
+            this.busy = this.cuentaService.update(this.cuenta)
+            .then(respuestaCuenta => {
+               if(respuestaCuenta){
+                  this.toastr.success('La actualización fue exitosa', 'Actualización');
+               }else{
+                  this.toastr.warning('Se produjo un error', 'Actualización');
+               }
+               this.refresh();
+            })
+            .catch(error => {
+               this.toastr.warning('Se produjo un error', 'Actualización');
+            });
          }else{
             this.toastr.warning('Se produjo un error', 'Actualización');
          }
-         this.refresh();
       })
       .catch(error => {
          this.toastr.warning('Se produjo un error', 'Actualización');
@@ -192,18 +242,19 @@ export class PersonaComponent implements OnInit {
    }
 
    delete(entidadParaBorrar: Persona): void {
-      this.busy = this.dataService.remove(entidadParaBorrar.id)
-      .then(respuesta => {
-         if(respuesta){
-            this.toastr.success('La eliminación fue exitosa', 'Eliminación');
-         }else{
-            this.toastr.warning('Se produjo un error', 'Eliminación');
-         }
-         this.refresh();
-      })
-      .catch(error => {
-         this.toastr.success('Se produjo un error', 'Eliminación');
-      });
+      this.cuenta.idRol = 1;
+      this.busy = this.cuentaService.update(this.cuenta)
+        .then(respuestaCuenta => {
+            if(respuestaCuenta){
+                this.toastr.success('La desactivación de la cuenta fue exitosa', 'Desactivación');
+            }else{
+                this.toastr.warning('Se produjo un error', 'Desactivación');
+            }
+            this.refresh();
+        })
+        .catch(error => {
+            this.toastr.warning('Se produjo un error', 'Desactivación');
+        });
    }
 
    refresh(): void {
@@ -211,8 +262,22 @@ export class PersonaComponent implements OnInit {
       this.getPagina(this.paginaActual,this.registrosPorPagina);
       this.entidades = Persona[0];
       this.entidadSeleccionada = this.crearEntidad();
+      this.cuenta = new Cuenta();
+      this.cuenta.idCoperativa = 0;
+      this.cuenta.idRol = 0;
       this.getGeneros();
       this.getRoles();
+      this.getCoperativas();
+      this.validarClaveEvent();
+   }
+
+   validarClaveEvent():void {
+       if(this.claveNueva == null || this.claveNueva == '' || this.claveConfirm == null || this.claveConfirm == '' || this.claveConfirm != this.claveNueva){
+           this.validarClave = false;
+       }else {
+           this.validarClave = true;
+           this.cuenta.clave = this.claveNueva;
+       }
    }
 
    getPaginaPrimera():void {
@@ -247,5 +312,15 @@ export class PersonaComponent implements OnInit {
 
    onSelect(entidadActual: Persona): void {
       this.entidadSeleccionada = entidadActual;
+      this.busy = this.cuentaService.getFiltrado('idPersona', 'coincide', entidadActual.id.toString())
+      .then(respuesta => {
+         this.cuenta = respuesta[0];
+         this.claveConfirm = '';
+         this.claveNueva = '';
+         this.validarClaveEvent();
+      })
+      .catch(error => {
+
+      });
    }
 }

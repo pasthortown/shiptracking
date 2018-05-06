@@ -18,7 +18,7 @@
                   <span class="fa fa-plus"></span>&nbsp;Nuevo
                </button>
                <button type="button" class="btn btn-danger" (click)="delete(entidadSeleccionada); $event.stopPropagation();" [ngClass]='{disabled: entidadSeleccionada.id === 0}'>
-                  <span class="fa fa-remove"></span>&nbsp;Borrar
+                  <span class="fa fa-remove"></span>&nbsp;Desactivar
                </button>
             </div>
          </div>
@@ -168,22 +168,40 @@
          <div class="form-group row">
             <label for="rol" class="col-sm-4 col-form-label">Rol</label>
             <div class="col-sm-8">
-                <select class="form-control" id="idRol" name="idRol" [(ngModel)]="entidadSeleccionada.idRol">
+                <select class="form-control" id="idRol" name="idRol" [(ngModel)]="cuenta.idRol">
                     <option value="0" selected>Seleccione...</option>
                     <option *ngFor="let rol of roles" value={{rol.id}}>{{rol.descripcion}}</option>
                 </select>
             </div>
          </div>
          <div class="form-group row">
+            <label for="clave" class="col-sm-4 col-form-label">Coperativa</label>
+            <div class="col-sm-8">
+                <select class="form-control" id="idCoperativa" name="idCoperativa" [(ngModel)]="cuenta.idCoperativa">
+                    <option *ngFor="let coperativa of coperativas" value={{coperativa.id}}>{{coperativa.nombre}}</option>
+                </select>
+            </div>
+         </div>
+         <div class="form-group row">
             <label for="clave" class="col-sm-4 col-form-label">Contraseña</label>
             <div class="col-sm-8">
-              <input type="password" class="form-control" id="clave" name="clave" placeholder="Contraseña">
+              <input type="password" class="form-control" id="clave" name="clave" (keyup)="validarClaveEvent()" placeholder="Contraseña" [(ngModel)]="claveNueva">
             </div>
          </div>
          <div class="form-group row">
             <label for="claveConfirm" class="col-sm-4 col-form-label">Confirmar Contraseña</label>
             <div class="col-sm-8">
-              <input type="password" class="form-control" id="claveConfirm" name="claveConfirm" placeholder="Confirmar Contraseña">
+              <input type="password" class="form-control" id="claveConfirm" (keyup)="validarClaveEvent()" name="claveConfirm" placeholder="Confirmar Contraseña" [(ngModel)]="claveConfirm">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-12 text-center">
+                    <div *ngIf="validarClave" class="col-12 alert alert-success" role="alert">
+                        Las contraseñas coinciden.
+                    </div>
+                    <div *ngIf="!validarClave" class="col-12 alert alert-danger" role="alert">
+                        Las contraseñas son diferentes.
+                    </div>
             </div>
         </div>
          </form>

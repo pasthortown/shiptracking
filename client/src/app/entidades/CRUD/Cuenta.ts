@@ -3,5 +3,5 @@ export class Cuenta {
    idPersona: number;
    idRol: number;
    idCoperativa: number;
-   clave: Blob;
+   clave: string;
 }

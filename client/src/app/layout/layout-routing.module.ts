@@ -27,11 +27,9 @@ const routes: Routes = [
             { path: 'rol', loadChildren: './CRUD/rol/rol.module#RolModule' },
             { path: 'genero', loadChildren: './CRUD/genero/genero.module#GeneroModule' },
             { path: 'expresion', loadChildren: './CRUD/expresion/expresion.module#ExpresionModule' },
-            { path: 'cuenta', loadChildren: './CRUD/cuenta/cuenta.module#CuentaModule' },
             { path: 'calificacion', loadChildren: './CRUD/calificacion/calificacion.module#CalificacionModule' },
             { path: 'auditoria', loadChildren: './CRUD/auditoria/auditoria.module#AuditoriaModule' },
             { path: 'adjunto', loadChildren: './CRUD/adjunto/adjunto.module#AdjuntoModule' },
-            { path: 'parada', loadChildren: './CRUD/parada/parada.module#ParadaModule' }
         ]
     }
 ];
