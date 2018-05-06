@@ -1,3 +1,7 @@
+import { RolService } from './../rol/rol.service';
+import { GeneroService } from './../genero/genero.service';
+import { Genero } from './../../../entidades/CRUD/Genero';
+import { Rol } from './../../../entidades/CRUD/Rol';
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { Persona } from '../../../entidades/CRUD/Persona';
@@ -25,8 +29,10 @@ export class PersonaComponent implements OnInit {
    paginaUltima: number;
    registrosPorPagina: number;
    esVisibleVentanaEdicion: boolean;
+   roles: Rol[];
+   generos: Genero[];
 
-   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private dataService: PersonaService, private modalService: NgbModal) {
+   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private generoService: GeneroService, private rolService: RolService, private dataService: PersonaService, private modalService: NgbModal) {
       this.toastr.setRootViewContainerRef(vcr);
    }
 
@@ -85,6 +91,28 @@ export class PersonaComponent implements OnInit {
       });
    }
 
+   getGeneros(): void {
+      this.busy = this.generoService
+      .getAll()
+      .then(entidadesRecuperadas => {
+         this.generos = entidadesRecuperadas;
+      })
+      .catch(error => {
+
+      });
+   }
+
+   getRoles(): void {
+      this.busy = this.rolService
+      .getAll()
+      .then(entidadesRecuperadas => {
+         this.roles = entidadesRecuperadas;
+      })
+      .catch(error => {
+
+      });
+   }
+
    getPagina(pagina: number, tamanoPagina: number): void {
       this.busy = this.dataService
       .getPagina(pagina, tamanoPagina)
@@ -127,8 +155,9 @@ export class PersonaComponent implements OnInit {
    }
 
    crearEntidad(): Persona {
-      const nuevoPersona = new Persona();
+      let nuevoPersona = new Persona();
       nuevoPersona.id = 0;
+      nuevoPersona.idGenero = 0;
       return nuevoPersona;
    }
 
@@ -182,6 +211,8 @@ export class PersonaComponent implements OnInit {
       this.getPagina(this.paginaActual,this.registrosPorPagina);
       this.entidades = Persona[0];
       this.entidadSeleccionada = this.crearEntidad();
+      this.getGeneros();
+      this.getRoles();
    }
 
    getPaginaPrimera():void {
