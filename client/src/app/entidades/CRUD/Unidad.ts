@@ -7,4 +7,7 @@ export class Unidad {
    anoFabricacion: number;
    registroMunicipal: string;
    idTipoUnidad: number;
+   TipoUnidad: string;
+   Ruta: string;
+   Coperativa: string;
 }

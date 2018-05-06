@@ -1,3 +1,4 @@
+import { TipoUnidadService } from './../tipounidad/tipounidad.service';
 import { RutaService } from './../ruta/ruta.service';
 import { CoperativaService } from './../coperativa/coperativa.service';
 import { Ruta } from './../../../entidades/CRUD/Ruta';
@@ -11,6 +12,7 @@ import 'rxjs/add/operator/toPromise';
 import { ModalComponent } from '../../bs-component/components';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import { TipoUnidad } from '../../../entidades/CRUD/TipoUnidad';
 
 @Component({
    selector: 'app-unidad',
@@ -20,7 +22,7 @@ import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 export class UnidadComponent implements OnInit {
 
-   unidady: Promise<any>;
+   busy: Promise<any>;
    entidades: Unidad[];
    entidadSeleccionada: Unidad;
    pagina: 1;
@@ -31,8 +33,9 @@ export class UnidadComponent implements OnInit {
    esVisibleVentanaEdicion: boolean;
    coperativas: Coperativa[];
    rutas: Ruta[];
+   tipoUnidades: TipoUnidad[];
 
-   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private coperativaService: CoperativaService, private rutaService: RutaService, private dataService: UnidadService, private modalService: NgbModal) {
+   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private coperativaService: CoperativaService, private rutaService: RutaService, private tipoUnidadService: TipoUnidadService, private dataService: UnidadService, private modalService: NgbModal) {
       this.toastr.setRootViewContainerRef(vcr);
    }
 
@@ -75,8 +78,19 @@ export class UnidadComponent implements OnInit {
       this.entidadSeleccionada = this.crearEntidad();
    }
 
+   getTipoUnidad(): void {
+      this.busy = this.tipoUnidadService
+      .getAll()
+      .then(entidadesRecuperadas => {
+         this.tipoUnidades = entidadesRecuperadas;
+      })
+      .catch(error => {
+
+      });
+   }
+
    getCoperativas(): void {
-      this.unidady = this.coperativaService
+      this.busy = this.coperativaService
       .getAll()
       .then(entidadesRecuperadas => {
          this.coperativas = entidadesRecuperadas;
@@ -87,7 +101,7 @@ export class UnidadComponent implements OnInit {
    }
 
    getRutas(): void {
-      this.unidady = this.rutaService
+      this.busy = this.rutaService
       .getAll()
       .then(entidadesRecuperadas => {
          this.rutas = entidadesRecuperadas;
@@ -98,7 +112,7 @@ export class UnidadComponent implements OnInit {
    }
 
    getAll(): void {
-      this.unidady = this.dataService
+      this.busy = this.dataService
       .getAll()
       .then(entidadesRecuperadas => {
          this.entidades = entidadesRecuperadas
@@ -114,7 +128,7 @@ export class UnidadComponent implements OnInit {
    }
 
    getPagina(pagina: number, tamanoPagina: number): void {
-      this.unidady = this.dataService
+      this.busy = this.dataService
       .getPagina(pagina, tamanoPagina)
       .then(entidadesRecuperadas => {
          this.entidades = entidadesRecuperadas
@@ -130,7 +144,7 @@ export class UnidadComponent implements OnInit {
    }
 
    getNumeroPaginas(tamanoPagina: number): void{
-      this.unidady = this.dataService
+      this.busy = this.dataService
       .getNumeroPaginas(tamanoPagina)
       .then(respuesta => {
          this.paginaUltima = respuesta.paginas;
@@ -155,13 +169,16 @@ export class UnidadComponent implements OnInit {
    }
 
    crearEntidad(): Unidad {
-      const nuevoUnidad = new Unidad();
+      let nuevoUnidad = new Unidad();
       nuevoUnidad.id = 0;
+      nuevoUnidad.idCoperativa = 0;
+      nuevoUnidad.idRuta = 0;
+      nuevoUnidad.idTipoUnidad = 0;
       return nuevoUnidad;
    }
 
    add(entidadNueva: Unidad): void {
-      this.unidady = this.dataService.create(entidadNueva)
+      this.busy = this.dataService.create(entidadNueva)
       .then(respuesta => {
          if(respuesta){
             this.toastr.success('La creación fue exitosa', 'Creación');
@@ -176,7 +193,7 @@ export class UnidadComponent implements OnInit {
    }
 
    update(entidadParaActualizar: Unidad): void {
-      this.unidady = this.dataService.update(entidadParaActualizar)
+      this.busy = this.dataService.update(entidadParaActualizar)
       .then(respuesta => {
          if(respuesta){
             this.toastr.success('La actualización fue exitosa', 'Actualización');
@@ -191,7 +208,7 @@ export class UnidadComponent implements OnInit {
    }
 
    delete(entidadParaBorrar: Unidad): void {
-      this.unidady = this.dataService.remove(entidadParaBorrar.id)
+      this.busy = this.dataService.remove(entidadParaBorrar.id)
       .then(respuesta => {
          if(respuesta){
             this.toastr.success('La eliminación fue exitosa', 'Eliminación');
@@ -211,6 +228,7 @@ export class UnidadComponent implements OnInit {
       this.entidades = Unidad[0];
       this.entidadSeleccionada = this.crearEntidad();
       this.getCoperativas();
+      this.getTipoUnidad();
       this.getRutas();
    }
 

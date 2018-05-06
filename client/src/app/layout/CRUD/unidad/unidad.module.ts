@@ -1,3 +1,4 @@
+import { TipoUnidadService } from './../tipounidad/tipounidad.service';
 import { RutaService } from './../ruta/ruta.service';
 import { CoperativaService } from './../coperativa/coperativa.service';
 import { NgModule } from '@angular/core';
@@ -14,7 +15,7 @@ import { UnidadService } from './unidad.service';
       FormsModule,
       UnidadRoutingModule
    ],
-   providers: [UnidadService, CoperativaService, RutaService],
+   providers: [UnidadService, CoperativaService, RutaService, TipoUnidadService],
    declarations: [UnidadComponent],
 })
 export class UnidadModule { }

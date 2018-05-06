@@ -46,10 +46,10 @@ class Controlador_rol extends Controlador_Base
    {
       $id = $args["id"];
       if ($id==""){
-         $sql = "SELECT * FROM Rol;";
+         $sql = "SELECT * FROM Rol ORDER BY Rol.id ASC;";
       }else{
       $parametros = array($id);
-         $sql = "SELECT * FROM Rol WHERE id = ?;";
+         $sql = "SELECT * FROM Rol WHERE id = ? ORDER BY Rol.id ASC;";
       }
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       return $respuesta;
@@ -60,7 +60,7 @@ class Controlador_rol extends Controlador_Base
       $pagina = $args["pagina"];
       $registrosPorPagina = $args["registros_por_pagina"];
       $desde = (($pagina-1)*$registrosPorPagina);
-      $sql ="SELECT * FROM Rol LIMIT $desde,$registrosPorPagina;";
+      $sql ="SELECT * FROM Rol ORDER BY Rol.id ASC LIMIT $desde,$registrosPorPagina;";
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       return $respuesta;
    }
@@ -81,16 +81,16 @@ class Controlador_rol extends Controlador_Base
       switch ($tipoFiltro){
          case "coincide":
             $parametros = array($filtro);
-            $sql = "SELECT * FROM Rol WHERE $nombreColumna = ?;";
+            $sql = "SELECT * FROM Rol WHERE $nombreColumna = ? ORDER BY Rol.id ASC;";
             break;
          case "inicia":
-            $sql = "SELECT * FROM Rol WHERE $nombreColumna LIKE '$filtro%';";
+            $sql = "SELECT * FROM Rol WHERE $nombreColumna LIKE '$filtro%' ORDER BY Rol.id ASC;";
             break;
          case "termina":
-            $sql = "SELECT * FROM Rol WHERE $nombreColumna LIKE '%$filtro';";
+            $sql = "SELECT * FROM Rol WHERE $nombreColumna LIKE '%$filtro' ORDER BY Rol.id ASC;";
             break;
          default:
-            $sql = "SELECT * FROM Rol WHERE $nombreColumna LIKE '%$filtro%';";
+            $sql = "SELECT * FROM Rol WHERE $nombreColumna LIKE '%$filtro%' ORDER BY Rol.id ASC;";
             break;
       }
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
