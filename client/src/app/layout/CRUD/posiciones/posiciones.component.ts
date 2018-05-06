@@ -1,38 +1,32 @@
-import { RutaService } from './../ruta/ruta.service';
-import { CoperativaService } from './../coperativa/coperativa.service';
-import { Ruta } from './../../../entidades/CRUD/Ruta';
-import { Coperativa } from './../../../entidades/CRUD/Coperativa';
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
-import { Bus } from '../../../entidades/CRUD/Bus';
-import { BusService } from './bus.service';
+import { Posiciones } from '../../../entidades/CRUD/Posiciones';
+import { PosicionesService } from './posiciones.service';
 
 import 'rxjs/add/operator/toPromise';
-import { ModalComponent } from '../../bs-component/components';
+import { ModalComponent } from './../../bs-component/components';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Component({
-   selector: 'app-bus',
-   templateUrl: './bus.component.html',
-   styleUrls: ['./bus.component.scss']
+   selector: 'app-posiciones',
+   templateUrl: './posiciones.component.html',
+   styleUrls: ['./posiciones.component.scss']
 })
 
-export class BusComponent implements OnInit {
+export class PosicionesComponent implements OnInit {
 
    busy: Promise<any>;
-   entidades: Bus[];
-   entidadSeleccionada: Bus;
+   entidades: Posiciones[];
+   entidadSeleccionada: Posiciones;
    pagina: 1;
    tamanoPagina: 20;
    paginaActual: number;
    paginaUltima: number;
    registrosPorPagina: number;
    esVisibleVentanaEdicion: boolean;
-   coperativas: Coperativa[];
-   rutas: Ruta[];
 
-   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private coperativaService: CoperativaService, private rutaService: RutaService, private dataService: BusService, private modalService: NgbModal) {
+   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private dataService: PosicionesService, private modalService: NgbModal) {
       this.toastr.setRootViewContainerRef(vcr);
    }
 
@@ -73,28 +67,6 @@ export class BusComponent implements OnInit {
 
    resetEntidadSeleccionada(): void {
       this.entidadSeleccionada = this.crearEntidad();
-   }
-
-   getCoperativas(): void {
-      this.busy = this.coperativaService
-      .getAll()
-      .then(entidadesRecuperadas => {
-         this.coperativas = entidadesRecuperadas;
-      })
-      .catch(error => {
-
-      });
-   }
-
-   getRutas(): void {
-      this.busy = this.rutaService
-      .getAll()
-      .then(entidadesRecuperadas => {
-         this.rutas = entidadesRecuperadas;
-      })
-      .catch(error => {
-
-      });
    }
 
    getAll(): void {
@@ -140,7 +112,7 @@ export class BusComponent implements OnInit {
       });
    }
 
-   isValid(entidadPorEvaluar: Bus): boolean {
+   isValid(entidadPorEvaluar: Posiciones): boolean {
       return true;
    }
 
@@ -154,13 +126,13 @@ export class BusComponent implements OnInit {
       this.cerrarVentanaEdicion();
    }
 
-   crearEntidad(): Bus {
-      const nuevoBus = new Bus();
-      nuevoBus.id = 0;
-      return nuevoBus;
+   crearEntidad(): Posiciones {
+      const nuevoPosiciones = new Posiciones();
+      nuevoPosiciones.id = 0;
+      return nuevoPosiciones;
    }
 
-   add(entidadNueva: Bus): void {
+   add(entidadNueva: Posiciones): void {
       this.busy = this.dataService.create(entidadNueva)
       .then(respuesta => {
          if(respuesta){
@@ -175,7 +147,7 @@ export class BusComponent implements OnInit {
       });
    }
 
-   update(entidadParaActualizar: Bus): void {
+   update(entidadParaActualizar: Posiciones): void {
       this.busy = this.dataService.update(entidadParaActualizar)
       .then(respuesta => {
          if(respuesta){
@@ -190,7 +162,7 @@ export class BusComponent implements OnInit {
       });
    }
 
-   delete(entidadParaBorrar: Bus): void {
+   delete(entidadParaBorrar: Posiciones): void {
       this.busy = this.dataService.remove(entidadParaBorrar.id)
       .then(respuesta => {
          if(respuesta){
@@ -208,10 +180,8 @@ export class BusComponent implements OnInit {
    refresh(): void {
       this.getNumeroPaginas(this.registrosPorPagina);
       this.getPagina(this.paginaActual,this.registrosPorPagina);
-      this.entidades = Bus[0];
+      this.entidades = Posiciones[0];
       this.entidadSeleccionada = this.crearEntidad();
-      this.getCoperativas();
-      this.getRutas();
    }
 
    getPaginaPrimera():void {
@@ -244,7 +214,7 @@ export class BusComponent implements OnInit {
       this.refresh();
    }
 
-   onSelect(entidadActual: Bus): void {
+   onSelect(entidadActual: Posiciones): void {
       this.entidadSeleccionada = entidadActual;
    }
 }

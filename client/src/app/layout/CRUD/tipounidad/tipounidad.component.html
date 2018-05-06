@@ -1,7 +1,7 @@
 <div class="container">
    <div class="row">
       <div class="col-md-12 text-right">
-         <h2 style="margin-top:0px">Administración de Buses</h2>
+         <h2 style="margin-top:0px">Catálogo de TipoUnidad</h2>
       </div>
    </div>
    <div class="row">
@@ -33,37 +33,17 @@
                   </th>
                   <th scope="col">
                      <span>
-                        <strong>No.</strong>
+                        <strong>Identificador</strong>
                      </span>
                   </th>
                   <th scope="col">
                      <span>
-                        <strong>Coperativa</strong>
+                        <strong>descripcion</strong>
                      </span>
                   </th>
                   <th scope="col">
                      <span>
-                        <strong>Ruta</strong>
-                     </span>
-                  </th>
-                  <th scope="col">
-                     <span>
-                        <strong>Placa</strong>
-                     </span>
-                  </th>
-                  <th scope="col">
-                     <span>
-                        <strong>Número de Disco</strong>
-                     </span>
-                  </th>
-                  <th scope="col">
-                     <span>
-                        <strong>Año de Fabricación</strong>
-                     </span>
-                  </th>
-                  <th scope="col">
-                     <span>
-                        <strong>Registro Municipal</strong>
+                        <strong>urlIcono</strong>
                      </span>
                   </th>
                </tr>
@@ -74,12 +54,8 @@
                      <i class="fa fa-hand-o-right" [hidden]="!estaSeleccionado(actual)"></i>
                   </td>
                   <td>{{actual.id}}</td>
-                  <td>{{actual.Coperativa}}</td>
-                  <td>{{actual.Ruta}}</td>
-                  <td>{{actual.placa}}</td>
-                  <td>{{actual.numero}}</td>
-                  <td>{{actual.anoFabricacion}}</td>
-                  <td>{{actual.registroMunicipal}}</td>
+                  <td>{{actual.descripcion}}</td>
+                  <td>{{actual.urlIcono}}</td>
                </tr>
             </tbody>
          </table>
@@ -108,7 +84,7 @@
       <div class="modal-header">
          <h4 class="modal-title">
             <span *ngIf="entidadSeleccionada.id != 0">
-               Edición de Datos: {{entidadSeleccionada.placa | uppercase}}
+               Edición de Datos: {{entidadSeleccionada.descripcion | uppercase}}
             </span>
             <span *ngIf="entidadSeleccionada.id === 0">
                Ingreso de Datos:
@@ -121,51 +97,21 @@
       <div class="modal-body">
          <form>
          <div class="form-group row">
-            <label for="id" class="col-sm-4 col-form-label">No.</label>
+            <label for="id" class="col-sm-4 col-form-label">Identificador</label>
             <div class="col-sm-8">
               <input type="text" readonly class="form-control" id="id" name="id" [(ngModel)]="entidadSeleccionada.id">
             </div>
          </div>
          <div class="form-group row">
-            <label for="idCoperativa" class="col-sm-4 col-form-label">Coperativa</label>
+            <label for="descripcion" class="col-sm-4 col-form-label">descripcion</label>
             <div class="col-sm-8">
-                <select class="form-control" id="idCoperativa" name="idCoperativa" [(ngModel)]="entidadSeleccionada.idCoperativa">
-                    <option value="" selected>Seleccione...</option>
-                    <option *ngFor="let coperativa of coperativas" value={{coperativa.id}}>{{coperativa.nombre}}</option>
-                </select>
+              <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="descripcion" [(ngModel)]="entidadSeleccionada.descripcion">
             </div>
          </div>
          <div class="form-group row">
-            <label for="idRuta" class="col-sm-4 col-form-label">Ruta</label>
+            <label for="urlIcono" class="col-sm-4 col-form-label">urlIcono</label>
             <div class="col-sm-8">
-                <select class="form-control" id="idRuta" name="idRuta" [(ngModel)]="entidadSeleccionada.idRuta">
-                    <option value="" selected>Seleccione...</option>
-                    <option *ngFor="let ruta of rutas" value={{ruta.id}}>{{ruta.desde}} - {{ruta.hasta}}</option>
-                </select>
-            </div>
-         </div>
-         <div class="form-group row">
-            <label for="placa" class="col-sm-4 col-form-label">Placa</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="placa" name="placa" placeholder="Placa" [(ngModel)]="entidadSeleccionada.placa">
-            </div>
-         </div>
-         <div class="form-group row">
-            <label for="numero" class="col-sm-4 col-form-label">Número de Disco</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="numero" name="numero" placeholder="Número de Disco" [(ngModel)]="entidadSeleccionada.numero">
-            </div>
-         </div>
-         <div class="form-group row">
-            <label for="anoFabricacion" class="col-sm-4 col-form-label">Año de Fabricación</label>
-            <div class="col-sm-8">
-              <input type="number" min="1900" step="1" class="form-control" id="anoFabricacion" name="anoFabricacion" placeholder="Año de Fabricación" [(ngModel)]="entidadSeleccionada.anoFabricacion">
-            </div>
-         </div>
-         <div class="form-group row">
-            <label for="registroMunicipal" class="col-sm-4 col-form-label">Registro Municipal</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="registroMunicipal" name="registroMunicipal" placeholder="Registro Municipal" [(ngModel)]="entidadSeleccionada.registroMunicipal">
+              <input type="text" class="form-control" id="urlIcono" name="urlIcono" placeholder="urlIcono" [(ngModel)]="entidadSeleccionada.urlIcono">
             </div>
          </div>
          </form>
@@ -174,8 +120,7 @@
          <button type="button" class="btn btn-primary col-offset-sm-4" (click)="c('save')">
             <span class="fa fa-save"></span>&nbsp;Guardar
          </button>
-         <button type="button" class="btn btn-danger" (click)="c('close')"><span class="fa fa-close"></span>&nbsp;Cerrar</button>
+         <button type="button" class="btn btn-default" (click)="c('close')">Cerrar</button>
       </div>
    </ng-template>
 </div>
-

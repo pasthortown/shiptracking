@@ -4,17 +4,17 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { BusRoutingModule } from './bus-routing.module';
-import { BusComponent } from './bus.component';
-import { BusService } from './bus.service';
+import { UnidadRoutingModule } from './unidad-routing.module';
+import { UnidadComponent } from './unidad.component';
+import { UnidadService } from './unidad.service';
 
 @NgModule({
    imports: [
       CommonModule,
       FormsModule,
-      BusRoutingModule
+      UnidadRoutingModule
    ],
-   providers: [BusService, CoperativaService, RutaService],
-   declarations: [BusComponent],
+   providers: [UnidadService, CoperativaService, RutaService],
+   declarations: [UnidadComponent],
 })
-export class BusModule { }
+export class UnidadModule { }

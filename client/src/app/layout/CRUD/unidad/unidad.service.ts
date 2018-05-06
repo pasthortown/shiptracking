@@ -4,13 +4,13 @@ import { environment } from '../../../../environments/environment';
 
 import 'rxjs/add/operator/toPromise';
 
-import { Bus } from '../../../entidades/CRUD/Bus';
+import { Unidad } from '../../../entidades/CRUD/Unidad';
 
 @Injectable()
 
-export class BusService {
+export class UnidadService {
    private headers = new Headers({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-   private urlBase = environment.apiUrl + 'bus';
+   private urlBase = environment.apiUrl + 'unidad';
 
    constructor(private http: Http) {
    }
@@ -19,38 +19,38 @@ export class BusService {
        return this.urlBase;
    }
 
-   getAll(): Promise<Bus[]> {
-      return this.http.get(this.urlBase+'/leer').toPromise().then(response=>response.json() as Bus[]).catch(this.handleError);
+   getAll(): Promise<Unidad[]> {
+      return this.http.get(this.urlBase+'/leer').toPromise().then(response=>response.json() as Unidad[]).catch(this.handleError);
    }
 
-   getPagina(pagina: number, tamanoPagina: number): Promise<Bus[]> {
-      return this.http.get(this.urlBase+'/leer_paginado' + '?pagina=' + pagina + '&registros_por_pagina=' + tamanoPagina).toPromise().then(response=>response.json() as Bus[]).catch(this.handleError);
+   getPagina(pagina: number, tamanoPagina: number): Promise<Unidad[]> {
+      return this.http.get(this.urlBase+'/leer_paginado' + '?pagina=' + pagina + '&registros_por_pagina=' + tamanoPagina).toPromise().then(response=>response.json() as Unidad[]).catch(this.handleError);
    }
 
-   getFiltrado(columna: string, tipoFiltro: string, filtro: string): Promise<Bus[]> {
-      return this.http.get(this.urlBase+'/leer_filtrado' + '?columna=' + columna + '&tipo_filtro=' + tipoFiltro + '&filtro=' + filtro).toPromise().then(response=>response.json() as Bus[]).catch(this.handleError);
+   getFiltrado(columna: string, tipoFiltro: string, filtro: string): Promise<Unidad[]> {
+      return this.http.get(this.urlBase+'/leer_filtrado' + '?columna=' + columna + '&tipo_filtro=' + tipoFiltro + '&filtro=' + filtro).toPromise().then(response=>response.json() as Unidad[]).catch(this.handleError);
    }
 
    getNumeroPaginas(tamanoPagina: number): Promise<any> {
       return this.http.get(this.urlBase+'/numero_paginas' + '?registros_por_pagina=' + tamanoPagina).toPromise().then(response=>response.json()).catch(this.handleError);
    }
 
-   get(id: number): Promise<Bus> {
+   get(id: number): Promise<Unidad> {
       const url = `${this.urlBase+'/leer'}?id=${id}`;
-      return this.http.get(url).toPromise().then(response=>(response.json() as Bus[])[0]).catch(this.handleError);
+      return this.http.get(url).toPromise().then(response=>(response.json() as Unidad[])[0]).catch(this.handleError);
    }
 
    remove(id: number): Promise<boolean> {
       const url = `${this.urlBase+'/borrar'}?id=${id}`;
-      return this.http.get(url).toPromise().then(response=>response.json() as Bus).catch(this.handleError);
+      return this.http.get(url).toPromise().then(response=>response.json() as Unidad).catch(this.handleError);
    }
 
-   create(entidadTransporte: Bus): Promise<boolean> {
+   create(entidadTransporte: Unidad): Promise<boolean> {
       const url = `${this.urlBase+'/crear'}`;
       return this.http.post(url, JSON.stringify(entidadTransporte)).toPromise().then(response=>response.json()).catch(this.handleError);
    }
 
-   update(entidadTransporte: Bus): Promise<boolean> {
+   update(entidadTransporte: Unidad): Promise<boolean> {
       const url = `${this.urlBase+'/actualizar'}`;
       return this.http.post(url, JSON.stringify(entidadTransporte)).toPromise().then(response=>response.json()).catch(this.handleError);
    }

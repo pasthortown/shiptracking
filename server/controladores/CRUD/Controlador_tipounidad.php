@@ -1,13 +1,13 @@
 <?php
 include_once('../controladores/Controlador_Base.php');
-include_once('../entidades/CRUD/Bus.php');
-class Controlador_bus extends Controlador_Base
+include_once('../entidades/CRUD/TipoUnidad.php');
+class Controlador_tipounidad extends Controlador_Base
 {
    function crear($args)
    {
-      $bus = new Bus($args["id"],$args["idCoperativa"],$args["idRuta"],$args["placa"],$args["numero"],$args["anoFabricacion"],$args["registroMunicipal"]);
-      $sql = "INSERT INTO Bus (idCoperativa,idRuta,placa,numero,anoFabricacion,registroMunicipal) VALUES (?,?,?,?,?,?);";
-      $parametros = array($bus->idCoperativa,$bus->idRuta,$bus->placa,$bus->numero,$bus->anoFabricacion,$bus->registroMunicipal);
+      $tipounidad = new TipoUnidad($args["id"],$args["descripcion"],$args["urlIcono"]);
+      $sql = "INSERT INTO TipoUnidad (descripcion,urlIcono) VALUES (?,?);";
+      $parametros = array($tipounidad->descripcion,$tipounidad->urlIcono);
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       if(is_null($respuesta[0])){
          return true;
@@ -18,9 +18,9 @@ class Controlador_bus extends Controlador_Base
 
    function actualizar($args)
    {
-      $bus = new Bus($args["id"],$args["idCoperativa"],$args["idRuta"],$args["placa"],$args["numero"],$args["anoFabricacion"],$args["registroMunicipal"]);
-      $parametros = array($bus->idCoperativa,$bus->idRuta,$bus->placa,$bus->numero,$bus->anoFabricacion,$bus->registroMunicipal,$bus->id);
-      $sql = "UPDATE Bus SET idCoperativa = ?,idRuta = ?,placa = ?,numero = ?,anoFabricacion = ?,registroMunicipal = ? WHERE id = ?;";
+      $tipounidad = new TipoUnidad($args["id"],$args["descripcion"],$args["urlIcono"]);
+      $parametros = array($tipounidad->descripcion,$tipounidad->urlIcono,$tipounidad->id);
+      $sql = "UPDATE TipoUnidad SET descripcion = ?,urlIcono = ? WHERE id = ?;";
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       if(is_null($respuesta[0])){
          return true;
@@ -33,7 +33,7 @@ class Controlador_bus extends Controlador_Base
    {
       $id = $args["id"];
       $parametros = array($id);
-      $sql = "DELETE FROM Bus WHERE id = ?;";
+      $sql = "DELETE FROM TipoUnidad WHERE id = ?;";
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       if(is_null($respuesta[0])){
          return true;
@@ -46,10 +46,10 @@ class Controlador_bus extends Controlador_Base
    {
       $id = $args["id"];
       if ($id==""){
-         $sql = "SELECT * FROM Bus;";
+         $sql = "SELECT * FROM TipoUnidad;";
       }else{
       $parametros = array($id);
-         $sql = "SELECT * FROM Bus WHERE id = ?;";
+         $sql = "SELECT * FROM TipoUnidad WHERE id = ?;";
       }
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       return $respuesta;
@@ -60,7 +60,7 @@ class Controlador_bus extends Controlador_Base
       $pagina = $args["pagina"];
       $registrosPorPagina = $args["registros_por_pagina"];
       $desde = (($pagina-1)*$registrosPorPagina);
-      $sql ="SELECT * FROM Bus LIMIT $desde,$registrosPorPagina;";
+      $sql ="SELECT * FROM TipoUnidad LIMIT $desde,$registrosPorPagina;";
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       return $respuesta;
    }
@@ -68,7 +68,7 @@ class Controlador_bus extends Controlador_Base
    function numero_paginas($args)
    {
       $registrosPorPagina = $args["registros_por_pagina"];
-      $sql ="SELECT IF(ceil(count(*)/$registrosPorPagina)>0,ceil(count(*)/$registrosPorPagina),1) as 'paginas' FROM Bus;";
+      $sql ="SELECT IF(ceil(count(*)/$registrosPorPagina)>0,ceil(count(*)/$registrosPorPagina),1) as 'paginas' FROM TipoUnidad;";
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       return $respuesta[0];
    }
@@ -81,16 +81,16 @@ class Controlador_bus extends Controlador_Base
       switch ($tipoFiltro){
          case "coincide":
             $parametros = array($filtro);
-            $sql = "SELECT * FROM Bus WHERE $nombreColumna = ?;";
+            $sql = "SELECT * FROM TipoUnidad WHERE $nombreColumna = ?;";
             break;
          case "inicia":
-            $sql = "SELECT * FROM Bus WHERE $nombreColumna LIKE '$filtro%';";
+            $sql = "SELECT * FROM TipoUnidad WHERE $nombreColumna LIKE '$filtro%';";
             break;
          case "termina":
-            $sql = "SELECT * FROM Bus WHERE $nombreColumna LIKE '%$filtro';";
+            $sql = "SELECT * FROM TipoUnidad WHERE $nombreColumna LIKE '%$filtro';";
             break;
          default:
-            $sql = "SELECT * FROM Bus WHERE $nombreColumna LIKE '%$filtro%';";
+            $sql = "SELECT * FROM TipoUnidad WHERE $nombreColumna LIKE '%$filtro%';";
             break;
       }
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);

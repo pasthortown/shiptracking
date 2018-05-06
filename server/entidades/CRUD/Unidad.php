@@ -1,5 +1,5 @@
 <?php
-class Bus
+class Unidad
 {
    public $id;
    public $idCoperativa;
@@ -8,8 +8,9 @@ class Bus
    public $numero;
    public $anoFabricacion;
    public $registroMunicipal;
+   public $idTipoUnidad;
 
-   function __construct($id,$idCoperativa,$idRuta,$placa,$numero,$anoFabricacion,$registroMunicipal){
+   function __construct($id,$idCoperativa,$idRuta,$placa,$numero,$anoFabricacion,$registroMunicipal,$idTipoUnidad){
       $this->id = $id;
       $this->idCoperativa = $idCoperativa;
       $this->idRuta = $idRuta;
@@ -17,6 +18,7 @@ class Bus
       $this->numero = $numero;
       $this->anoFabricacion = $anoFabricacion;
       $this->registroMunicipal = $registroMunicipal;
+      $this->idTipoUnidad = $idTipoUnidad;
    }
 }
 ?>

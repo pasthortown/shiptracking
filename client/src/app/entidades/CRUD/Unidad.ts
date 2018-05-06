@@ -1,4 +1,4 @@
-export class Bus {
+export class Unidad {
    id: number;
    idCoperativa: number;
    idRuta: number;
@@ -6,6 +6,5 @@ export class Bus {
    numero: number;
    anoFabricacion: number;
    registroMunicipal: string;
-   Coperativa: string;
-   Ruta: string;
+   idTipoUnidad: number;
 }
