@@ -1,22 +1,43 @@
-<div class="login-page" [@routerTransition]>
-    <div class="row justify-content-md-center">
-        <div class="col-md-4">
-            <img src="assets/images/logo.png" width="150px" class="user-avatar" />
-            <h1>SB Admin BS4 Angular5</h1>
-            <form role="form">
-                <div class="form-content">
+<div [@routerTransition] class="login-page">
+    <div class="container-fluid" style="margin-top:20px;">
+        <form>
+            <div class="form-group row">
+                <div class="col-xs-1 col-sm-1 col-md-3 col-lg-3"></div>
+                <div class="form-group text-center col-xs-11 col-sm-11 col-md-6 col-lg-6 pretty-form">
                     <div class="form-group">
-                        <input type="text" ng-model="name" class="form-control input-underline input-lg" id="" placeholder="Email">
+                        <img src="assets/images/logoBT.png" class="img-responsive col-xs-7 col-sm-7 col-md-7 col-lg-6"/>
                     </div>
-
                     <div class="form-group">
-                        <input type="password" class="form-control input-underline input-lg" id="" placeholder="Password">
+                        <div class="form-content">
+                            <div class="form-group row">
+                                <input type="text" class="form-control input-underline input-lg" id="email" name="email" placeholder="Correo Electrónico" [(ngModel)]="loginEntidad.email">
+                            </div>
+                            <div class="form-group row">
+                                <input type="password" class="form-control input-underline input-lg" name="clave" id="clave" placeholder="Contraseña" [(ngModel)]="loginEntidad.clave">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" (click)="onLoggedin()">
+                            Ingreso
+                        </button>
                     </div>
                 </div>
-                <a class="btn rounded-btn" [routerLink]="['/dashboard']" (click)="onLoggedin()"> Log in </a>
-                &nbsp;
-                <a class="btn rounded-btn" [routerLink]="['/signup']">Register</a>
+                <div class="col-xs-1 col-sm-1 col-md-3 col-lg-3"></div>
+            </div>
+        </form>
+    </div>
+    <!--
+    <div class="row">
+        <div class="col-md-4 push-md-4">
+            <img src="assets/images/logo.png" width="150px" class="user-avatar" />
+            <h1>Ignug</h1>
+            <form role="form">
+                <div class="form-content">
+                </div>
+                <a class="btn rounded-btn" [routerLink]="['/dashboard']" (click)="onLoggedin()"> Ingresar con Google </a>
             </form>
         </div>
     </div>
+    -->
 </div>
