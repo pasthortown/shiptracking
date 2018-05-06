@@ -263,7 +263,7 @@ export class PersonaComponent implements OnInit {
       this.entidades = Persona[0];
       this.entidadSeleccionada = this.crearEntidad();
       this.cuenta = new Cuenta();
-      this.cuenta.idCoperativa = 0;
+      this.cuenta.idCoperativa = 1;
       this.cuenta.idRol = 0;
       this.getGeneros();
       this.getRoles();

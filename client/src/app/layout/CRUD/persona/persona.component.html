@@ -178,6 +178,7 @@
             <label for="clave" class="col-sm-4 col-form-label">Coperativa</label>
             <div class="col-sm-8">
                 <select class="form-control" id="idCoperativa" name="idCoperativa" [(ngModel)]="cuenta.idCoperativa">
+                    <option value="1" selected>Sin Coperativa</option>
                     <option *ngFor="let coperativa of coperativas" value={{coperativa.id}}>{{coperativa.nombre}}</option>
                 </select>
             </div>

@@ -1,3 +1,4 @@
+import { LoginResult } from './../../../entidades/especifico/Login-Result';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,6 +12,7 @@ export class SidebarComponent {
     isActive: boolean = false;
     showMenu: string = '';
     pushRightClass: string = 'push-right';
+    usuario: string;
 
     constructor(private translate: TranslateService, public router: Router) {
         this.translate.addLangs(['en', 'fr', 'ur', 'es', 'it', 'fa', 'de']);
@@ -27,6 +29,10 @@ export class SidebarComponent {
                 this.toggleSidebar();
             }
         });
+
+        let logedResult = JSON.parse(sessionStorage.getItem('logedResult')) as LoginResult;
+        let personaLogeada = logedResult.persona;
+        this.usuario = personaLogeada.nombres + ' ' + personaLogeada.apellidos;
     }
 
     eventCalled() {
@@ -62,5 +68,6 @@ export class SidebarComponent {
 
     onLoggedout() {
         localStorage.removeItem('isLoggedin');
+        sessionStorage.removeItem('logedResult');
     }
 }

@@ -1,3 +1,4 @@
+import { LoginResult } from './../../../entidades/especifico/Login-Result';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HeaderComponent implements OnInit {
     pushRightClass: string = 'push-right';
+    usuario: string;
 
     constructor(private translate: TranslateService, public router: Router) {
 
@@ -28,7 +30,11 @@ export class HeaderComponent implements OnInit {
         });
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        let logedResult = JSON.parse(sessionStorage.getItem('logedResult')) as LoginResult;
+        let personaLogeada = logedResult.persona;
+        this.usuario = personaLogeada.nombres + ' ' + personaLogeada.apellidos;
+    }
 
     isToggled(): boolean {
         const dom: Element = document.querySelector('body');
@@ -47,6 +53,7 @@ export class HeaderComponent implements OnInit {
 
     onLoggedout() {
         localStorage.removeItem('isLoggedin');
+        sessionStorage.removeItem('logedResult');
     }
 
     changeLang(language: string) {

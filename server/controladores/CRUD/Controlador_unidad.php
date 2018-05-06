@@ -46,7 +46,7 @@ class Controlador_unidad extends Controlador_Base
    {
       $id = $args["id"];
       if ($id==""){
-         $sql = "SELECT Unidad.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', TipoUnidad.urlIcono as 'TipoUnidad' FROM Unidad INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa INNER JOIN Ruta ON Unidad.idRuta = Ruta.id INNER JOIN TipoUnidad ON TipoUnidad.id = Unidad.idTipoUnidad;";
+         $sql = "SELECT Unidad.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', TipoUnidad.urlIcono as 'TipoUnidad' FROM Unidad INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa INNER JOIN Ruta ON Unidad.idRuta = Ruta.id INNER JOIN TipoUnidad ON TipoUnidad.id = Unidad.idTipoUnidad ORDER BY Unidad.idCoperativa, Unidad.numero ASC;";
       }else{
       $parametros = array($id);
          $sql = "SELECT Unidad.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', TipoUnidad.urlIcono as 'TipoUnidad' FROM Unidad INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa INNER JOIN Ruta ON Unidad.idRuta = Ruta.id INNER JOIN TipoUnidad ON TipoUnidad.id = Unidad.idTipoUnidad WHERE Unidad.id = ?;";
@@ -60,7 +60,7 @@ class Controlador_unidad extends Controlador_Base
       $pagina = $args["pagina"];
       $registrosPorPagina = $args["registros_por_pagina"];
       $desde = (($pagina-1)*$registrosPorPagina);
-      $sql ="SELECT Unidad.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', TipoUnidad.urlIcono as 'TipoUnidad' FROM Unidad INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa INNER JOIN Ruta ON Unidad.idRuta = Ruta.id INNER JOIN TipoUnidad ON TipoUnidad.id = Unidad.idTipoUnidad LIMIT $desde,$registrosPorPagina;";
+      $sql ="SELECT Unidad.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', TipoUnidad.urlIcono as 'TipoUnidad' FROM Unidad INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa INNER JOIN Ruta ON Unidad.idRuta = Ruta.id INNER JOIN TipoUnidad ON TipoUnidad.id = Unidad.idTipoUnidad ORDER BY Unidad.idCoperativa, Unidad.numero ASC LIMIT $desde,$registrosPorPagina;";
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       return $respuesta;
    }
@@ -81,16 +81,16 @@ class Controlador_unidad extends Controlador_Base
       switch ($tipoFiltro){
          case "coincide":
             $parametros = array($filtro);
-            $sql = "SELECT Unidad.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', TipoUnidad.urlIcono as 'TipoUnidad' FROM Unidad INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa INNER JOIN Ruta ON Unidad.idRuta = Ruta.id INNER JOIN TipoUnidad ON TipoUnidad.id = Unidad.idTipoUnidad WHERE Unidad.$nombreColumna = ?;";
+            $sql = "SELECT Unidad.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', TipoUnidad.urlIcono as 'TipoUnidad' FROM Unidad INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa INNER JOIN Ruta ON Unidad.idRuta = Ruta.id INNER JOIN TipoUnidad ON TipoUnidad.id = Unidad.idTipoUnidad WHERE Unidad.$nombreColumna = ? ORDER BY Unidad.idCoperativa, Unidad.numero ASC;";
             break;
          case "inicia":
-            $sql = "SELECT Unidad.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', TipoUnidad.urlIcono as 'TipoUnidad' FROM Unidad INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa INNER JOIN Ruta ON Unidad.idRuta = Ruta.id INNER JOIN TipoUnidad ON TipoUnidad.id = Unidad.idTipoUnidad WHERE Unidad.$nombreColumna LIKE '$filtro%';";
+            $sql = "SELECT Unidad.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', TipoUnidad.urlIcono as 'TipoUnidad' FROM Unidad INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa INNER JOIN Ruta ON Unidad.idRuta = Ruta.id INNER JOIN TipoUnidad ON TipoUnidad.id = Unidad.idTipoUnidad WHERE Unidad.$nombreColumna LIKE '$filtro%' ORDER BY Unidad.idCoperativa, Unidad.numero ASC;";
             break;
          case "termina":
-            $sql = "SELECT Unidad.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', TipoUnidad.urlIcono as 'TipoUnidad' FROM Unidad INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa INNER JOIN Ruta ON Unidad.idRuta = Ruta.id INNER JOIN TipoUnidad ON TipoUnidad.id = Unidad.idTipoUnidad WHERE Unidad.$nombreColumna LIKE '%$filtro';";
+            $sql = "SELECT Unidad.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', TipoUnidad.urlIcono as 'TipoUnidad' FROM Unidad INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa INNER JOIN Ruta ON Unidad.idRuta = Ruta.id INNER JOIN TipoUnidad ON TipoUnidad.id = Unidad.idTipoUnidad WHERE Unidad.$nombreColumna LIKE '%$filtro' ORDER BY Unidad.idCoperativa, Unidad.numero ASC;";
             break;
          default:
-            $sql = "SELECT Unidad.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', TipoUnidad.urlIcono as 'TipoUnidad' FROM Unidad INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa INNER JOIN Ruta ON Unidad.idRuta = Ruta.id INNER JOIN TipoUnidad ON TipoUnidad.id = Unidad.idTipoUnidad WHERE Unidad.$nombreColumna LIKE '%$filtro%';";
+            $sql = "SELECT Unidad.*, Coperativa.nombre as 'Coperativa', CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', TipoUnidad.urlIcono as 'TipoUnidad' FROM Unidad INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa INNER JOIN Ruta ON Unidad.idRuta = Ruta.id INNER JOIN TipoUnidad ON TipoUnidad.id = Unidad.idTipoUnidad WHERE Unidad.$nombreColumna LIKE '%$filtro%' ORDER BY Unidad.idCoperativa, Unidad.numero ASC;";
             break;
       }
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);

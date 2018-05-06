@@ -171,7 +171,7 @@ export class UnidadComponent implements OnInit {
    crearEntidad(): Unidad {
       let nuevoUnidad = new Unidad();
       nuevoUnidad.id = 0;
-      nuevoUnidad.idCoperativa = 0;
+      nuevoUnidad.idCoperativa = 1;
       nuevoUnidad.idRuta = 0;
       nuevoUnidad.idTipoUnidad = 0;
       return nuevoUnidad;
