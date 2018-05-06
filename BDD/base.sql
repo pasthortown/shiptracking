@@ -30,7 +30,7 @@ CREATE TABLE Parada (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE Bus (
+CREATE TABLE Unidad (
     id INT NOT NULL AUTO_INCREMENT,
     idCoperativa INT NOT NULL,
     idRuta INT NULL,
@@ -38,6 +38,14 @@ CREATE TABLE Bus (
     numero INT NULL,
     anoFabricacion INT NULL,
     registroMunicipal VARCHAR(10) NULL,
+    idTipoUnidad INT NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE TipoUnidad (
+    id INT NOT NULL AUTO_INCREMENT,
+    descripcion VARCHAR(20) NOT NULL UNIQUE,
+    urlIcono VARCHAR(500) NULL,
     PRIMARY KEY (id)
 );
 
@@ -107,5 +115,14 @@ CREATE TABLE Adjunto (
 	tipoArchivo VARCHAR(255) NULL,
 	nombreArchivo VARCHAR(255) NULL,
 	adjunto LONGBLOB NULL,
+	PRIMARY KEY (id)
+) ENGINE myISAM;
+
+CREATE TABLE Posiciones (
+    id INT NOT NULL AUTO_INCREMENT,
+	idUnidad INT NULL,
+	tiempo DATETIME NULL,
+    latitud VARCHAR(255) NULL,
+    longitud VARCHAR(255) NULL,
 	PRIMARY KEY (id)
 ) ENGINE myISAM;

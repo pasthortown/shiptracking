@@ -58,12 +58,12 @@
                   </th>
                   <th scope="col">
                      <span>
-                        <strong>Año de Fabricación</strong>
+                        <strong>Registro Municipal</strong>
                      </span>
                   </th>
                   <th scope="col">
                      <span>
-                        <strong>Registro Municipal</strong>
+                        <strong>Tipo</strong>
                      </span>
                   </th>
                </tr>
@@ -78,8 +78,8 @@
                   <td>{{actual.Ruta}}</td>
                   <td>{{actual.placa}}</td>
                   <td>{{actual.numero}}</td>
-                  <td>{{actual.anoFabricacion}}</td>
                   <td>{{actual.registroMunicipal}}</td>
+                  <td>{{actual.Tipo}}</td>
                </tr>
             </tbody>
          </table>
@@ -166,6 +166,15 @@
             <label for="registroMunicipal" class="col-sm-4 col-form-label">Registro Municipal</label>
             <div class="col-sm-8">
               <input type="text" class="form-control" id="registroMunicipal" name="registroMunicipal" placeholder="Registro Municipal" [(ngModel)]="entidadSeleccionada.registroMunicipal">
+            </div>
+         </div>
+         <div class="form-group row">
+            <label for="TipoUnidad" class="col-sm-4 col-form-label">Tipo de Unidad</label>
+            <div class="col-sm-8">
+                <select class="form-control" id="idTipoUnidad" name="idTipoUnidad" [(ngModel)]="entidadSeleccionada.idTipoUnidad">
+                    <option value="" selected>Seleccione...</option>
+                    <option *ngFor="let tipoUnidad of tipoUnidades" value={{tipoUnidad.id}}>{{tipoUnidad.descripcion}}</option>
+                </select>
             </div>
          </div>
          </form>
