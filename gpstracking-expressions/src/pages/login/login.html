@@ -23,7 +23,9 @@
     <ion-row>
       <ion-col class="signup-col">
         <button ion-button class="submit-btn" full (click)="ingresar()">Ingresar</button>
-        <button ion-button class="submit-btn" color="secondary" full (click)="passwordRecovery()">Recuperar Contraseña</button>
+        <div style="float:left; width:100%;">
+          <a style="float:left;width:40%; text-align: left;" (click)="register()"><small>Registrarse</small></a><a (click)="passwordRecovery()" style="float:left;width:60%; text-align: right;"><small>Recuperar Contraseña</small></a>
+        </div>
       </ion-col>
     </ion-row>
   </div>

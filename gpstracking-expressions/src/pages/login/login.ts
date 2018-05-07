@@ -1,3 +1,4 @@
+import { RegisterPage } from './../register/register';
 import { TabsPage } from './../tabs/tabs';
 import { LoginRequest } from './Login-Request';
 import { Component, OnInit } from '@angular/core';
@@ -13,6 +14,7 @@ import { ToastController } from 'ionic-angular';
 export class LoginPage implements OnInit{
   webServiceURL = 'http://localhost/shiptracking/server/login/';
   loginRequest: LoginRequest;
+
   constructor(public navCtrl: NavController, public toastCtrl: ToastController, public navParams: NavParams, public http: Http) {
   }
 
@@ -63,5 +65,9 @@ export class LoginPage implements OnInit{
       duration: 3000
     });
     toast.present();
+  }
+
+  register(){
+    this.navCtrl.push(RegisterPage);
   }
 }
