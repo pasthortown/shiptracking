@@ -22,11 +22,7 @@ class Controlador_persona extends Controlador_Base
       $parametros = array($persona->identificacion,$persona->nombres,$persona->apellidos,$persona->idGenero,$persona->direccion,$persona->telefono1,$persona->telefono2,$persona->correoElectronico,$persona->id);
       $sql = "UPDATE Persona SET identificacion = ?,nombres = ?,apellidos = ?,idGenero = ?,direccion = ?,telefono1 = ?,telefono2 = ?,correoElectronico = ? WHERE id = ?;";
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
-      if(is_null($respuesta[0])){
-         return true;
-      }else{
-         return false;
-      }
+      return true;
    }
 
    function borrar($args)

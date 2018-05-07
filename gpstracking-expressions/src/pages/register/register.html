@@ -1,0 +1,40 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Registrarse</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-row>
+    <ion-list inset>
+      <ion-item>
+          <ion-label floating>Identificación</ion-label>
+          <ion-input type="text" [(ngModel)]="persona.identificacion"></ion-input>
+      </ion-item>
+      <ion-item>
+          <ion-label floating>Nombres</ion-label>
+          <ion-input type="text" [(ngModel)]="persona.nombres"></ion-input>
+      </ion-item>
+      <ion-item>
+          <ion-label floating>Apellidos</ion-label>
+          <ion-input type="text" [(ngModel)]="persona.apellidos"></ion-input>
+      </ion-item>
+      <ion-item>
+          <ion-label floating>Correo Electrónico</ion-label>
+          <ion-input type="text" [(ngModel)]="persona.correoElectronico"></ion-input>
+      </ion-item>
+      <ion-item>
+          <ion-label floating>Contraseña</ion-label>
+          <ion-input type="password" [(ngModel)]="cuenta.clave"></ion-input>
+      </ion-item>
+    </ion-list>
+  </ion-row>
+  <ion-row>
+    <ion-col class="signup-col">
+      <button ion-button class="submit-btn"  color="secondary" full (click)="registrar()">Registrar</button>
+    </ion-col>
+  </ion-row>
+</ion-content>

@@ -5,8 +5,14 @@
     right: 0;
     bottom: 0;
     overflow: auto;
-    background-color: #0F3542;
+    background-color: #232624;
     padding: 3em;
+}
+
+.pretty-form {
+    background-color:white;
+    padding:40px;
+    border-radius: 25px;
 }
 
 .input-lg {
@@ -15,12 +21,6 @@
     font-size: 18px;
     line-height: 1.3333333;
     border-radius: 0;
-}
-
-.pretty-form {
-    background-color:rgba(255,255,255,0.9);
-    padding:40px;
-    border-radius: 25px;
 }
 
 .input-underline {

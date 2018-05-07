@@ -33,12 +33,12 @@
                   </th>
                   <th scope="col">
                      <span>
-                        <strong>No.</strong>
+                        <strong>Coperativa</strong>
                      </span>
                   </th>
                   <th scope="col">
                      <span>
-                        <strong>Coperativa</strong>
+                        <strong>Número de Disco</strong>
                      </span>
                   </th>
                   <th scope="col">
@@ -49,11 +49,6 @@
                   <th scope="col">
                      <span>
                         <strong>Placa</strong>
-                     </span>
-                  </th>
-                  <th scope="col">
-                     <span>
-                        <strong>Número de Disco</strong>
                      </span>
                   </th>
                   <th scope="col">
@@ -73,11 +68,10 @@
                   <td>
                      <i class="fa fa-hand-o-right" [hidden]="!estaSeleccionado(actual)"></i>
                   </td>
-                  <td>{{actual.id}}</td>
                   <td>{{actual.Coperativa}}</td>
+                  <td>{{actual.numero}}</td>
                   <td>{{actual.Ruta}}</td>
                   <td>{{actual.placa}}</td>
-                  <td>{{actual.numero}}</td>
                   <td>{{actual.registroMunicipal}}</td>
                   <td><img *ngIf="actual.TipoUnidad!=null" src="{{actual.TipoUnidad}}" alt="Icono" height="25" width="25"></td>
                </tr>
@@ -130,7 +124,7 @@
             <label for="idCoperativa" class="col-sm-4 col-form-label">Coperativa</label>
             <div class="col-sm-8">
                 <select class="form-control" id="idCoperativa" name="idCoperativa" [(ngModel)]="entidadSeleccionada.idCoperativa">
-                    <option value="0" selected>Seleccione...</option>
+                    <option value="1" selected>Sin Coperativa</option>
                     <option *ngFor="let coperativa of coperativas" value={{coperativa.id}}>{{coperativa.nombre}}</option>
                 </select>
             </div>

@@ -239,7 +239,13 @@ export class RutaComponent implements OnInit {
    }
 
    permitirAgregarMarcadoresConClick() {
-        let image = './../../../../assets/images/parada.png';
+        let image = {
+            url: 'assets/images/parada.png',
+            size: new google.maps.Size(40, 40),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(40, 40)
+        };
         let mapa = this.map;
         let paradas = this.paradas;
         this.poly = new google.maps.Polyline({
@@ -250,7 +256,6 @@ export class RutaComponent implements OnInit {
             map: this.map
          });
         let poly = this.poly;
-        console.log(paradas);
         if(paradas.length==0){
             paradas = [];
         }
@@ -306,13 +311,22 @@ export class RutaComponent implements OnInit {
    }
 
    refreshMarkers(): void {
-      let image = './../../../../assets/images/parada.png';
-      this.getParadas(this.entidadSeleccionada.id);
+        let image = {
+            url: 'assets/images/parada.png',
+            size: new google.maps.Size(40, 40),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(40, 40)
+        };
+        this.getParadas(this.entidadSeleccionada.id);
    }
 
    saveMarkers(): void {
       let cuenta = 0;
-      console.log(this.paradas);
+      if(this.entidadSeleccionada.id<1){
+          this.toastr.warning('Debe seleccionar una ruta primero', 'Guardar Paradas');
+          return;
+      }
       this.paradas.forEach(parada => {
         this.busy = this.paradaService.getFiltrado('idRuta','coincide',this.entidadSeleccionada.id.toString())
         .then(respuesta => {

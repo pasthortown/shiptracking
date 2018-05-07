@@ -29,6 +29,16 @@ export class LoginService {
       .catch(this.handleError);
    }
 
+   passwordRecovery(email: string): Promise<LoginResult> {
+      const url = this.urlBase + '/passwordRecovery';
+      return this.http.get(url+'?email='+email)
+      .toPromise()
+      .then(response=>{
+          return response;
+      })
+      .catch(this.handleError);
+   }
+
    baseUrl(): string {
        return this.urlBase;
    }

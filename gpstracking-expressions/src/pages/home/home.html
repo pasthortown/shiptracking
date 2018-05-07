@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-navbar>
+    <ion-item>
+      <img col-6 src="./../../assets/imgs/LogoGeoTracking.png">
+      <h2>Te damos la bienvenida!!!</h2>
+      <p>{{usuario}}</p>
+    </ion-item>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-row>
+    <ion-col>
+      <ion-list inset>
+        <ion-list-header>
+          <strong>UNIDAD</strong>
+          <button item-end ion-button icon-left>
+            <ion-icon name="qr-scanner"></ion-icon>
+            Escanear
+          </button>
+        </ion-list-header>
+        <ion-item>
+          <ion-label floating>Registro Municipal</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Placa</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+        <ion-list-header>
+          <strong>CUÉNTANOS</strong>
+        </ion-list-header>
+        <ion-item>
+          <ion-label floating>Tu opinión es importante</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col class="signup-col">
+      <button ion-button class="submit-btn" full (click)="enviar()">Enviar</button>
+    </ion-col>
+  </ion-row>
+</ion-content>

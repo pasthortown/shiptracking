@@ -2,31 +2,61 @@
 include_once('../controladores/Controlador_Base.php');
 include_once('../entidades/especificos/LoginResult.php');
 include_once('../entidades/CRUD/Persona.php');
+include_once('../controladores/especificos/Controlador_mail_sender.php');
 class Controlador_login extends Controlador_Base
 {
    function cuenta($args)
    { 
        $email = $args["email"];
        $clave = $args["clave"];
-       /*// CIFRAR LA CLAVE
-       $sql = "SELECT Persona.id as 'idPersona', Cuenta.idRol as 'idRol' FROM Persona INNER JOIN Cuenta ON Cuenta.idPersona = Persona.id WHERE Persona.correoElectronicoInstitucional = ?;";
-       $parametros = array($email);
+       $sql = "SELECT Persona.*, Cuenta.idRol as 'idRol' FROM Persona INNER JOIN Cuenta ON Cuenta.idPersona = Persona.id WHERE Persona.correoElectronico = ? AND Cuenta.clave = aes_encrypt(?,'gps_tracking');";
+       $parametros = array($email, $clave);
        $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
        if(is_null($respuesta[0])||$respuesta[0]==0){
           return new LoginResult(0,new Persona);
        }else{
-           $in=imap_open("{pop.gmail.com:995/pop3/ssl}",$email, $clave);
-           if($in==false){
-               return new LoginResult(0,new Persona);
-           }
-           imap_close($in);
-           $sqlPersona = "SELECT * FROM Persona WHERE Persona.id = ?;";
-           $parametrosPersona = array($respuesta[0]["idPersona"]);
-           $persona = $this->conexion->ejecutarConsulta($sqlPersona,$parametrosPersona);
-           $PersonaLogged = new Persona($persona[0]["id"],$persona[0]["identificacion"],$persona[0]["nombre1"],$persona[0]["nombre2"],$persona[0]["apellido1"],$persona[0]["apellido2"],$persona[0]["fechaNacimiento"],$persona[0]["telefonoCelular"],$persona[0]["telefonoDomicilio"],$persona[0]["correoElectronicoInstitucional"],$persona[0]["correoElectronicoPersonal"],$persona[0]["idGenero"],$persona[0]["idUbicacionDomicilioPais"],$persona[0]["idUbicacionDomicilioProvincia"],$persona[0]["idUbicacionDomicilioCanton"],$persona[0]["idUbicacionDomicilioParroquia"],$persona[0]["direccionDomicilio"],$persona[0]["idEstadoCivil"],$persona[0]["idUbicacionNacimientoPais"],$persona[0]["idUbicacionNacimientoProvincia"],$persona[0]["idUbicacionNacimientoCanton"],$persona[0]["idUbicacionNacimientoParroquia"],$persona[0]["idIngresos"],$persona[0]["idEtnia"],$persona[0]["idTipoSangre"],$persona[0]["numeroHijos"],$persona[0]["idOcupacion"],$persona[0]["carnetConadis"],$persona[0]["idTipoDiscapacidad"],$persona[0]["porcentajeDiscapacidad"],$persona[0]["nombrePadre"],$persona[0]["paisOrigenPadre"],$persona[0]["idNivelEstudioPadre"],$persona[0]["nombreMadre"],$persona[0]["paisOrigenMadre"],$persona[0]["idNivelEstudioMadre"]);
+           $PersonaLogged = new Persona($respuesta[0]["id"],$respuesta[0]["identificacion"],$respuesta[0]["nombres"],$respuesta[0]["apellidos"],$respuesta[0]["idGenero"],$respuesta[0]["direccion"],$respuesta[0]["telefono1"],$respuesta[0]["telefono2"],$respuesta[0]["correoElectronico"]);
            $loginResult = new LoginResult((int)$respuesta[0]["idRol"],$PersonaLogged);
            return $loginResult;
-       }*/
-       return true;
+       }
+       return false;
+   }
+
+   function passwordRecovery($args)
+   {
+        $email = $args["email"];
+        $sql = "SELECT Cuenta.id, CONCAT(Persona.nombres,' ',Persona.apellidos) as 'usuario' FROM Persona INNER JOIN Cuenta ON Persona.id = Cuenta.idPersona WHERE Persona.correoElectronico = ?;";
+        $parametros = array($email);
+        $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
+        $usuario = $respuesta[0]["usuario"];
+        if(is_null($respuesta[0])||$respuesta[0]==0){
+            return false;
+        }else{
+            $posiblesLetras = ['a','b','c','d','e','f','g','h','i','j','k','l',
+                               'm','n','o','p','q','r','s','t','u','v','w','x'];
+            $posiblesNumeros = ['1','2','3','4','5','6','7','8','9','0'];
+            $generador = array();
+            for($i = 0;$i<5;$i++){
+                array_push($generador,$posiblesLetras[rand(0,count($posiblesLetras) - 1)]);
+            }
+            for($i = 0;$i<5;$i++){
+                array_push($generador, strtoupper($posiblesLetras[rand(0,count($posiblesLetras) - 1)]));
+            }
+            for($i = 0;$i<5;$i++){
+                array_push($generador, $posiblesNumeros[rand(0,count($posiblesNumeros) - 1)]);
+            }
+            shuffle($generador);
+            $nuevaClave = "";
+            foreach($generador as $caracter){
+                $nuevaClave.=$caracter;
+            }
+            $sql = "UPDATE Cuenta SET clave = aes_encrypt(?,'gps_tracking') WHERE Cuenta.id = ?;";
+            $parametros = array($nuevaClave, $respuesta[0]["id"]);
+            $respuesta2 = $this->conexion->ejecutarConsulta($sql,$parametros);
+            $mailSender = new Controlador_mail_sender();
+            $mailSender->enviarMail('gpstrackingec@gmail.com','GPS Tracking EC', '1509Charles*', 'gpstrackingec@gmail.com','Soporte al Consumidor',$email,$usuario,'Hola, '.$usuario.'. Tu nueva clave es <strong>'.$nuevaClave.'</strong>','Reseteo de Clave');
+            return true;
+        }
+        return false;
    }
 }

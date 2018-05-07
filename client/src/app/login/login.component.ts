@@ -47,19 +47,35 @@ export class LoginComponent implements OnInit {
     login(datosLogin: LoginRequest): void {
         this.busy = this.dataService.cuenta(datosLogin)
         .then(respuesta => {
-            /*if (respuesta.idRol === 0) {
+            if (respuesta.idRol == 0) {
                 this.toastr.warning('Credenciales Incorrectos', 'Autenticar');
-                localStorage.setItem('isLoggedin', 'false');
+                localStorage.removeItem('isLoggedin');
+                sessionStorage.removeItem('logedResult');
                 this.router.navigate(['/login']);
-            } else {
-                localStorage.setItem('isLoggedin', 'true');
-                localStorage.setItem('logedResult', JSON.stringify(respuesta));
-            }*/
+                return;
+            }
             localStorage.setItem('isLoggedin', 'true');
-            localStorage.setItem('logedResult', JSON.stringify(respuesta));
+            sessionStorage.setItem('logedResult', JSON.stringify(respuesta));
+            this.router.navigate(['/dashboard']);
         })
         .catch(error => {
-           this.toastr.warning('Ocurrió un error', 'Autenticar');
+            localStorage.removeItem('isLoggedin');
+            sessionStorage.removeItem('logedResult');
+            this.toastr.warning('Ocurrió un error', 'Autenticar');
+        });
+    }
+
+    recoveryPassword(){
+        if (this.loginEntidad.email == null || this.loginEntidad.email=='') {
+            this.toastr.warning('Ingrese su correo electrónico', 'Recuperar Contraseña');
+            return;
+        }
+        this.busy = this.dataService.passwordRecovery(this.loginEntidad.email)
+        .then(respuesta => {
+            this.toastr.success('La contraseña ha cambiado, revise su correo electrónico', 'Recuperar Contraseña');
+        })
+        .catch(error => {
+            this.toastr.warning('Ocurrió un error', 'Recuperar Contraseña');
         });
     }
 }

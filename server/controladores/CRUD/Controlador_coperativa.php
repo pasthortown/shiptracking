@@ -46,7 +46,7 @@ class Controlador_coperativa extends Controlador_Base
    {
       $id = $args["id"];
       if ($id==""){
-         $sql = "SELECT * FROM Coperativa;";
+         $sql = "SELECT * FROM Coperativa WHERE RUC<>0 ORDER BY Coperativa.nombre ASC;";
       }else{
       $parametros = array($id);
          $sql = "SELECT * FROM Coperativa WHERE id = ?;";
@@ -60,7 +60,7 @@ class Controlador_coperativa extends Controlador_Base
       $pagina = $args["pagina"];
       $registrosPorPagina = $args["registros_por_pagina"];
       $desde = (($pagina-1)*$registrosPorPagina);
-      $sql ="SELECT * FROM Coperativa LIMIT $desde,$registrosPorPagina;";
+      $sql ="SELECT * FROM Coperativa WHERE RUC<>0 ORDER BY Coperativa.nombre ASC LIMIT $desde,$registrosPorPagina;";
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       return $respuesta;
    }
@@ -68,7 +68,7 @@ class Controlador_coperativa extends Controlador_Base
    function numero_paginas($args)
    {
       $registrosPorPagina = $args["registros_por_pagina"];
-      $sql ="SELECT IF(ceil(count(*)/$registrosPorPagina)>0,ceil(count(*)/$registrosPorPagina),1) as 'paginas' FROM Coperativa;";
+      $sql ="SELECT IF(ceil(count(*)/$registrosPorPagina)>0,ceil(count(*)/$registrosPorPagina),1) as 'paginas' FROM Coperativa WHERE RUC<>0;";
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       return $respuesta[0];
    }
@@ -81,16 +81,16 @@ class Controlador_coperativa extends Controlador_Base
       switch ($tipoFiltro){
          case "coincide":
             $parametros = array($filtro);
-            $sql = "SELECT * FROM Coperativa WHERE $nombreColumna = ?;";
+            $sql = "SELECT * FROM Coperativa WHERE RUC<>0 AND $nombreColumna = ? ORDER BY Coperativa.nombre ASC;";
             break;
          case "inicia":
-            $sql = "SELECT * FROM Coperativa WHERE $nombreColumna LIKE '$filtro%';";
+            $sql = "SELECT * FROM Coperativa WHERE RUC<>0 AND $nombreColumna LIKE '$filtro%' ORDER BY Coperativa.nombre ASC;";
             break;
          case "termina":
-            $sql = "SELECT * FROM Coperativa WHERE $nombreColumna LIKE '%$filtro';";
+            $sql = "SELECT * FROM Coperativa WHERE RUC<>0 AND $nombreColumna LIKE '%$filtro' ORDER BY Coperativa.nombre ASC;";
             break;
          default:
-            $sql = "SELECT * FROM Coperativa WHERE $nombreColumna LIKE '%$filtro%';";
+            $sql = "SELECT * FROM Coperativa WHERE RUC<>0 AND $nombreColumna LIKE '%$filtro%'ORDER BY Coperativa.nombre ASC;";
             break;
       }
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);

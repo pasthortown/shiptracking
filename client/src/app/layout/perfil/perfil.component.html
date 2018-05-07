@@ -1,0 +1,147 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h2 class="text-center">Datos Personales</h2>
+        </div>
+    </div>
+    <div style="width:100%; height:30px;"></div>
+    <div class="form-group row">
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" >
+            <label class="col-form-label">Identificación</label>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-5 col-lg-5">
+            <input type="text" class="form-control" id="identificacion" placeholder="Identificación" [(ngModel)]="personaLogeada.identificacion" readonly>
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+    </div>
+    <div class="form-group row">
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" >
+            <label class="col-form-label">Nombres</label>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-5 col-lg-5">
+            <input type="text" class="form-control" id="nombres" placeholder="Nombres" [(ngModel)]="persona.nombres">
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+    </div>
+    <div class="form-group row">
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" >
+            <label class="col-form-label">Apellidos</label>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-5 col-lg-5">
+            <input type="text" class="form-control" id="apellidos" placeholder="Apellidos" [(ngModel)]="persona.apellidos">
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+    </div>
+    <div class="form-group row">
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" >
+            <label class="col-form-label">Género</label>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-5 col-lg-5">
+            <select class="form-control" id="idGenero" name="idGenero" [(ngModel)]="persona.idGenero">
+                <option value="" selected>Seleccione...</option>
+                <option *ngFor="let genero of generos" value={{genero.id}}>{{genero.descripcion}}</option>
+            </select>
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+    </div>
+    <div class="form-group row">
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" >
+            <label class="col-form-label">Dirección</label>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-5 col-lg-5">
+            <input type="text" class="form-control" id="direccion" placeholder="Dirección" [(ngModel)]="persona.direccion">
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+    </div>
+    <div class="form-group row">
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" >
+            <label class="col-form-label">Teléfono Principal</label>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-5 col-lg-5">
+            <input type="text" class="form-control" id="telefonoPrincipal" placeholder="Teléfono Principal" [(ngModel)]="persona.telefono1">
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+    </div>
+    <div class="form-group row">
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" >
+            <label class="col-form-label">Teléfono Secundario</label>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-5 col-lg-5">
+            <input type="text" class="form-control" id="telefonoSecundario" placeholder="Teléfono Secundario" [(ngModel)]="persona.telefono2">
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+    </div>
+    <div class="form-group row">
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" >
+            <label class="col-form-label">Correo Electrónico</label>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-5 col-lg-5">
+            <input type="email" class="form-control" id="correoElectronico" placeholder="Correo Electrónico" [(ngModel)]="persona.correoElectronico">
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+    </div>
+    <div class="form-group row">
+        <div class="col-12 text-center">
+            <h4>¿Desea cambiar su clave?</h4>
+        </div>
+        <div style="float:left; width: 100%; border-top: 1px black solid;"></div>
+    </div>
+    <div class="form-group row">
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" >
+            <label class="col-form-label">Nueva Clave</label>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-5 col-lg-5">
+            <input type="password" class="form-control" id="claveNueva" (keyup)="validarClaveEvent()" placeholder="Nueva Clave" [(ngModel)]="claveNueva">
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+    </div>
+    <div class="form-group row">
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" >
+            <label class="col-form-label">Confirmar Nueva Clave</label>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-5 col-lg-5">
+            <input type="password" class="form-control" id="confirmClaveNueva" (keyup)="validarClaveEvent()" placeholder="Confirmar Nueva Clave" [(ngModel)]="confirmarNuevaClave">
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2" ></div>
+    </div>
+    <div *ngIf="cambiandoClave" class="form-group row">
+        <div class="col-12 text-center">
+            <div *ngIf="validarClave" class="col-12 alert alert-success" role="alert">
+                Las contraseñas coinciden.
+            </div>
+            <div *ngIf="!validarClave" class="col-12 alert alert-danger" role="alert">
+                Las contraseñas son diferentes.
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-12 text-center">
+            <button type="button" class="btn btn-success" (click)="updateClave()">
+                <span class="fa fa-check"></span>&nbsp;Cambiar Clave
+            </button>
+        </div>
+        <div style="float:left; width: 100%; border-top: 1px black solid; margin-top:20px;"></div>
+    </div>
+    <div class="form-group row">
+        <div style="width: 100%; text-align:center;">
+            <div>
+                <button type="button" class="btn btn-primary" (click)="update()">
+                    <span class="fa fa-refresh"></span>&nbsp;Actualizar
+                </button>
+                <button type="button" class="btn btn-danger" (click)="cancelar()">
+                    <span class="fa fa-remove"></span>&nbsp;Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
