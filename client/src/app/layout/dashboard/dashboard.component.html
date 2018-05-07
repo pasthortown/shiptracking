@@ -1,5 +1,7 @@
 <div [@routerTransition]>
-    <h2 class="text-muted">Dashboard <small>Statistics Overview</small></h2>
+    <div class="col-12">
+        <img src="assets/images/LogoGeoTracking.png" class="img-responsive col-xs-5 col-sm-5 col-md-5 col-lg-5"/>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <ngb-carousel>
@@ -14,50 +16,77 @@
         </div>
     </div>
     <hr>
-    <div class="row">
-        <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'primary'" [icon]="'fa-map-marker'" [count]="POSICIONAMIENTO" [label]="'Localización y estado de sus vehículos en tiempo real'" ></app-stat>
-        </div>
-        <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'warning'" [icon]="'fa-list-alt'" [count]="CONTROL ACTIVIDAD" [label]="'Registro de todos los movimientos realizados y rutas programadas'" ></app-stat>
-        </div>
-        <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'success'" [icon]="'fa-rss'" [count]="RADAR SITIOS POIS" [label]="'El radar GPS envía avisos de llegada y salida'" ></app-stat>
-        </div>
-        <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'danger'" [icon]="'fa-cogs'" [count]="SOPORTE 24/7" [label]="'Soporte Técnico en-línea 24/7 para solventar cualquier consulta'"></app-stat>
-        </div>
-    </div>
-    <hr />
-    <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}</ngb-alert>
-    <hr />
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="card card-default">
-                <div class="card-header">
-                    <i class="fa fa-clock-o fa-fw"></i> Responsive Timeline
+    <div class="col-12">
+        <div class="form-group row">
+            <div class="col-3">
+                <div class="card col-12" style="background-color:#238fa0;">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: white;"><strong>Card title</strong></h5>
+                        <div class="form-group row">
+                            <div class="col-3">
+                                <i class="fa fa-html5 fa-4x" style="color: white;"></i>
+                            </div>
+                            <div class="col-9">
+                                <p class="card-text text-right" style="color:white;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>        
+                            </div>
+                        </div>                    
+                    </div>
                 </div>
-                <!-- /.card-header -->
-                <app-timeline></app-timeline>
-                <!-- /.card-body -->
             </div>
-            <!-- /.card -->
-        </div>
-        <!-- /.col-lg-8 -->
-        <div class="col-lg-4">
-            <div class="card card-default mb-3">
-                <div class="card-header">
-                    <i class="fa fa-bell fa-fw"></i> Notifications card
+            <div class="col-3">
+                <div class="card col-12" style="background-color:#238fa0;">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: white;"><strong>Card title</strong></h5>
+                        <div class="form-group row">
+                            <div class="col-3">
+                                <i class="fa fa-html5 fa-4x" style="color: white;"></i>
+                            </div>
+                            <div class="col-9">
+                                <p class="card-text text-right" style="color:white;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>        
+                            </div>
+                        </div>                    
+                    </div>
                 </div>
-                <!-- /.card-header -->
-                <app-notification></app-notification>
-                <!-- /.card-body -->
             </div>
-            <!-- /.card -->
-
-            <app-chat></app-chat>
-            <!-- /.card .chat-card -->
+            <div class="col-3">
+                <div class="card col-12" style="background-color:#238fa0;">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: white;"><strong>Card title</strong></h5>
+                        <div class="form-group row">
+                            <div class="col-3">
+                                <i class="fa fa-html5 fa-4x" style="color: white;"></i>
+                            </div>
+                            <div class="col-9">
+                                <p class="card-text text-right" style="color:white;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>        
+                            </div>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card col-12" style="background-color:#238fa0;">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: white;"><strong>Card title</strong></h5>
+                        <div class="form-group row">
+                            <div class="col-3">
+                                <i class="fa fa-html5 fa-4x" style="color: white;"></i>
+                            </div>
+                            <div class="col-9">
+                                <p class="card-text text-right" style="color:white;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>        
+                            </div>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- /.col-lg-4 -->
+        <div style="float:left; width:100%; height:20px;"></div>
+        <div class="col-12">
+            <div class="col-12 text-center">
+                <h6>GPS TRACKING EC</h6>
+                <div class="col-12 text-center small">&copy; Producto desarrollado por Luis Afonso Salazar Vaca y Andrés Alejandro Romero Barreto</div>
+                <br/>
+            </div>
+        </div>
     </div>
 </div>
+
