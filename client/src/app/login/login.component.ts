@@ -64,4 +64,18 @@ export class LoginComponent implements OnInit {
             this.toastr.warning('Ocurrió un error', 'Autenticar');
         });
     }
+
+    recoveryPassword(){
+        if (this.loginEntidad.email == null || this.loginEntidad.email=='') {
+            this.toastr.warning('Ingrese su correo electrónico', 'Recuperar Contraseña');
+            return;
+        }
+        this.busy = this.dataService.passwordRecovery(this.loginEntidad.email)
+        .then(respuesta => {
+            this.toastr.success('La contraseña ha cambiado, revise su correo electrónico', 'Recuperar Contraseña');
+        })
+        .catch(error => {
+            this.toastr.warning('Ocurrió un error', 'Recuperar Contraseña');
+        });
+    }
 }
