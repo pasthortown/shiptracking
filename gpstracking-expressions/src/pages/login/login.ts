@@ -1,3 +1,4 @@
+import { TabsPage } from './../tabs/tabs';
 import { LoginRequest } from './Login-Request';
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
@@ -34,6 +35,7 @@ export class LoginPage implements OnInit{
       }
       sessionStorage.setItem('logedResult', JSON.stringify(respuesta.json().Persona));
       localStorage.setItem('isLoggedin', 'true');
+      this.navCtrl.push(TabsPage);
     }, error => {
       localStorage.removeItem('isLoggedin');
       sessionStorage.removeItem('logedResult');
