@@ -29,10 +29,14 @@ export class SidebarComponent {
                 this.toggleSidebar();
             }
         });
+        try{
+            let logedResult = JSON.parse(sessionStorage.getItem('logedResult')) as LoginResult;
+            let personaLogeada = logedResult.persona;
+            this.usuario = personaLogeada.nombres + ' ' + personaLogeada.apellidos;
+        }catch(e){
+            this.router.navigate(['/login']);
+        }
 
-        let logedResult = JSON.parse(sessionStorage.getItem('logedResult')) as LoginResult;
-        let personaLogeada = logedResult.persona;
-        this.usuario = personaLogeada.nombres + ' ' + personaLogeada.apellidos;
     }
 
     eventCalled() {

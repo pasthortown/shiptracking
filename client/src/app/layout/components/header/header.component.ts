@@ -31,9 +31,13 @@ export class HeaderComponent implements OnInit {
     }
 
     ngOnInit() {
-        let logedResult = JSON.parse(sessionStorage.getItem('logedResult')) as LoginResult;
-        let personaLogeada = logedResult.persona;
-        this.usuario = personaLogeada.nombres + ' ' + personaLogeada.apellidos;
+        try{
+            let logedResult = JSON.parse(sessionStorage.getItem('logedResult')) as LoginResult;
+            let personaLogeada = logedResult.persona;
+            this.usuario = personaLogeada.nombres + ' ' + personaLogeada.apellidos;
+        }catch(e){
+            this.router.navigate(['/login']);
+        }
     }
 
     isToggled(): boolean {

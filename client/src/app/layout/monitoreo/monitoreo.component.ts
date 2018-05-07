@@ -33,7 +33,14 @@ export class MonitoreoComponent implements OnInit {
         content: contentString
       });
 
-        var image = './../../../assets/images/bus.png';
+        var image = {
+            url: 'assets/images/taxi.png',
+            size: new google.maps.Size(40, 40),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(40, 40)
+        };
+
         let marker = new google.maps.Marker({
           position: location,
           map: this.map,
