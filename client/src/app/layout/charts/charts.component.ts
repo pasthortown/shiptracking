@@ -14,74 +14,45 @@ export class ChartsComponent implements OnInit {
         responsive: true
     };
     public barChartLabels: string[] = [
-        '2006',
-        '2007',
-        '2008',
-        '2009',
-        '2010',
-        '2011',
-        '2012'
+        '2012',
+        '2013',
+        '2014',
+        '2015',
+        '2016',
+        '2017',
+        '2018'
     ];
     public barChartType: string = 'bar';
     public barChartLegend: boolean = true;
 
     public barChartData: any[] = [
-        { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-        { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
+        { data: [65, 59, 80, 81, 56, 55, 40], label: 'Taxis' },
+        { data: [28, 48, 40, 19, 86, 27, 90], label: 'Buses' },
+        { data: [15, 67, 100, 13, 34, 78, 113], label: 'Mascotas' }
     ];
 
     // Doughnut
     public doughnutChartLabels: string[] = [
-        'Download Sales',
-        'In-Store Sales',
-        'Mail-Order Sales'
+        'Taxis',
+        'Buses',
+        'Mascotas'
     ];
-    public doughnutChartData: number[] = [350, 450, 100];
+    public doughnutChartData: number[] = [400, 450, 100];
     public doughnutChartType: string = 'doughnut';
-
-    // Radar
-    public radarChartLabels: string[] = [
-        'Eating',
-        'Drinking',
-        'Sleeping',
-        'Designing',
-        'Coding',
-        'Cycling',
-        'Running'
-    ];
-    public radarChartData: any = [
-        { data: [65, 59, 90, 81, 56, 55, 40], label: 'Series A' },
-        { data: [28, 48, 40, 19, 96, 27, 100], label: 'Series B' }
-    ];
-    public radarChartType: string = 'radar';
 
     // Pie
     public pieChartLabels: string[] = [
-        'Download Sales',
-        'In-Store Sales',
-        'Mail Sales'
+        'Positivas',
+        'Negativas',
+        'No Especificas'
     ];
     public pieChartData: number[] = [300, 500, 100];
     public pieChartType: string = 'pie';
 
-    // PolarArea
-    public polarAreaChartLabels: string[] = [
-        'Download Sales',
-        'In-Store Sales',
-        'Mail Sales',
-        'Telesales',
-        'Corporate Sales'
-    ];
-    public polarAreaChartData: number[] = [300, 500, 100, 40, 120];
-    public polarAreaLegend: boolean = true;
-
-    public polarAreaChartType: string = 'polarArea';
-
     // lineChart
     public lineChartData: Array<any> = [
-        { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-        { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
-        { data: [18, 48, 77, 9, 100, 27, 40], label: 'Series C' }
+        { data: [99.8, 98.9, 99.9, 97.7, 99.9, 98.8, 100], label: 'Disponibilidad' },
+        { data: [0.2, 1.1, 0.1, 2.3, 0.1, 1.2, 0], label: 'Indisponibilidad' }
     ];
     public lineChartLabels: Array<any> = [
         'January',
