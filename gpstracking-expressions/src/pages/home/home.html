@@ -3,7 +3,7 @@
     <ion-item>
       <img col-6 src="./../../assets/imgs/LogoGeoTracking.png">
       <h2>Te damos la bienvenida!!!</h2>
-      <p>{{usuario}}</p>
+      <p>{{persona.nombres}} {{persona.apellidos}}</p>
     </ion-item>
   </ion-navbar>
 </ion-header>
@@ -21,18 +21,18 @@
         </ion-list-header>
         <ion-item>
           <ion-label floating>Registro Municipal</ion-label>
-          <ion-input type="text"></ion-input>
+          <ion-input type="text" [(ngModel)]="unidad.registroMunicipal"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label floating>Placa</ion-label>
-          <ion-input type="text"></ion-input>
+          <ion-input type="text" [(ngModel)]="unidad.placa"></ion-input>
         </ion-item>
         <ion-list-header>
           <strong>CUÉNTANOS</strong>
         </ion-list-header>
         <ion-item>
           <ion-label floating>Tu opinión es importante</ion-label>
-          <ion-input type="text"></ion-input>
+          <ion-input type="text" [(ngModel)]="expresion.contenido"></ion-input>
         </ion-item>
       </ion-list>
     </ion-col>
