@@ -1,3 +1,4 @@
+import { LoginPage } from './../login/login';
 import { Adjunto } from './Adjunto';
 import { Expresion } from './Expresion';
 import { Unidad } from './Unidad';
@@ -77,12 +78,18 @@ export class HomePage implements OnInit{
     .subscribe(respuesta => {
       if (respuesta.json()){
         this.showToast('Hemos receptado tu opinión, en breve la atenderemos');
+        this.unidad = new Unidad();
+        this.unidad.id = 0;
+        this.expresion = new Expresion();
+        this.adjunto = new Adjunto();
+        this.adjunto.id = 0;
+        localStorage.removeItem('isLoggedin');
+        sessionStorage.removeItem('logedResult');
+        this.navCtrl.push(LoginPage);
       }else {
         this.showToast('Ocurrió un error');
       }
     }, error => {
-      localStorage.removeItem('isLoggedin');
-      sessionStorage.removeItem('logedResult');
       this.showToast('Ocurrió un error');
     });
   }
