@@ -33,12 +33,19 @@ CREATE TABLE Parada (
 CREATE TABLE Unidad (
     id INT NOT NULL AUTO_INCREMENT,
     idCoperativa INT NOT NULL,
-    idRuta INT NULL,
     placa VARCHAR(10) NULL UNIQUE,
     numero INT NULL,
     anoFabricacion INT NULL,
     registroMunicipal VARCHAR(10) NULL,
     idTipoUnidad INT NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE AsignacionRuta (
+    id INT NOT NULL AUTO_INCREMENT,
+    idRuta INT NOT NULL,
+    idUnidad INT NOT NULL,
+    diaSemana INT NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -91,7 +98,7 @@ CREATE TABLE Auditoria (
     nuevo TEXT NULL,
     anterior TEXT NULL,
     PRIMARY KEY (id)
-);
+) ENGINE myISAM;
 
 CREATE TABLE Expresion (
     id INT NOT NULL AUTO_INCREMENT,

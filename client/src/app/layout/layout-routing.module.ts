@@ -31,6 +31,7 @@ const routes: Routes = [
             { path: 'calificacion', loadChildren: './CRUD/calificacion/calificacion.module#CalificacionModule' },
             { path: 'auditoria', loadChildren: './CRUD/auditoria/auditoria.module#AuditoriaModule' },
             { path: 'adjunto', loadChildren: './CRUD/adjunto/adjunto.module#AdjuntoModule' },
+            { path: 'asignacionruta', loadChildren: './CRUD/asignacionruta/asignacionruta.module#AsignacionRutaModule' },
         ]
     }
 ];

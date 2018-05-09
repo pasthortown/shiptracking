@@ -1,7 +1,7 @@
 <div class="container">
    <div class="row">
       <div class="col-md-12 text-right">
-         <h2 style="margin-top:0px">Administración de Unidades</h2>
+         <h2 style="margin-top:0px">Asignación Ruta - Unidad</h2>
       </div>
    </div>
    <div class="row">
@@ -33,27 +33,22 @@
                   </th>
                   <th scope="col">
                      <span>
-                        <strong>Coperativa</strong>
+                        <strong>Identificador</strong>
                      </span>
                   </th>
                   <th scope="col">
                      <span>
-                        <strong>Número de Disco</strong>
+                        <strong>Ruta</strong>
                      </span>
                   </th>
                   <th scope="col">
                      <span>
-                        <strong>Placa</strong>
+                        <strong>Unidad</strong>
                      </span>
                   </th>
                   <th scope="col">
                      <span>
-                        <strong>Registro Municipal</strong>
-                     </span>
-                  </th>
-                  <th scope="col">
-                     <span>
-                        <strong>Tipo</strong>
+                        <strong>Día de la Semana</strong>
                      </span>
                   </th>
                </tr>
@@ -63,11 +58,10 @@
                   <td>
                      <i class="fa fa-hand-o-right" [hidden]="!estaSeleccionado(actual)"></i>
                   </td>
-                  <td>{{actual.Coperativa}}</td>
-                  <td>{{actual.numero}}</td>
-                  <td>{{actual.placa}}</td>
-                  <td>{{actual.registroMunicipal}}</td>
-                  <td><img *ngIf="actual.TipoUnidad!=null" src="{{actual.TipoUnidad}}" alt="Icono" height="25" width="25"></td>
+                  <td>{{actual.id}}</td>
+                  <td>{{actual.Ruta}}</td>
+                  <td>{{actual.Unidad}}</td>
+                  <td>{{actual.Dia}}</td>
                </tr>
             </tbody>
          </table>
@@ -96,7 +90,7 @@
       <div class="modal-header">
          <h4 class="modal-title">
             <span *ngIf="entidadSeleccionada.id != 0">
-               Edición de Datos: {{entidadSeleccionada.placa | uppercase}}
+               Edición de Datos: {{entidadSeleccionada.descripcion | uppercase}}
             </span>
             <span *ngIf="entidadSeleccionada.id === 0">
                Ingreso de Datos:
@@ -109,51 +103,36 @@
       <div class="modal-body">
          <form>
          <div class="form-group row">
-            <label for="id" class="col-sm-4 col-form-label">No.</label>
+            <label for="id" class="col-sm-4 col-form-label">Identificador</label>
             <div class="col-sm-8">
               <input type="text" readonly class="form-control" id="id" name="id" [(ngModel)]="entidadSeleccionada.id">
             </div>
          </div>
          <div class="form-group row">
-            <label for="idCoperativa" class="col-sm-4 col-form-label">Coperativa</label>
+            <label for="idRuta" class="col-sm-4 col-form-label">Ruta</label>
             <div class="col-sm-8">
-                <select class="form-control" id="idCoperativa" name="idCoperativa" [(ngModel)]="entidadSeleccionada.idCoperativa">
-                    <option value="1" selected>Sin Coperativa</option>
-                    <option *ngFor="let coperativa of coperativas" value={{coperativa.id}}>{{coperativa.nombre}}</option>
-                </select>
-            </div>
-         </div>
-         <div class="form-group row">
-            <label for="TipoUnidad" class="col-sm-4 col-form-label">Tipo de Unidad</label>
-            <div class="col-sm-8">
-                <select class="form-control" id="idTipoUnidad" name="idTipoUnidad" [(ngModel)]="entidadSeleccionada.idTipoUnidad">
+                <select class="form-control" id="idRuta" name="idRuta" [(ngModel)]="entidadSeleccionada.idRuta">
                     <option value="0" selected>Seleccione...</option>
-                    <option *ngFor="let tipoUnidad of tipoUnidades" value={{tipoUnidad.id}}>{{tipoUnidad.descripcion}}</option>
+                    <option *ngFor="let ruta of rutas" value={{ruta.id}}>{{ruta.desde}} - {{ruta.hasta}}</option>
                 </select>
             </div>
          </div>
          <div class="form-group row">
-            <label for="placa" class="col-sm-4 col-form-label">Placa</label>
+            <label for="idUnidad" class="col-sm-4 col-form-label">Unidad</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" id="placa" name="placa" placeholder="Placa" [(ngModel)]="entidadSeleccionada.placa">
+                <select class="form-control" id="idUnidad" name="idUnidad" [(ngModel)]="entidadSeleccionada.idUnidad">
+                    <option value="0" selected>Seleccione...</option>
+                    <option *ngFor="let unidad of unidades" value={{unidad.id}}>{{unidad.Coperativa}} - {{unidad.numero}}</option>
+                </select>
             </div>
          </div>
          <div class="form-group row">
-            <label for="numero" class="col-sm-4 col-form-label">Número de Disco</label>
+            <label for="diaSemana" class="col-sm-4 col-form-label">Día de la Semana</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" id="numero" name="numero" placeholder="Número de Disco" [(ngModel)]="entidadSeleccionada.numero">
-            </div>
-         </div>
-         <div class="form-group row">
-            <label for="anoFabricacion" class="col-sm-4 col-form-label">Año de Fabricación</label>
-            <div class="col-sm-8">
-              <input type="number" min="1900" step="1" class="form-control" id="anoFabricacion" name="anoFabricacion" placeholder="Año de Fabricación" [(ngModel)]="entidadSeleccionada.anoFabricacion">
-            </div>
-         </div>
-         <div class="form-group row">
-            <label for="registroMunicipal" class="col-sm-4 col-form-label">Registro Municipal</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="registroMunicipal" name="registroMunicipal" placeholder="Registro Municipal" [(ngModel)]="entidadSeleccionada.registroMunicipal">
+                <select class="form-control" id="diaSemana" name="diaSemana" [(ngModel)]="entidadSeleccionada.diaSemana">
+                    <option value="0" selected>Seleccione...</option>
+                    <option *ngFor="let dia of dias" value={{dia.id}}>{{dia.nombre}}</option>
+                </select>
             </div>
          </div>
          </form>
@@ -162,8 +141,7 @@
          <button type="button" class="btn btn-primary col-offset-sm-4" (click)="c('save')">
             <span class="fa fa-save"></span>&nbsp;Guardar
          </button>
-         <button type="button" class="btn btn-danger" (click)="c('close')"><span class="fa fa-close"></span>&nbsp;Cerrar</button>
+         <button type="button" class="btn btn-default" (click)="c('close')">Cerrar</button>
       </div>
    </ng-template>
 </div>
-

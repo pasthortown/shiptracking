@@ -1,38 +1,39 @@
-import { TipoUnidadService } from './../tipounidad/tipounidad.service';
-import { CoperativaService } from './../coperativa/coperativa.service';
-import { Coperativa } from './../../../entidades/CRUD/Coperativa';
+import { UnidadService } from './../unidad/unidad.service';
+import { Ruta } from './../../../entidades/CRUD/Ruta';
+import { Unidad } from './../../../entidades/CRUD/Unidad';
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
-import { Unidad } from '../../../entidades/CRUD/Unidad';
-import { UnidadService } from './unidad.service';
+import { AsignacionRuta } from '../../../entidades/CRUD/AsignacionRuta';
+import { AsignacionRutaService } from './asignacionruta.service';
 
 import 'rxjs/add/operator/toPromise';
-import { ModalComponent } from '../../bs-component/components';
+import { ModalComponent } from './../../bs-component/components';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-import { TipoUnidad } from '../../../entidades/CRUD/TipoUnidad';
+import { RutaService } from '../ruta/ruta.service';
 
 @Component({
-   selector: 'app-unidad',
-   templateUrl: './unidad.component.html',
-   styleUrls: ['./unidad.component.scss']
+   selector: 'app-asignacionruta',
+   templateUrl: './asignacionruta.component.html',
+   styleUrls: ['./asignacionruta.component.scss']
 })
 
-export class UnidadComponent implements OnInit {
+export class AsignacionRutaComponent implements OnInit {
 
    busy: Promise<any>;
-   entidades: Unidad[];
-   entidadSeleccionada: Unidad;
+   entidades: AsignacionRuta[];
+   entidadSeleccionada: AsignacionRuta;
    pagina: 1;
    tamanoPagina: 20;
    paginaActual: number;
    paginaUltima: number;
    registrosPorPagina: number;
    esVisibleVentanaEdicion: boolean;
-   coperativas: Coperativa[];
-   tipoUnidades: TipoUnidad[];
+   unidades: Unidad[];
+   rutas: Ruta[];
+   dias=[{'id':0, 'nombre':'Lunes'},{'id':1, 'nombre':'Martes'},{'id':2, 'nombre':'Miércoles'},{'id':3, 'nombre':'Jueves'},{'id':4, 'nombre':'Viernes'},{'id':5, 'nombre':'Sábado'},{'id':6, 'nombre':'Domingo'}];
 
-   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private coperativaService: CoperativaService, private tipoUnidadService: TipoUnidadService, private dataService: UnidadService, private modalService: NgbModal) {
+   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private rutaService: RutaService, private unidadService: UnidadService, private dataService: AsignacionRutaService, private modalService: NgbModal) {
       this.toastr.setRootViewContainerRef(vcr);
    }
 
@@ -75,33 +76,11 @@ export class UnidadComponent implements OnInit {
       this.entidadSeleccionada = this.crearEntidad();
    }
 
-   getTipoUnidad(): void {
-      this.busy = this.tipoUnidadService
-      .getAll()
-      .then(entidadesRecuperadas => {
-         this.tipoUnidades = entidadesRecuperadas;
-      })
-      .catch(error => {
-
-      });
-   }
-
-   getCoperativas(): void {
-      this.busy = this.coperativaService
-      .getAll()
-      .then(entidadesRecuperadas => {
-         this.coperativas = entidadesRecuperadas;
-      })
-      .catch(error => {
-
-      });
-   }
-
    getAll(): void {
       this.busy = this.dataService
       .getAll()
       .then(entidadesRecuperadas => {
-         this.entidades = entidadesRecuperadas
+         this.entidades = entidadesRecuperadas;
          if (entidadesRecuperadas == null || entidadesRecuperadas.length === 0) {
             this.toastr.success('¡No hay datos!', 'Consulta');
          } else {
@@ -118,6 +97,13 @@ export class UnidadComponent implements OnInit {
       .getPagina(pagina, tamanoPagina)
       .then(entidadesRecuperadas => {
          this.entidades = entidadesRecuperadas
+         this.entidades.forEach(element => {
+             this.dias.forEach(dia => {
+                 if(dia.id ==element.diaSemana){
+                    element.Dia = dia.nombre;
+                 }
+             });
+         });
          if (entidadesRecuperadas == null || entidadesRecuperadas.length === 0) {
             this.toastr.success('¡No hay datos!', 'Consulta');
          } else {
@@ -140,7 +126,7 @@ export class UnidadComponent implements OnInit {
       });
    }
 
-   isValid(entidadPorEvaluar: Unidad): boolean {
+   isValid(entidadPorEvaluar: AsignacionRuta): boolean {
       return true;
    }
 
@@ -154,15 +140,13 @@ export class UnidadComponent implements OnInit {
       this.cerrarVentanaEdicion();
    }
 
-   crearEntidad(): Unidad {
-      let nuevoUnidad = new Unidad();
-      nuevoUnidad.id = 0;
-      nuevoUnidad.idCoperativa = 1;
-      nuevoUnidad.idTipoUnidad = 0;
-      return nuevoUnidad;
+   crearEntidad(): AsignacionRuta {
+      const nuevoAsignacionRuta = new AsignacionRuta();
+      nuevoAsignacionRuta.id = 0;
+      return nuevoAsignacionRuta;
    }
 
-   add(entidadNueva: Unidad): void {
+   add(entidadNueva: AsignacionRuta): void {
       this.busy = this.dataService.create(entidadNueva)
       .then(respuesta => {
          if(respuesta){
@@ -177,7 +161,7 @@ export class UnidadComponent implements OnInit {
       });
    }
 
-   update(entidadParaActualizar: Unidad): void {
+   update(entidadParaActualizar: AsignacionRuta): void {
       this.busy = this.dataService.update(entidadParaActualizar)
       .then(respuesta => {
          if(respuesta){
@@ -192,7 +176,7 @@ export class UnidadComponent implements OnInit {
       });
    }
 
-   delete(entidadParaBorrar: Unidad): void {
+   delete(entidadParaBorrar: AsignacionRuta): void {
       this.busy = this.dataService.remove(entidadParaBorrar.id)
       .then(respuesta => {
          if(respuesta){
@@ -210,10 +194,32 @@ export class UnidadComponent implements OnInit {
    refresh(): void {
       this.getNumeroPaginas(this.registrosPorPagina);
       this.getPagina(this.paginaActual,this.registrosPorPagina);
-      this.entidades = Unidad[0];
+      this.entidades = AsignacionRuta[0];
       this.entidadSeleccionada = this.crearEntidad();
-      this.getCoperativas();
-      this.getTipoUnidad();
+      this.getRutas();
+      this.getUnidades();
+   }
+
+   getRutas(): void {
+      this.busy = this.rutaService
+      .getAll()
+      .then(entidadesRecuperadas => {
+         this.rutas = entidadesRecuperadas;
+      })
+      .catch(error => {
+         this.toastr.success('Se produjo un error', 'Consulta');
+      });
+   }
+
+   getUnidades(): void {
+      this.busy = this.unidadService
+      .getAll()
+      .then(entidadesRecuperadas => {
+         this.unidades = entidadesRecuperadas;
+      })
+      .catch(error => {
+         this.toastr.success('Se produjo un error', 'Consulta');
+      });
    }
 
    getPaginaPrimera():void {
@@ -246,7 +252,7 @@ export class UnidadComponent implements OnInit {
       this.refresh();
    }
 
-   onSelect(entidadActual: Unidad): void {
+   onSelect(entidadActual: AsignacionRuta): void {
       this.entidadSeleccionada = entidadActual;
    }
 }
