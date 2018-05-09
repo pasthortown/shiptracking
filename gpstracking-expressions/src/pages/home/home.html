@@ -14,7 +14,7 @@
       <ion-list inset>
         <ion-list-header>
           <strong>UNIDAD</strong>
-          <button item-end ion-button icon-left>
+          <button item-end ion-button icon-left (click)="escanear()">
             <ion-icon name="qr-scanner"></ion-icon>
             Escanear
           </button>
@@ -23,9 +23,8 @@
           <ion-label floating>Registro Municipal</ion-label>
           <ion-input type="text" [(ngModel)]="unidad.registroMunicipal"></ion-input>
         </ion-item>
-        <ion-item>
-          <ion-label floating>Placa</ion-label>
-          <ion-input type="text" [(ngModel)]="unidad.placa"></ion-input>
+        <ion-item *ngIf="!confirmado">
+          <button ion-button class="submit-btn" full (click)="buscar(unidad.registroMunicipal)">Confirmar Unidad</button>
         </ion-item>
         <ion-list-header>
           <strong>CUÉNTANOS</strong>
@@ -34,6 +33,20 @@
           <ion-label floating>Tu opinión es importante</ion-label>
           <ion-input type="text" [(ngModel)]="expresion.contenido"></ion-input>
         </ion-item>
+        <ion-list-header>
+          <strong>EVIDENCIA</strong>
+        </ion-list-header>
+        <ion-item>
+          <ion-label>Adjuntar</ion-label>
+          <input type="file" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="subirImagen($event)"/>
+        </ion-item>
+        <div col-12 text-center>
+          <button ion-button col-11 icon-left (click)="getPicture()"><ion-icon name="camera"></ion-icon>Fotografía</button>
+          <button ion-button color="secondary" col-11 icon-left (click)="subirPicture()"><ion-icon name="cloud-upload"></ion-icon>Subir</button>
+        </div>
+        <ion-card *ngIf="fotografia" text-center style="padding:10px;">
+          <ion-label>{{adjunto.nombreArchivo}}</ion-label>
+        </ion-card>
       </ion-list>
     </ion-col>
   </ion-row>
