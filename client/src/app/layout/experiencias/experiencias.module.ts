@@ -1,3 +1,7 @@
+import { AdjuntoService } from './../CRUD/adjunto/adjunto.service';
+import { UnidadService } from './../CRUD/unidad/unidad.service';
+import { PersonaService } from './../CRUD/persona/persona.service';
+import { ExpresionService } from './../CRUD/expresion/expresion.service';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -12,6 +16,7 @@ import { ExperienciasComponent } from './experiencias.component';
         FormsModule,
         NgbModule,
         ExperienciasRoutingModule],
-    declarations: [ExperienciasComponent]
+    declarations: [ExperienciasComponent],
+    providers: [ExpresionService, PersonaService, UnidadService, AdjuntoService]
 })
 export class ExperienciasModule {}

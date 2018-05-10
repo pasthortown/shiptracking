@@ -81,16 +81,16 @@ class Controlador_asignacionruta extends Controlador_Base
       switch ($tipoFiltro){
          case "coincide":
             $parametros = array($filtro);
-            $sql = "SELECT AsignacionRuta.*, CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', CONCAT(Coperativa.nombre,' - ', Unidad.numero) as 'Unidad' FROM AsignacionRuta INNER JOIN Ruta ON AsignacionRuta.idRuta = Ruta.id INNER JOIN Unidad ON Unidad.id = AsignacionRuta.idUnidad INNER JOIN Coperativa ON Unidad.idCoperativa = Coperativa.id ORDER BY Unidad.idCoperativa, Unidad.numero, AsignacionRuta.diaSemana ASC WHERE $nombreColumna = ?;";
+            $sql = "SELECT AsignacionRuta.*, CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', CONCAT(Coperativa.nombre,' - ', Unidad.numero) as 'Unidad' FROM AsignacionRuta INNER JOIN Ruta ON AsignacionRuta.idRuta = Ruta.id INNER JOIN Unidad ON Unidad.id = AsignacionRuta.idUnidad INNER JOIN Coperativa ON Unidad.idCoperativa = Coperativa.id WHERE $nombreColumna = ? ORDER BY Unidad.idCoperativa, Unidad.numero, AsignacionRuta.diaSemana ASC;";
             break;
          case "inicia":
-            $sql = "SELECT AsignacionRuta.*, CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', CONCAT(Coperativa.nombre,' - ', Unidad.numero) as 'Unidad' FROM AsignacionRuta INNER JOIN Ruta ON AsignacionRuta.idRuta = Ruta.id INNER JOIN Unidad ON Unidad.id = AsignacionRuta.idUnidad INNER JOIN Coperativa ON Unidad.idCoperativa = Coperativa.id ORDER BY Unidad.idCoperativa, Unidad.numero, AsignacionRuta.diaSemana ASC LIKE '$filtro%';";
+            $sql = "SELECT AsignacionRuta.*, CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', CONCAT(Coperativa.nombre,' - ', Unidad.numero) as 'Unidad' FROM AsignacionRuta INNER JOIN Ruta ON AsignacionRuta.idRuta = Ruta.id INNER JOIN Unidad ON Unidad.id = AsignacionRuta.idUnidad INNER JOIN Coperativa ON Unidad.idCoperativa = Coperativa.id WHERE $nombreColumna LIKE '$filtro%' ORDER BY Unidad.idCoperativa, Unidad.numero, AsignacionRuta.diaSemana ASC;";
             break;
          case "termina":
-            $sql = "SELECT AsignacionRuta.*, CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', CONCAT(Coperativa.nombre,' - ', Unidad.numero) as 'Unidad' FROM AsignacionRuta INNER JOIN Ruta ON AsignacionRuta.idRuta = Ruta.id INNER JOIN Unidad ON Unidad.id = AsignacionRuta.idUnidad INNER JOIN Coperativa ON Unidad.idCoperativa = Coperativa.id ORDER BY Unidad.idCoperativa, Unidad.numero, AsignacionRuta.diaSemana ASC LIKE '%$filtro';";
+            $sql = "SELECT AsignacionRuta.*, CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', CONCAT(Coperativa.nombre,' - ', Unidad.numero) as 'Unidad' FROM AsignacionRuta INNER JOIN Ruta ON AsignacionRuta.idRuta = Ruta.id INNER JOIN Unidad ON Unidad.id = AsignacionRuta.idUnidad INNER JOIN Coperativa ON Unidad.idCoperativa = Coperativa.id WHERE $nombreColumna LIKE '%$filtro' ORDER BY Unidad.idCoperativa, Unidad.numero, AsignacionRuta.diaSemana ASC;";
             break;
          default:
-            $sql = "SELECT AsignacionRuta.*, CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', CONCAT(Coperativa.nombre,' - ', Unidad.numero) as 'Unidad' FROM AsignacionRuta INNER JOIN Ruta ON AsignacionRuta.idRuta = Ruta.id INNER JOIN Unidad ON Unidad.id = AsignacionRuta.idUnidad INNER JOIN Coperativa ON Unidad.idCoperativa = Coperativa.id ORDER BY Unidad.idCoperativa, Unidad.numero, AsignacionRuta.diaSemana ASC LIKE '%$filtro%';";
+            $sql = "SELECT AsignacionRuta.*, CONCAT(Ruta.desde, ' - ', Ruta.hasta) as 'Ruta', CONCAT(Coperativa.nombre,' - ', Unidad.numero) as 'Unidad' FROM AsignacionRuta INNER JOIN Ruta ON AsignacionRuta.idRuta = Ruta.id INNER JOIN Unidad ON Unidad.id = AsignacionRuta.idUnidad INNER JOIN Coperativa ON Unidad.idCoperativa = Coperativa.id WHERE $nombreColumna LIKE '%$filtro%' ORDER BY Unidad.idCoperativa, Unidad.numero, AsignacionRuta.diaSemana ASC;";
             break;
       }
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);

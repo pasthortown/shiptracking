@@ -1,3 +1,4 @@
+import { TotalizadoresExpresion } from './../../../entidades/especifico/TotalizadoresExpresion';
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { environment } from '../../../../environments/environment';
@@ -50,9 +51,19 @@ export class ExpresionService {
       return this.http.post(url, JSON.stringify(entidadTransporte)).toPromise().then(response=>response.json()).catch(this.handleError);
    }
 
+   totalizadores(): Promise<TotalizadoresExpresion[]> {
+    const url = `${this.urlBase+'/totalizadores'}`;
+    return this.http.get(url).toPromise().then(response=>response.json() as TotalizadoresExpresion[]).catch(this.handleError);
+   }
+
    update(entidadTransporte: Expresion): Promise<boolean> {
       const url = `${this.urlBase+'/actualizar'}`;
       return this.http.post(url, JSON.stringify(entidadTransporte)).toPromise().then(response=>response.json()).catch(this.handleError);
+   }
+
+   enviarRespuesta(email: string, usuario: string, respuesta: string): Promise<boolean> {
+    const url = `${this.urlBase+'/enviarRespuesta?email=' + email + '&usuario=' + usuario + '&respuesta=' + respuesta}`;
+    return this.http.get(url).toPromise().then(response=>response.json()).catch(this.handleError);
    }
 
    handleError(error: any): Promise<any> {

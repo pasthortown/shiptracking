@@ -1,6 +1,8 @@
 <?php
 include_once('../controladores/Controlador_Base.php');
 include_once('../entidades/CRUD/Expresion.php');
+include_once('../controladores/especificos/Controlador_mail_sender.php');
+
 class Controlador_expresion extends Controlador_Base
 {
    function crear($args)
@@ -29,6 +31,14 @@ class Controlador_expresion extends Controlador_Base
       }
    }
 
+   function totalizadores($args)
+   {
+      $parametros = array();
+      $sql = "SELECT Coperativa.nombre as 'Coperativa', COUNT(Expresion.id) as 'Cuenta', Coperativa.id as 'idCoperativa' FROM Expresion INNER JOIN Unidad ON Expresion.idBus = Unidad.id INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa WHERE Expresion.idCalificacion is null GROUP BY Coperativa.nombre, Coperativa.id ORDER BY Coperativa.nombre, Coperativa.id ASC;";
+      $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
+      return $respuesta;
+   }
+
    function borrar($args)
    {
       $id = $args["id"];
@@ -46,13 +56,21 @@ class Controlador_expresion extends Controlador_Base
    {
       $id = $args["id"];
       if ($id==""){
-         $sql = "SELECT * FROM Expresion;";
+         $sql = "SELECT Expresion.*, Unidad.placa as 'Placa', Unidad.numero as 'Numero', Coperativa.id as 'idCoperativa' FROM Expresion INNER JOIN Unidad ON Expresion.idBus = Unidad.id INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa ORDER BY Unidad.idCoperativa, Unidad.numero;";
       }else{
       $parametros = array($id);
-         $sql = "SELECT * FROM Expresion WHERE id = ?;";
+         $sql = "SELECT Expresion.*, Unidad.placa as 'Placa', Unidad.numero as 'Numero', Coperativa.id as 'idCoperativa' FROM Expresion INNER JOIN Unidad ON Expresion.idBus = Unidad.id INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa WHERE id = ?;";
       }
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       return $respuesta;
+   }
+
+   function enviarRespuesta($args){
+      $email = $args["email"];
+      $usuario = $args["usuario"];
+      $respuesta = $args["respuesta"];
+      $mailSender = new Controlador_mail_sender();
+      return $mailSender->enviarMail('gpstrackingec@gmail.com','GPS Tracking EC', '1509Charles*', 'gpstrackingec@gmail.com','Soporte al Consumidor',$email,$usuario,$respuesta,'Respuesta a Comentario/Sugerencia Recibido');
    }
 
    function leer_paginado($args)
@@ -60,7 +78,7 @@ class Controlador_expresion extends Controlador_Base
       $pagina = $args["pagina"];
       $registrosPorPagina = $args["registros_por_pagina"];
       $desde = (($pagina-1)*$registrosPorPagina);
-      $sql ="SELECT * FROM Expresion LIMIT $desde,$registrosPorPagina;";
+      $sql ="SELECT Expresion.*, Unidad.placa as 'Placa', Unidad.numero as 'Numero', Coperativa.id as 'idCoperativa' FROM Expresion INNER JOIN Unidad ON Expresion.idBus = Unidad.id INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa WHERE Expresion.idCalificacion is null ORDER BY Unidad.idCoperativa, Unidad.numero LIMIT $desde,$registrosPorPagina;";
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       return $respuesta;
    }
@@ -81,16 +99,16 @@ class Controlador_expresion extends Controlador_Base
       switch ($tipoFiltro){
          case "coincide":
             $parametros = array($filtro);
-            $sql = "SELECT * FROM Expresion WHERE $nombreColumna = ?;";
+            $sql = "SELECT Expresion.*, Unidad.placa as 'Placa', Unidad.numero as 'Numero', Coperativa.id as 'idCoperativa' FROM Expresion INNER JOIN Unidad ON Expresion.idBus = Unidad.id INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa WHERE $nombreColumna = ? AND Expresion.idCalificacion is null ORDER BY Unidad.idCoperativa, Unidad.numero;";
             break;
          case "inicia":
-            $sql = "SELECT * FROM Expresion WHERE $nombreColumna LIKE '$filtro%';";
+            $sql = "SELECT Expresion.*, Unidad.placa as 'Placa', Unidad.numero as 'Numero', Coperativa.id as 'idCoperativa' FROM Expresion INNER JOIN Unidad ON Expresion.idBus = Unidad.id INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa WHERE $nombreColumna LIKE '$filtro%' AND Expresion.idCalificacion is null ORDER BY Unidad.idCoperativa, Unidad.numero;";
             break;
          case "termina":
-            $sql = "SELECT * FROM Expresion WHERE $nombreColumna LIKE '%$filtro';";
+            $sql = "SELECT Expresion.*, Unidad.placa as 'Placa', Unidad.numero as 'Numero', Coperativa.id as 'idCoperativa' FROM Expresion INNER JOIN Unidad ON Expresion.idBus = Unidad.id INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa WHERE $nombreColumna LIKE '%$filtro' AND Expresion.idCalificacion is null ORDER BY Unidad.idCoperativa, Unidad.numero;";
             break;
          default:
-            $sql = "SELECT * FROM Expresion WHERE $nombreColumna LIKE '%$filtro%';";
+            $sql = "SELECT Expresion.*, Unidad.placa as 'Placa', Unidad.numero as 'Numero', Coperativa.id as 'idCoperativa' FROM Expresion INNER JOIN Unidad ON Expresion.idBus = Unidad.id INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa WHERE $nombreColumna LIKE '%$filtro%' AND Expresion.idCalificacion is null ORDER BY Unidad.idCoperativa, Unidad.numero;";
             break;
       }
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
