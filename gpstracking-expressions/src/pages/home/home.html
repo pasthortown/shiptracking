@@ -1,10 +1,13 @@
 <ion-header>
   <ion-navbar>
-    <ion-item>
-      <img col-6 src="assets/imgs/LogoGeoTracking.png">
-      <h2>Te damos la bienvenida!!!</h2>
-      <p>{{persona.nombres}} {{persona.apellidos}}</p>
-    </ion-item>
+    <ion-row class="logo-row">
+      <ion-col></ion-col>
+      <ion-col col-9>
+        <img col-8 src="assets/imgs/LogoGeoTracking.png">
+        <br/><strong>Te damos la bienvenida!!!</strong><br/>{{persona.nombres}} {{persona.apellidos}}
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
