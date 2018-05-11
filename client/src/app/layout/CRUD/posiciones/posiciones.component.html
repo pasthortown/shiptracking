@@ -56,6 +56,11 @@
                         <strong>longitud</strong>
                      </span>
                   </th>
+                  <th scope="col">
+                     <span>
+                        <strong>veloidad</strong>
+                     </span>
+                  </th>
                </tr>
             </thead>
             <tbody>
@@ -68,6 +73,7 @@
                   <td>{{actual.tiempo}}</td>
                   <td>{{actual.latitud}}</td>
                   <td>{{actual.longitud}}</td>
+                  <td>{{actual.veloidad}}</td>
                </tr>
             </tbody>
          </table>
@@ -136,6 +142,12 @@
             <label for="longitud" class="col-sm-4 col-form-label">longitud</label>
             <div class="col-sm-8">
               <input type="text" class="form-control" id="longitud" name="longitud" placeholder="longitud" [(ngModel)]="entidadSeleccionada.longitud">
+            </div>
+         </div>
+         <div class="form-group row">
+            <label for="veloidad" class="col-sm-4 col-form-label">veloidad</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="veloidad" name="veloidad" placeholder="veloidad" [(ngModel)]="entidadSeleccionada.veloidad">
             </div>
          </div>
          </form>

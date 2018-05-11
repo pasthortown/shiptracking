@@ -4,4 +4,5 @@ export class Posiciones {
    tiempo: Date;
    latitud: string;
    longitud: string;
+   veloidad: string;
 }

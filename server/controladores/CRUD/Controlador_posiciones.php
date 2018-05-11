@@ -5,12 +5,12 @@ class Controlador_posiciones extends Controlador_Base
 {
    function crear($args)
    {
-      $posiciones = new Posiciones($args["id"],$args["idUnidad"],$args["tiempo"],$args["latitud"],$args["longitud"]);
-      $sql = "INSERT INTO Posiciones (idUnidad,tiempo,latitud,longitud) VALUES (?,?,?,?);";
+      $posiciones = new Posiciones($args["id"],$args["idUnidad"],$args["tiempo"],$args["latitud"],$args["longitud"],$args["veloidad"]);
+      $sql = "INSERT INTO Posiciones (idUnidad,tiempo,latitud,longitud,veloidad) VALUES (?,?,?,?,?);";
       $tiempoNoSQLTime = strtotime($posiciones->tiempo);
       $tiempoSQLTime = date("Y-m-d H:i:s", $tiempoNoSQLTime);
       $posiciones->tiempo = $tiempoSQLTime;
-      $parametros = array($posiciones->idUnidad,$posiciones->tiempo,$posiciones->latitud,$posiciones->longitud);
+      $parametros = array($posiciones->idUnidad,$posiciones->tiempo,$posiciones->latitud,$posiciones->longitud,$posiciones->veloidad);
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       if(is_null($respuesta[0])){
          return true;
@@ -21,9 +21,9 @@ class Controlador_posiciones extends Controlador_Base
 
    function actualizar($args)
    {
-      $posiciones = new Posiciones($args["id"],$args["idUnidad"],$args["tiempo"],$args["latitud"],$args["longitud"]);
-      $parametros = array($posiciones->idUnidad,$posiciones->tiempo,$posiciones->latitud,$posiciones->longitud,$posiciones->id);
-      $sql = "UPDATE Posiciones SET idUnidad = ?,tiempo = ?,latitud = ?,longitud = ? WHERE id = ?;";
+      $posiciones = new Posiciones($args["id"],$args["idUnidad"],$args["tiempo"],$args["latitud"],$args["longitud"],$args["veloidad"]);
+      $parametros = array($posiciones->idUnidad,$posiciones->tiempo,$posiciones->latitud,$posiciones->longitud,$posiciones->veloidad,$posiciones->id);
+      $sql = "UPDATE Posiciones SET idUnidad = ?,tiempo = ?,latitud = ?,longitud = ?,veloidad = ? WHERE id = ?;";
       $tiempoNoSQLTime = strtotime($posiciones->tiempo);
       $tiempoSQLTime = date("Y-m-d H:i:s", $tiempoNoSQLTime);
       $posiciones->tiempo = $tiempoSQLTime;

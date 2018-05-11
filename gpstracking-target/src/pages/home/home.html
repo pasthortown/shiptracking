@@ -1,17 +1,47 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Inicio</ion-title>
+    <ion-row class="logo-row">
+      <ion-col></ion-col>
+      <ion-col col-9>
+        <img col-8 src="assets/imgs/LogoGeoTracking.png">
+        <br/><strong>Te damos la bienvenida!!!</strong><br/>{{persona.nombres}} {{persona.apellidos}}
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
   </ion-navbar>
 </ion-header>
-
 <ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+  <ion-row>
+    <ion-col>
+      <ion-list inset>
+        <ion-list-header>
+          <strong>UNIDAD</strong>
+          <button item-end ion-button icon-left (click)="escanear()">
+            <ion-icon name="qr-scanner"></ion-icon>
+            Escanear
+          </button>
+        </ion-list-header>
+        <ion-item>
+          <ion-label floating>Registro Municipal</ion-label>
+          <ion-input type="text" [(ngModel)]="unidad.registroMunicipal"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="!confirmado">
+          <button ion-button class="submit-btn" full (click)="buscar(unidad.registroMunicipal)">Confirmar Unidad</button>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col class="signup-col">
+      <button ion-button class="submit-btn" color="secondary" full (click)="iniciar()">Iniciar</button>
+      <button ion-button class="submit-btn" color="danger" full (click)="detener()">Detener</button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col class="signup-col">
+      <h5>Lat: {{latitud}}</h5>
+      <h5>Lng: {{longitud}}</h5>
+      <h5>Velocidad: {{velocidad}}</h5>
+    </ion-col>
+  </ion-row>
 </ion-content>
