@@ -12,7 +12,7 @@ import { ToastController } from 'ionic-angular';
   templateUrl: 'register.html',
 })
 export class RegisterPage implements OnInit{
-  webServiceURL = 'http://192.168.1.102/shiptracking/server/';
+  webServiceURL = 'http://shiptracking.000webhostapp.com/server/';
   persona: Persona;
   cuenta: Cuenta;
 

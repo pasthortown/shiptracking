@@ -19,7 +19,7 @@ export class HomePage implements OnInit{
   unidad: Unidad;
   expresion: Expresion;
   persona: Persona;
-  webServiceURL = 'http://192.168.1.102/shiptracking/server/';
+  webServiceURL = 'http://shiptracking.000webhostapp.com/server/';
   fotografia = null;
   adjunto: Adjunto;
   confirmado: Boolean = false;
