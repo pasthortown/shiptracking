@@ -6,15 +6,15 @@ class Posiciones
    public $tiempo;
    public $latitud;
    public $longitud;
-   public $veloidad;
+   public $velocidad;
 
-   function __construct($id,$idUnidad,$tiempo,$latitud,$longitud,$veloidad){
+   function __construct($id,$idUnidad,$tiempo,$latitud,$longitud,$velocidad){
       $this->id = $id;
       $this->idUnidad = $idUnidad;
       $this->tiempo = $tiempo;
       $this->latitud = $latitud;
       $this->longitud = $longitud;
-      $this->veloidad = $veloidad;
+      $this->velocidad = $velocidad;
    }
 }
 ?>

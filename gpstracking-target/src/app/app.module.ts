@@ -1,3 +1,4 @@
+import { Geolocation } from '@ionic-native/geolocation';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -40,6 +41,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     SplashScreen,
     BarcodeScanner,
     Camera,
+    Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

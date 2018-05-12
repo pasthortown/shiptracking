@@ -1,3 +1,4 @@
+import { Posiciones } from './Posiciones';
 import { Unidad } from './Unidad';
 import { Persona } from './Persona';
 import { Component, OnInit } from '@angular/core';
@@ -21,6 +22,7 @@ export class HomePage implements OnInit{
   latitud: string;
   longitud: string;
   velocidad: string;
+  ubicaciones: Posiciones[];
 
   constructor(public navCtrl: NavController, public http: Http, public camera: Camera, public toastCtrl: ToastController, private barcodeScanner: BarcodeScanner, private geolocation: Geolocation) {
 
@@ -29,6 +31,7 @@ export class HomePage implements OnInit{
   ngOnInit() {
     this.persona = JSON.parse(sessionStorage.getItem('logedResult')) as Persona;
     this.unidad = new Unidad();
+    this.ubicaciones = [];
     this.unidad.id = 0;
   }
 
@@ -78,16 +81,59 @@ export class HomePage implements OnInit{
   }
 
   iniciar():void {
+    if(!this.confirmado){
+      this.showToast('Por favor, confirme los datos de la unidad');
+      return;
+    }
+    if(this.unidad.id == 0) {
+      if(this.unidad.registroMunicipal == '' || this.unidad.registroMunicipal == null){
+        this.showToast('Por favor, ingrese o escanee el registro municipal de la unidad');
+        return;
+      }
+    }
     let options = {
       enableHighAccuracy: true,
-      timeout: 30000
+      timeout: 15000
     };
-
     this.subscription = this.geolocation.watchPosition(options)
     .subscribe(position => {
       this.latitud = position.coords.latitude.toString();
       this.longitud = position.coords.longitude.toString();
       this.velocidad = (position.coords.speed * 3.6) + ' Km/h';
+      let posicion = new Posiciones();
+      posicion.latitud = this.latitud;
+      posicion.longitud = this.longitud;
+      posicion.velocidad = this.velocidad;
+      posicion.idUnidad = this.unidad.id;
+      posicion.tiempo = new Date();
+      this.ubicaciones.push(posicion);
+      if(this.ubicaciones.length == 4){
+        this.http.post(this.webServiceURL + 'posiciones/crear',JSON.stringify(this.ubicaciones[0]))
+        .subscribe(respuesta => {
+
+        }, error => {
+
+        });
+        this.http.post(this.webServiceURL + 'posiciones/crear',JSON.stringify(this.ubicaciones[1]))
+        .subscribe(respuesta => {
+
+        }, error => {
+
+        });
+        this.http.post(this.webServiceURL + 'posiciones/crear',JSON.stringify(this.ubicaciones[2]))
+        .subscribe(respuesta => {
+
+        }, error => {
+
+        });
+        this.http.post(this.webServiceURL + 'posiciones/crear',JSON.stringify(this.ubicaciones[3]))
+        .subscribe(respuesta => {
+
+        }, error => {
+
+        });
+        this.ubicaciones=[];
+      }
     });
   }
 

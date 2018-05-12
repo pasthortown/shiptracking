@@ -86,4 +86,5 @@
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="Permite el rastreo de unidades - GPS TRACKING EC" />
     </plugin>
+    <engine name="android" spec="7.0.0" />
 </widget>

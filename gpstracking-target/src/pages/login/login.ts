@@ -11,8 +11,9 @@ import { ToastController } from 'ionic-angular';
   templateUrl: 'login.html',
 })
 export class LoginPage implements OnInit{
-  webServiceURL = 'http://localhost/shiptracking/server/login/';
+  webServiceURL = 'http://192.168.1.102/shiptracking/server/login/';
   loginRequest: LoginRequest;
+
   constructor(public navCtrl: NavController, public toastCtrl: ToastController, public navParams: NavParams, public http: Http) {
   }
 
@@ -64,4 +65,5 @@ export class LoginPage implements OnInit{
     });
     toast.present();
   }
+
 }

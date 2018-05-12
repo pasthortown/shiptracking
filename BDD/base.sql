@@ -131,6 +131,6 @@ CREATE TABLE Posiciones (
 	tiempo DATETIME NULL,
     latitud VARCHAR(255) NULL,
     longitud VARCHAR(255) NULL,
-    veloidad VARCHAR(255) NULL,
+    velocidad VARCHAR(255) NULL,
 	PRIMARY KEY (id)
 ) ENGINE myISAM;

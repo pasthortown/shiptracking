@@ -39,9 +39,14 @@
   </ion-row>
   <ion-row>
     <ion-col class="signup-col">
-      <h5>Lat: {{latitud}}</h5>
-      <h5>Lng: {{longitud}}</h5>
-      <h5>Velocidad: {{velocidad}}</h5>
+      <ion-card>
+          <ion-card-header>
+              Ubicación
+          </ion-card-header>
+          <p><strong>Lat:</strong>{{latitud}}</p>
+          <p><strong>Lng:</strong>{{longitud}}</p>
+          <p><strong>Velocidad:</strong>{{velocidad}}</p>
+      </ion-card>
     </ion-col>
   </ion-row>
 </ion-content>
