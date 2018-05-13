@@ -23,6 +23,7 @@ export class HomePage implements OnInit{
   longitud: string;
   velocidad: string;
   ubicaciones: Posiciones[];
+  fecha: Date;
 
   constructor(public navCtrl: NavController, public http: Http, public camera: Camera, public toastCtrl: ToastController, private barcodeScanner: BarcodeScanner, private geolocation: Geolocation) {
 
@@ -106,33 +107,22 @@ export class HomePage implements OnInit{
       posicion.velocidad = this.velocidad;
       posicion.idUnidad = this.unidad.id;
       posicion.tiempo = new Date();
-      this.ubicaciones.push(posicion);
-      if(this.ubicaciones.length == 4){
-        this.http.post(this.webServiceURL + 'posiciones/crear',JSON.stringify(this.ubicaciones[0]))
-        .subscribe(respuesta => {
-
-        }, error => {
-
-        });
-        this.http.post(this.webServiceURL + 'posiciones/crear',JSON.stringify(this.ubicaciones[1]))
-        .subscribe(respuesta => {
-
-        }, error => {
-
-        });
-        this.http.post(this.webServiceURL + 'posiciones/crear',JSON.stringify(this.ubicaciones[2]))
-        .subscribe(respuesta => {
-
-        }, error => {
-
-        });
-        this.http.post(this.webServiceURL + 'posiciones/crear',JSON.stringify(this.ubicaciones[3]))
-        .subscribe(respuesta => {
-
-        }, error => {
-
-        });
-        this.ubicaciones=[];
+      if(this.ubicaciones.length>0){
+        if(posicion.tiempo.getTime() - this.ubicaciones[this.ubicaciones.length -1].tiempo.getTime() < 14500){
+        }
+        else{
+          this.ubicaciones.push(posicion);
+          if(this.ubicaciones.length > 3){
+            this.http.post(this.webServiceURL + 'posiciones/cargar',JSON.stringify({datos:this.ubicaciones}))
+            .subscribe(respuesta => {
+              this.ubicaciones=[];
+            }, error => {
+              console.log("esperando datos");
+            });
+          }
+        }
+      }else {
+        this.ubicaciones.push(posicion);
       }
     });
   }

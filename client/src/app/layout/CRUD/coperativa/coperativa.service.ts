@@ -1,3 +1,4 @@
+import { Totalizadores } from './../../../entidades/especifico/Totalizadores';
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { environment } from '../../../../environments/environment';
@@ -53,6 +54,11 @@ export class CoperativaService {
    update(entidadTransporte: Coperativa): Promise<boolean> {
       const url = `${this.urlBase+'/actualizar'}`;
       return this.http.post(url, JSON.stringify(entidadTransporte)).toPromise().then(response=>response.json()).catch(this.handleError);
+   }
+
+   totalizadores(): Promise<Totalizadores[]> {
+    const url = `${this.urlBase+'/totalizadores'}`;
+    return this.http.get(url).toPromise().then(response=>response.json() as Totalizadores[]).catch(this.handleError);
    }
 
    handleError(error: any): Promise<any> {

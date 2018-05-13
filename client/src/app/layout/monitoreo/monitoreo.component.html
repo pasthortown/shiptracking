@@ -3,14 +3,6 @@
         <div class="col-12">
             <h2 class="text-right">Monitoreo de Unidades</h2>
         </div>
-        <div class="col-12">
-            <div class="input-group">
-                <input class="form-control col-4" type="text" placeholder="Buscar">
-                <div class="input-group-append">
-                    <button type="button" class="btn btn-secondary"><span class="fa fa-search"></span></button>
-                </div>
-            </div>
-        </div>
     </div>
     <div class="form-group row">
         <table class="col-12 table table-striped table-bordered">
@@ -25,52 +17,25 @@
                     </th>
                     <th>
                         <span>
-                            <strong>Ruta</strong>
-                        </span>
-                    </th>
-                    <th>
-                        <span>
                             <strong>Unidades</strong>
                         </span>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr *ngFor="let totalizador of totalizadores" (click)="onSelect(totalizador)">
                     <td>
-                        <i class="fa fa-hand-o-right"></i>
+                        <i class="fa fa-hand-o-right" [hidden]="!estaSeleccionadoTotalizador(totalizador)"></i>
                     </td>
                     <td>
-                        Iñaquito
+                        {{totalizador.Coperativa}}
                     </td>
                     <td>
-                        Camal Aeropuerto
-                    </td>
-                    <td>
-                        4
+                        {{totalizador.Cuenta}}
                     </td>
                 </tr>
             </tbody>
         </table>
-        <div class="col-md-12">
-            <div class="btn-toolbar">
-                <div>
-                    <button type="button" class="btn btn-default" (click)="getPaginaPrimera()">
-                        <span class="fa fa-fast-backward"></span>
-                    </button>
-                    <button type="button" class="btn btn-default" (click)="getPaginaAnterior()">
-                        <span class="fa fa-step-backward"></span>
-                    </button>
-                    <span><strong style="margin:10px;">Página</strong><strong id="paginaActual">{{paginaActual}}</strong><strong style="margin:10px;">de</strong><strong id="paginaUltima" style="margin-right:10px;">{{paginaUltima}}</strong></span>
-                    <button type="button" class="btn btn-default" (click)="getPaginaSiguiente()">
-                        <span class="fa fa-step-forward"></span>
-                    </button>
-                    <button type="button" class="btn btn-default" (click)="getPaginaUltima()">
-                        <span class="fa fa-fast-forward"></span>
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
     <div class="form-group row">
         <div class="col-12">
@@ -90,40 +55,48 @@
             </div>
         </div>
         <div class="col-4">
-            <table class="col-12 table table-striped table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>
-                            <span>
-                                <strong>Mostrar</strong>
-                            </span>
-                        </th>
-                        <th>
-                            <span>
-                                <strong>No.</strong>
-                            </span>
-                        </th>
-                        <th>
-                            <span>
-                                <strong>Placa</strong>
-                            </span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="text-center">
-                            <input type="checkbox" checked>
-                        </td>
-                        <td>
-                            10
-                        </td>
-                        <td>
-                            PCO9000
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="col-12" *ngIf="mostrarUnidades">
+                <table class="col-12 table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>
+                                <span>
+                                    <strong>Mostrar</strong>
+                                </span>
+                            </th>
+                            <th>
+                                <span>
+                                    <strong>No.</strong>
+                                </span>
+                            </th>
+                            <th>
+                                <span>
+                                    <strong>Placa</strong>
+                                </span>
+                            </th>
+                            <th>
+                                <span>
+                                    <strong>Tipo</strong>
+                                </span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let actual of unidades">
+                            <td class="text-center">
+                                <input type="checkbox" checked #visible (change)="cambioVisibilidad(actual.id,visible.checked)">
+                            </td>
+                            <td>
+                                {{actual.numero}}
+                            </td>
+                            <td>
+                                {{actual.placa}}
+                            </td>
+                            <td><img *ngIf="actual.TipoUnidad!=null" src="{{actual.TipoUnidad}}" alt="Icono" height="25" width="25"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

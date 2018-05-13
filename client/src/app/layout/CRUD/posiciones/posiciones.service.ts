@@ -5,7 +5,7 @@ import { environment } from '../../../../environments/environment';
 import 'rxjs/add/operator/toPromise';
 
 import { Posiciones } from '../../../entidades/CRUD/Posiciones';
-
+import { MonitoreoUnidad} from '../../../entidades/especifico/MonitoreoUnidad';
 @Injectable()
 
 export class PosicionesService {
@@ -38,6 +38,16 @@ export class PosicionesService {
    get(id: number): Promise<Posiciones> {
       const url = `${this.urlBase+'/leer'}?id=${id}`;
       return this.http.get(url).toPromise().then(response=>(response.json() as Posiciones[])[0]).catch(this.handleError);
+   }
+
+   getMonitoreoUnidad(idCoperativa: number, idUnidad: number): Promise<MonitoreoUnidad[]> {
+      const url = `${this.urlBase+'/getMonitoreoUnidad'}`;
+      return this.http.get(url + '?idCoperativa=' + idCoperativa.toString() + '&idUnidad=' + idUnidad.toString()).toPromise().then(response=>(response.json() as MonitoreoUnidad[])).catch(this.handleError);
+   }
+
+   getMonitoreoUnidadActual(idCoperativa: number, idUnidad: number): Promise<MonitoreoUnidad[]> {
+      const url = `${this.urlBase+'/getMonitoreoUnidadActual'}`;
+      return this.http.get(url + '?idCoperativa=' + idCoperativa.toString() + '&idUnidad=' + idUnidad.toString()).toPromise().then(response=>(response.json() as MonitoreoUnidad[])).catch(this.handleError);
    }
 
    remove(id: number): Promise<boolean> {

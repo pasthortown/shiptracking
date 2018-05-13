@@ -7,3 +7,8 @@ INSERT INTO `Rol` (`id`,`descripcion`) VALUES (1,'Administrador');
 INSERT INTO `Rol` (`id`,`descripcion`) VALUES (2,'Monitor');
 INSERT INTO `Rol` (`id`,`descripcion`) VALUES (3,'Usuario General');
 INSERT INTO `Coperativa` (`id`,`RUC`,`nombre`,`direccion`,`telefono1`,`telefono2`) VALUES (1,'0','Sin Corporativa','N/A','0','0');
+INSERT INTO `Coperativa` (`id`,`RUC`,`nombre`,`direccion`,`telefono1`,`telefono2`) VALUES (2,'1720364049001','Translatinos','Altos del Recreo','0998600661','023260618');
+INSERT INTO `Persona` (`id`,`identificacion`,`nombres`,`apellidos`,`idGenero`,`direccion`,`telefono1`,`telefono2`,`correoElectronico`) VALUES (1,'1720364049','Luis Alfonso','Salazar Vaca',1,'CONOCOTO','0998600661','023260618','luissalazarvaca1986@gmail.com');
+INSERT INTO `Persona` (`id`,`identificacion`,`nombres`,`apellidos`,`idGenero`,`direccion`,`telefono1`,`telefono2`,`correoElectronico`) VALUES (2,'1720539681','Andres','Romero',NULL,NULL,NULL,NULL,'andres.romero.barreto@gmail.com');
+INSERT INTO Cuenta (idPersona,idRol,idCoperativa,clave) VALUES (1,1,1,aes_encrypt('123','gps_tracking'));
+INSERT INTO Cuenta (idPersona,idRol,idCoperativa,clave) VALUES (2,1,1,aes_encrypt('123','gps_tracking'));

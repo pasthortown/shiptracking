@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost/shiptracking/server/'
+  apiUrl: 'http://shiptracking.000webhostapp.com/server/'
 };

@@ -96,4 +96,12 @@ class Controlador_coperativa extends Controlador_Base
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       return $respuesta;
    }
+
+   function totalizadores($args)
+   {
+      $parametros = array();
+      $sql = "SELECT Coperativa.nombre as 'Coperativa', COUNT(Unidad.id) as 'Cuenta', Coperativa.id as 'idCoperativa' FROM Coperativa INNER JOIN Unidad ON Unidad.idCoperativa = Coperativa.id GROUP BY Coperativa.nombre, Coperativa.id ORDER BY Coperativa.nombre, Coperativa.id ASC;";
+      $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
+      return $respuesta;
+   }
 }

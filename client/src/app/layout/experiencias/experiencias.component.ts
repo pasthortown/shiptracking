@@ -5,7 +5,7 @@ import { Unidad } from './../../entidades/CRUD/Unidad';
 import { Persona } from './../../entidades/CRUD/Persona';
 import { ExpresionService } from './../CRUD/expresion/expresion.service';
 import { Expresion } from './../../entidades/CRUD/Expresion';
-import { TotalizadoresExpresion } from './../../entidades/especifico/TotalizadoresExpresion';
+import { Totalizadores } from './../../entidades/especifico/Totalizadores';
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
@@ -18,14 +18,14 @@ import { saveAs } from "file-saver/FileSaver";
     styleUrls: ['./experiencias.component.scss']
 })
 export class ExperienciasComponent implements OnInit {
-    totalizadores:TotalizadoresExpresion[];
+    totalizadores:Totalizadores[];
     experiencias:Expresion[];
     busy: Promise<any>;
     experienciaSeleccionada: Expresion;
     remitente: Persona;
     unidad: Unidad;
     adjunto: Adjunto;
-    totalizadorSeleccionado: TotalizadoresExpresion;
+    totalizadorSeleccionado: Totalizadores;
     mostrarMensajes: boolean;
     adjuntoPresente: boolean;
 
@@ -43,14 +43,14 @@ export class ExperienciasComponent implements OnInit {
         this.unidad = new Unidad();
         this.adjunto = new Adjunto();
         this.adjunto.id = 0;
-        this.totalizadorSeleccionado = new TotalizadoresExpresion();
+        this.totalizadorSeleccionado = new Totalizadores();
         this.experiencias = [];
         this.experienciaSeleccionada = new Expresion();
         this.mostrarMensajes = false;
         this.adjuntoPresente = false;
     }
 
-    onSelect(totalizador: TotalizadoresExpresion) {
+    onSelect(totalizador: Totalizadores) {
         this.experiencias = [];
         this.totalizadorSeleccionado = totalizador;
         this.mostrarMensajes = true;
@@ -59,7 +59,7 @@ export class ExperienciasComponent implements OnInit {
             this.experiencias = respuesta;
         })
         .catch(error => {
-            this.toastr.warning('Se produjo un error', 'Creación');
+            this.toastr.warning('Se produjo un error', 'Lectura de Datos');
             this.mostrarMensajes = false;
         });
     }
