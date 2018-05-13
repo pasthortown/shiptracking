@@ -122,8 +122,11 @@ class Controlador_posiciones extends Controlador_Base
    {
       $idCoperativa = $args["idCoperativa"];
       $idUnidad = $args["idUnidad"];
-      $parametros = array($idCoperativa, $idUnidad);
-      $sql = "SELECT Unidad.id as 'idUnidad', TipoUnidad.urlIcono, Unidad.numero, Unidad.placa, Unidad.registroMunicipal, Posiciones.latitud, Posiciones.longitud, Posiciones.tiempo, Posiciones.velocidad FROM Posiciones INNER JOIN Unidad ON Posiciones.idUnidad = Unidad.id INNER JOIN TipoUnidad ON Unidad.idTipoUnidad = TipoUnidad.id INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa WHERE idCoperativa = ?  AND idUnidad = ? ORDER BY Posiciones.tiempo DESC;";
+      $fecha = $args["fecha"];
+      $tiempoNoSQLTime = strtotime($fecha);
+      $tiempoSQLTime = date("Y-m-d", $tiempoNoSQLTime);
+      $parametros = array($idCoperativa, $idUnidad, $tiempoSQLTime);
+      $sql = "SELECT Unidad.id as 'idUnidad', TipoUnidad.urlIcono, Unidad.numero, Unidad.placa, Unidad.registroMunicipal, Posiciones.latitud, Posiciones.longitud, Posiciones.tiempo, Posiciones.velocidad FROM Posiciones INNER JOIN Unidad ON Posiciones.idUnidad = Unidad.id INNER JOIN TipoUnidad ON Unidad.idTipoUnidad = TipoUnidad.id INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa WHERE idCoperativa = ?  AND idUnidad = ? AND DATE(Posiciones.tiempo)=? ORDER BY Posiciones.tiempo DESC;";
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       return $respuesta;
    }
