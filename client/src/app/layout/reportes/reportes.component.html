@@ -5,7 +5,7 @@
         </div>
     </div>
     <div class="form-group row">
-        <div class="col-6">
+        <div class="col-12">
             <div class="form-group row">
                 <label for="idCoperativa" class="col-sm-4 col-form-label text-right"><strong>Coperativa</strong></label>
                 <div class="col-sm-8">
@@ -16,100 +16,102 @@
                 </div>
             </div>
         </div>
-        <div class="col-6">
-            <div class="form-group row">
-                <label for="idCoperativa" class="col-sm-4 col-form-label text-right"><strong>Unidad</strong></label>
-                <div class="col-sm-8">
-                    <select class="form-control" id="idUnidad" name="idUnidad" [(ngModel)]="idUnidadSeleccionada" (change)="seleccionarUnidad(idUnidadSeleccionada)">
-                        <option value="0" selected>Seleccione...</option>
-                        <option *ngFor="let unidad of unidades" value={{unidad.id}}>{{unidad.numero}} {{unidad.placa}}</option>
-                    </select>
-                </div>
-            </div>
-        </div>
     </div>
     <div class="form-group row">
-        <div class="col-12">
-            <label for="idFecha" class="col-sm-4 col-form-label text-right"><strong>Fecha</strong></label>
-            <div class="col-sm-8">
-                <select class="form-control" id="idFecha" name="idFecha" [(ngModel)]="fechaSeleccionada" (change)="onSelectFecha()">
-                    <option value="0" selected>Seleccione...</option>
-                    <option *ngFor="let fecha of fechas" value={{fecha}}>{{fecha}}</option>
-                </select>
-            </div>
+        <label for="idFecha" class="col-sm-4 col-form-label text-right"><strong>Fecha</strong></label>
+        <div class="col-sm-6">
+            <input type="date" class="form-control" id="fecha" name="fecha" [ngModel]="fechaSeleccionada | date:'y-MM-dd'" (ngModelChange)="fechaSeleccionada = $event">
         </div>
-    </div>
-    <div class="form-group row">
-        <div #gmap class="col-12" style="height:750px;"></div>
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-primary col-offset-sm-4" (click)="generarReporte()">
+                <span class="fa fa-refresh"></span>&nbsp;Consultar
+            </button>
+        </div>
     </div>
     <div class="form-group row">
         <div class="col-12" *ngIf="mostrarDatosRecorrido">
             <div class="col-12">
-                <h4 class="text-center" style="border-bottom: 1px solid black;" >Recorrido</h4>
+                <h4 class="text-center" style="border-bottom: 1px solid black;" >Resumen</h4>
             </div>
             <div>
                 <table class="col-12 table table-striped table-bordered">
                     <thead class="thead-dark">
                         <tr>
                             <th>
-                                <span>
-                                    <strong>Tiempo</strong>
-                                </span>
+                                <small>
+                                    <strong>Unidad</strong>
+                                </small>
                             </th>
                             <th>
-                                <span>
-                                    <strong>No.</strong>
-                                </span>
+                                <small>
+                                    <strong>Nivel de Conducción</strong>
+                                </small>
                             </th>
                             <th>
-                                <span>
-                                    <strong>Placa</strong>
-                                </span>
+                                <small>
+                                    <strong>Kilometraje Final</strong>
+                                </small>
                             </th>
                             <th>
-                                <span>
-                                    <strong>Registro Municipal</strong>
-                                </span>
+                                <small>
+                                    <strong>Distancia Recorrida</strong>
+                                </small>
                             </th>
                             <th>
-                                <span>
-                                    <strong>Velocidad</strong>
-                                </span>
+                                <small>
+                                    <strong>Inicio</strong>
+                                </small>
                             </th>
                             <th>
-                                <span>
-                                    <strong>Latitud</strong>
-                                </span>
+                                <small>
+                                    <strong>Fin</strong>
+                                </small>
                             </th>
                             <th>
-                                <span>
-                                    <strong>Longitud</strong>
-                                </span>
+                                <small>
+                                    <strong>Tiempo Detenido</strong>
+                                </small>
+                            </th>
+                            <th>
+                                <small>
+                                    <strong>Tiempo Movimiento</strong>
+                                </small>
+                            </th>
+                            <th>
+                                <small>
+                                    <strong>Velocidad Promedio</strong>
+                                </small>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let posicion of rutaMostrada">
+                        <tr *ngFor="let posicion of InformacionDiariaRutas">
                             <td>
-                                {{posicion.tiempo}}
+                                <small>{{posicion.Alias}}</small>
                             </td>
                             <td>
-                                {{posicion.numero}}
+                                <small>{{posicion.Calificacion_Conductor}}%</small>
                             </td>
                             <td>
-                                {{posicion.placa}}
+                                <small>{{posicion.Odometro_Final}} Km</small>
                             </td>
                             <td>
-                                {{posicion.registroMunicipal}}
+                                <small>{{posicion.Distancia_Recorrida}} Km</small>
                             </td>
                             <td>
-                                {{posicion.velocidad}}
+                                <small>{{posicion.Inicio_Viaje | date:'MMMM dd HH:mm'}}</small>
                             </td>
                             <td>
-                                {{posicion.latitud}}
+                                <small>{{posicion.Fin_Viaje | date:'MMMM dd HH:mm'}}</small>
                             </td>
                             <td>
-                                {{posicion.longitud}}
+                                <small>{{posicion.Tiempo_Detenido}}</small>
+                            </td>
+                            <td>
+                                <small>{{posicion.Tiempo_Movimiento}}</small>
+                            </td>
+                            <td>
+                                <small>{{posicion.Velocidad_Promedio}} Km/h</small>
                             </td>
                         </tr>
                     </tbody>

@@ -63,7 +63,7 @@ export class MonitoreoComponent implements OnInit {
     getOdometros(){
         this.busy = this.locationService.getOdometros()
         .then(respuesta => {
-            this.Odometros = respuesta;
+            this.Odometros = respuesta[0];
         })
         .catch(error => {
             this.toastr.warning('Se produjo un error', 'Lectura de Datos');
@@ -73,7 +73,8 @@ export class MonitoreoComponent implements OnInit {
     getOnlineServiceInfo(){
         this.busy = this.locationService.getOnlineServiceInfo()
         .then(respuesta => {
-            this.OnlineServiceInfo = respuesta;
+            this.OnlineServiceInfo = respuesta[0];
+            this.mostrarUnidadesMapa();
         })
         .catch(error => {
             this.toastr.warning('Se produjo un error', 'Lectura de Datos');
@@ -81,9 +82,13 @@ export class MonitoreoComponent implements OnInit {
     }
 
     getInformacionDiariaRutas(){
-        this.busy = this.locationService.getInformacionDiariaRutas(new Date())
+        let fechaBuscar = new Date();
+        this.busy = this.locationService.getInformacionDiariaRutas(new Date(fechaBuscar.getFullYear().toString() + '-' + (fechaBuscar.getMonth() + 1).toString() + '-' + (fechaBuscar.getDate() - 5).toString()))
         .then(respuesta => {
-            this.InformacionDiariaRutas = respuesta;
+            this.InformacionDiariaRutas = respuesta[0];
+            this.InformacionDiariaRutas.forEach(element => {
+                element.Alias = element.Alias.split('-')[1].trim();
+            });
         })
         .catch(error => {
             this.toastr.warning('Se produjo un error', 'Lectura de Datos');
@@ -113,12 +118,13 @@ export class MonitoreoComponent implements OnInit {
         this.busy = this.unidadService.getFiltrado('idCoperativa','coincide',totalizador.idCoperativa.toString())
         .then(respuesta => {
             this.unidades = respuesta;
-            this.mostrarUnidadesMapa();
+            this.getOnlineServiceInfo();
         })
         .catch(error => {
             this.toastr.warning('Se produjo un error', 'Lectura de Datos');
             this.mostrarUnidades = false;
         });
+        this.getInformacionDiariaRutas();
     }
 
     mostrarUnidadesMapa(){
@@ -127,34 +133,35 @@ export class MonitoreoComponent implements OnInit {
         });
         this.unidadesMonitoreadasMarcador = [];
         this.unidades.forEach(unidad=>{
-            this.busy = this.posicionesService.getMonitoreoUnidadActual(this.totalizadorSeleccionado.idCoperativa, unidad.id)
-            .then(respuesta => {
-                let monitoreoActual = respuesta[0];
-                var image = {
-                    url: unidad.TipoUnidad,
-                    size: new google.maps.Size(40, 40),
-                    origin: new google.maps.Point(0, 0),
-                    anchor: new google.maps.Point(17, 34),
-                    scaledSize: new google.maps.Size(40, 40)
-                };
-                let location = new google.maps.LatLng(JSON.parse(monitoreoActual.latitud) as number,JSON.parse(monitoreoActual.longitud) as number);
-                let marker = new google.maps.Marker({
-                    position: location,
-                    map: this.map,
-                    draggable: false,
-                    icon: image,
-                    title: unidad.numero + '. ' + unidad.placa + ' ' + unidad.registroMunicipal
-                });
-                let infowindow = new google.maps.InfoWindow({
-                    content: '<div><h4>' + marker.getTitle() + '</h4><h5>' + monitoreoActual.tiempo + ': ' + monitoreoActual.velocidad + '</h5></div>'
-                });
-                marker.addListener('click', function() {
-                    infowindow.open(this.map, marker);
-                });
-                this.unidadesMonitoreadasMarcador.push(marker);
-            })
-            .catch(error => {
-                this.toastr.warning('Se produjo un error', 'Lectura de Datos');
+            this.OnlineServiceInfo.forEach(deviceInfo => {
+                if(unidad.placa == deviceInfo.alias.split('-')[1].trim()){
+                    var image = {
+                        url: unidad.TipoUnidad,
+                        size: new google.maps.Size(20, 20),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(20, 20),
+                        scaledSize: new google.maps.Size(20, 20)
+                    };
+                    let location = new google.maps.LatLng(JSON.parse(deviceInfo.latitude) as number,JSON.parse(deviceInfo.longitude) as number);
+                    let marker = new google.maps.Marker({
+                        position: location,
+                        map: this.map,
+                        draggable: false,
+                        icon: image,
+                        title: unidad.numero + '. ' + unidad.placa
+                    });
+                    let infowindow = new google.maps.InfoWindow({
+                        content: '<div><h4>' + marker.getTitle() + '</h4>'+
+                                 '<h5>' + Math.floor(deviceInfo.speed) + ' Km/h</h5>'+
+                                 '<h6><strong>Kilometraje: </strong>' + Math.floor(deviceInfo.odometer) + '</h6>'+
+                                 '<small>' + new Date() + '</small>'+
+                                 '</div>'
+                    });
+                    marker.addListener('click', function() {
+                        infowindow.open(this.map, marker);
+                    });
+                    this.unidadesMonitoreadasMarcador.push(marker);
+                }
             });
         });
     }
@@ -173,31 +180,10 @@ export class MonitoreoComponent implements OnInit {
             element.setMap(null);
         });
         this.marcadoresRutaMostrada = [];
-        this.busy = this.posicionesService.getMonitoreoUnidad(this.totalizadorSeleccionado.idCoperativa, unidad.id, new Date())
-        .then(respuesta => {
-            this.rutaMostrada = respuesta;
-            this.rutaMostrada.forEach(monitoreoActual => {
-                let location = new google.maps.LatLng(JSON.parse(monitoreoActual.latitud) as number,JSON.parse(monitoreoActual.longitud) as number);
-                this.poly.getPath().push(location);
-                var image = {
-                    url: 'http://shiptracking.000webhostapp.com/images/punto.png',
-                    size: new google.maps.Size(10, 10),
-                    origin: new google.maps.Point(0, 0),
-                    anchor: new google.maps.Point(10, 10),
-                    scaledSize: new google.maps.Size(10, 10)
-                };
-                let marker = new google.maps.Marker({
-                    position: location,
-                    map: this.map,
-                    draggable: false,
-                    icon: image,
-                    title: monitoreoActual.tiempo + ' ' + monitoreoActual.velocidad
-                });
-                this.marcadoresRutaMostrada.push(marker);
-            });
-        })
-        .catch(error => {
-
+        this.OnlineServiceInfo.forEach(deviceInfo => {
+            if(unidad.placa == deviceInfo.alias.split('-')[1].trim()){
+                this.map.setCenter(new google.maps.LatLng(deviceInfo.latitude, deviceInfo.longitude));
+            }
         });
     }
 
@@ -211,28 +197,36 @@ export class MonitoreoComponent implements OnInit {
     }
 
     actualizarMonitoreo() {
-        this.unidadesMonitoreadasMarcador.forEach(marcador => {
-            this.unidades.forEach(unidad => {
-                if(marcador.getTitle() === unidad.numero + '. ' + unidad.placa + ' ' + unidad.registroMunicipal){
-                    this.busy = this.posicionesService.getMonitoreoUnidadActual(this.totalizadorSeleccionado.idCoperativa, unidad.id)
-                    .then(respuesta => {
-                        let monitoreoActual = respuesta[0];
-                        let location = new google.maps.LatLng(JSON.parse(monitoreoActual.latitud) as number,JSON.parse(monitoreoActual.longitud) as number);
-                        marcador.setTitle(unidad.numero + '. ' + unidad.placa + ' ' + unidad.registroMunicipal);
-                        let infowindow = new google.maps.InfoWindow({
-                            content: '<div><h4>' + marcador.getTitle() + '</h4><h5>' + monitoreoActual.tiempo + ': ' + monitoreoActual.velocidad + '</h5></div>'
+        this.busy = this.locationService.getOnlineServiceInfo()
+        .then(respuesta => {
+            this.OnlineServiceInfo = respuesta[0];
+            this.unidadesMonitoreadasMarcador.forEach(marcador => {
+                this.unidades.forEach(unidad => {
+                    if(marcador.getTitle() === unidad.numero + '. ' + unidad.placa){
+                        this.OnlineServiceInfo.forEach(deviceInfo => {
+                            if(unidad.placa == deviceInfo.alias.split('-')[1].trim()){
+                                let location = new google.maps.LatLng(JSON.parse(deviceInfo.latitude) as number,JSON.parse(deviceInfo.longitude) as number);
+                                marcador.setTitle(unidad.numero + '. ' + unidad.placa);
+                                let infowindow = new google.maps.InfoWindow({
+                                    content: '<div><h4>' + marcador.getTitle() + '</h4>'+
+                                             '<h5>' + Math.floor(deviceInfo.speed) + ' Km/h</h5>'+
+                                             '<h6><strong>Kilometraje: </strong>' + Math.floor(deviceInfo.odometer) + '</h6>'+
+                                             '<small>' + new Date() + '</small>'+
+                                             '</div>'
+                                });
+                                google.maps.event.clearListeners(marcador,'click');
+                                marcador.addListener('click', function() {
+                                    infowindow.open(this.map, marcador);
+                                });
+                                marcador.setPosition(location);
+                            }
                         });
-                        google.maps.event.clearListeners(marcador,'click');
-                        marcador.addListener('click', function() {
-                            infowindow.open(this.map, marcador);
-                        });
-                        marcador.setPosition(location);
-                    })
-                    .catch(error => {
-
-                    });
-                }
+                    }
+                });
             });
+        })
+        .catch(error => {
+            this.toastr.warning('Se produjo un error', 'Lectura de Datos');
         });
     }
 
