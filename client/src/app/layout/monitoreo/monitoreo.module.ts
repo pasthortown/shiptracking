@@ -1,3 +1,4 @@
+import { LocationService } from './../origenes_externos/location.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -11,6 +12,6 @@ import { PosicionesService } from '../CRUD/posiciones/posiciones.service';
 @NgModule({
     imports: [CommonModule, MonitoreoRoutingModule, FormsModule],
     declarations: [MonitoreoComponent],
-    providers: [CoperativaService, UnidadService, ParadaService, PosicionesService]
+    providers: [CoperativaService, UnidadService, ParadaService, PosicionesService, LocationService]
 })
 export class MonitoreoModule {}

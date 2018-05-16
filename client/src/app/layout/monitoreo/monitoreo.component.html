@@ -103,6 +103,79 @@
                 </table>
             </div>
         </div>
+        <div class="col-12" *ngIf="mostrarDatosRecorrido">
+            <div class="col-12">
+                <h4 class="text-center" style="border-bottom: 1px solid black;" >Recorrido</h4>
+            </div>
+            <div>
+                <table class="col-12 table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>
+                                <span>
+                                    <strong>Tiempo</strong>
+                                </span>
+                            </th>
+                            <th>
+                                <span>
+                                    <strong>No.</strong>
+                                </span>
+                            </th>
+                            <th>
+                                <span>
+                                    <strong>Placa</strong>
+                                </span>
+                            </th>
+                            <th>
+                                <span>
+                                    <strong>Registro Municipal</strong>
+                                </span>
+                            </th>
+                            <th>
+                                <span>
+                                    <strong>Velocidad</strong>
+                                </span>
+                            </th>
+                            <th>
+                                <span>
+                                    <strong>Latitud</strong>
+                                </span>
+                            </th>
+                            <th>
+                                <span>
+                                    <strong>Longitud</strong>
+                                </span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let posicion of rutaMostrada">
+                            <td>
+                                {{posicion.tiempo}}
+                            </td>
+                            <td>
+                                {{posicion.numero}}
+                            </td>
+                            <td>
+                                {{posicion.placa}}
+                            </td>
+                            <td>
+                                {{posicion.registroMunicipal}}
+                            </td>
+                            <td>
+                                {{posicion.velocidad}}
+                            </td>
+                            <td>
+                                {{posicion.latitud}}
+                            </td>
+                            <td>
+                                {{posicion.longitud}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 

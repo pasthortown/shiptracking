@@ -14,7 +14,7 @@ import { Geolocation } from '@ionic-native/geolocation';
   templateUrl: 'home.html'
 })
 export class HomePage implements OnInit{
-  webServiceURL = 'http://shiptracking.000webhostapp.com/server/';
+  webServiceURL = 'http://localhost/shiptracking/server/';
   persona: Persona;
   unidad: Unidad;
   confirmado: Boolean = false;
@@ -100,7 +100,7 @@ export class HomePage implements OnInit{
     .subscribe(position => {
       this.latitud = position.coords.latitude.toString();
       this.longitud = position.coords.longitude.toString();
-      this.velocidad = (position.coords.speed * 3.6) + ' Km/h';
+      this.velocidad = Math.floor(position.coords.speed * 3.6) + ' Km/h';
       let posicion = new Posiciones();
       posicion.latitud = this.latitud;
       posicion.longitud = this.longitud;

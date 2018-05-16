@@ -45,6 +45,11 @@ export class PosicionesService {
       return this.http.get(url + '?idCoperativa=' + idCoperativa.toString() + '&idUnidad=' + idUnidad.toString() + '&fecha=' + fecha.toISOString()).toPromise().then(response=>(response.json() as MonitoreoUnidad[])).catch(this.handleError);
    }
 
+   getFechasMonitoreoUnidad(idUnidad: number): Promise<string[]> {
+      const url = `${this.urlBase+'/getFechasMonitoreoUnidad'}`;
+      return this.http.get(url + '?idUnidad=' + idUnidad.toString()).toPromise().then(response=>(response.json() as string[])).catch(this.handleError);
+   }
+
    getMonitoreoUnidadActual(idCoperativa: number, idUnidad: number): Promise<MonitoreoUnidad[]> {
       const url = `${this.urlBase+'/getMonitoreoUnidadActual'}`;
       return this.http.get(url + '?idCoperativa=' + idCoperativa.toString() + '&idUnidad=' + idUnidad.toString()).toPromise().then(response=>(response.json() as MonitoreoUnidad[])).catch(this.handleError);

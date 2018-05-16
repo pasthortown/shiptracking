@@ -1,3 +1,4 @@
+import { LocationService } from './../origenes_externos/location.service';
 import { element } from 'protractor';
 import { MonitoreoUnidad } from './../../entidades/especifico/MonitoreoUnidad';
 import { PosicionesService } from './../CRUD/posiciones/posiciones.service';
@@ -23,8 +24,6 @@ export class MonitoreoComponent implements OnInit {
     totalizadores:Totalizadores[];
     @ViewChild('gmap') gmapElement: any;
     map: google.maps.Map;
-    latitude: any;
-    longitude: any;
     busy: Promise<any>;
     unidades: Unidad[];
     mostrarUnidades: boolean;
@@ -37,8 +36,12 @@ export class MonitoreoComponent implements OnInit {
     minutosRefrescar: number;
     unidadesMonitoreadasMarcador = [];
     unidadSeleccionada: Unidad;
+    mostrarDatosRecorrido: Boolean;
+    OnlineServiceInfo = [];
+    Odometros = [];
+    InformacionDiariaRutas = [];
 
-    constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private coperativaService: CoperativaService, private unidadService: UnidadService, private paradaService: ParadaService, private posicionesService: PosicionesService) {
+    constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private coperativaService: CoperativaService, private unidadService: UnidadService, private paradaService: ParadaService, private posicionesService: PosicionesService, private locationService: LocationService) {
         this.toastr.setRootViewContainerRef(vcr);
     }
 
@@ -48,12 +51,43 @@ export class MonitoreoComponent implements OnInit {
 
     refresh() {
         this.mostrarUnidades = false;
+        this.mostrarDatosRecorrido = false;
         this.monitoreando = false;
         this.getTotalizadores();
         this.startGoogleMap();
         this.rutaMostrada = [];
         this.unidadesMonitoreadasMarcador = [];
         this.minutosRefrescar = 0;
+    }
+
+    getOdometros(){
+        this.busy = this.locationService.getOdometros()
+        .then(respuesta => {
+            this.Odometros = respuesta;
+        })
+        .catch(error => {
+            this.toastr.warning('Se produjo un error', 'Lectura de Datos');
+        });
+    }
+
+    getOnlineServiceInfo(){
+        this.busy = this.locationService.getOnlineServiceInfo()
+        .then(respuesta => {
+            this.OnlineServiceInfo = respuesta;
+        })
+        .catch(error => {
+            this.toastr.warning('Se produjo un error', 'Lectura de Datos');
+        });
+    }
+
+    getInformacionDiariaRutas(){
+        this.busy = this.locationService.getInformacionDiariaRutas(new Date())
+        .then(respuesta => {
+            this.InformacionDiariaRutas = respuesta;
+        })
+        .catch(error => {
+            this.toastr.warning('Se produjo un error', 'Lectura de Datos');
+        });
     }
 
     startGoogleMap() {
@@ -64,7 +98,7 @@ export class MonitoreoComponent implements OnInit {
         };
         this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
         this.poly = new google.maps.Polyline({
-            strokeColor: '#79b7f2',
+            strokeColor: '#ed8917',
             strokeOpacity: 1,
             strokeWeight: 3,
             geodesic: true,
@@ -129,7 +163,7 @@ export class MonitoreoComponent implements OnInit {
         this.unidadSeleccionada = unidad;
         this.poly.setMap(null);
         this.poly = new google.maps.Polyline({
-            strokeColor: '#79b7f2',
+            strokeColor: '#ed8917',
             strokeOpacity: 1,
             strokeWeight: 3,
             geodesic: true,
@@ -146,11 +180,11 @@ export class MonitoreoComponent implements OnInit {
                 let location = new google.maps.LatLng(JSON.parse(monitoreoActual.latitud) as number,JSON.parse(monitoreoActual.longitud) as number);
                 this.poly.getPath().push(location);
                 var image = {
-                    url: 'http://shiptracking.000webhostapp.com/images/parada.png',
-                    size: new google.maps.Size(30, 30),
-                    origin: new google.maps.Point(-5, -5),
-                    anchor: new google.maps.Point(30, 30),
-                    scaledSize: new google.maps.Size(30, 30)
+                    url: 'http://shiptracking.000webhostapp.com/images/punto.png',
+                    size: new google.maps.Size(10, 10),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(10, 10),
+                    scaledSize: new google.maps.Size(10, 10)
                 };
                 let marker = new google.maps.Marker({
                     position: location,
@@ -169,8 +203,10 @@ export class MonitoreoComponent implements OnInit {
 
     estaSeleccionadaUnidad(unidad: Unidad): boolean {
         if (this.unidadSeleccionada == null) {
+            this.mostrarDatosRecorrido = false;
             return false;
         }
+        this.mostrarDatosRecorrido = true;
         return this.unidadSeleccionada.id === unidad.id;
     }
 

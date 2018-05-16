@@ -126,7 +126,7 @@ class Controlador_posiciones extends Controlador_Base
       $tiempoNoSQLTime = strtotime($fecha);
       $tiempoSQLTime = date("Y-m-d", $tiempoNoSQLTime);
       $parametros = array($idCoperativa, $idUnidad, $tiempoSQLTime);
-      $sql = "SELECT Unidad.id as 'idUnidad', TipoUnidad.urlIcono, Unidad.numero, Unidad.placa, Unidad.registroMunicipal, Posiciones.latitud, Posiciones.longitud, Posiciones.tiempo, Posiciones.velocidad FROM Posiciones INNER JOIN Unidad ON Posiciones.idUnidad = Unidad.id INNER JOIN TipoUnidad ON Unidad.idTipoUnidad = TipoUnidad.id INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa WHERE idCoperativa = ?  AND idUnidad = ? AND DATE(Posiciones.tiempo)=? ORDER BY Posiciones.tiempo DESC;";
+      $sql = "SELECT Unidad.id as 'idUnidad', Unidad.numero, Unidad.placa, Unidad.registroMunicipal, Posiciones.latitud, Posiciones.longitud, Posiciones.tiempo, Posiciones.velocidad FROM Posiciones INNER JOIN Unidad ON Posiciones.idUnidad = Unidad.id INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa WHERE idCoperativa = ?  AND idUnidad = ? AND DATE(Posiciones.tiempo)=? ORDER BY Posiciones.tiempo DESC;";
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       return $respuesta;
    }
@@ -137,6 +137,15 @@ class Controlador_posiciones extends Controlador_Base
       $idUnidad = $args["idUnidad"];
       $parametros = array($idCoperativa, $idUnidad);
       $sql = "SELECT Unidad.id as 'idUnidad', TipoUnidad.urlIcono, Unidad.numero, Unidad.placa, Unidad.registroMunicipal, Posiciones.latitud, Posiciones.longitud, Posiciones.tiempo, Posiciones.velocidad FROM Posiciones INNER JOIN Unidad ON Posiciones.idUnidad = Unidad.id INNER JOIN TipoUnidad ON Unidad.idTipoUnidad = TipoUnidad.id INNER JOIN Coperativa ON Coperativa.id = Unidad.idCoperativa WHERE idCoperativa = ?  AND idUnidad = ? ORDER BY Posiciones.tiempo DESC LIMIT 1;";
+      $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
+      return $respuesta;
+   }
+
+   function getFechasMonitoreoUnidad($args)
+   {
+      $idUnidad = $args["idUnidad"];
+      $parametros = array($idUnidad);
+      $sql = "SELECT DATE(Posiciones.tiempo) FROM Posiciones INNER JOIN Unidad ON Posiciones.idUnidad = Unidad.id WHERE idUnidad = ? ORDER BY Posiciones.tiempo DESC;";
       $respuesta = $this->conexion->ejecutarConsulta($sql,$parametros);
       return $respuesta;
    }

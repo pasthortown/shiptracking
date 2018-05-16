@@ -32,6 +32,7 @@ const routes: Routes = [
             { path: 'auditoria', loadChildren: './CRUD/auditoria/auditoria.module#AuditoriaModule' },
             { path: 'adjunto', loadChildren: './CRUD/adjunto/adjunto.module#AdjuntoModule' },
             { path: 'asignacionruta', loadChildren: './CRUD/asignacionruta/asignacionruta.module#AsignacionRutaModule' },
+            { path: 'reportes', loadChildren: './reportes/reportes.module#ReportesModule' },
         ]
     }
 ];
