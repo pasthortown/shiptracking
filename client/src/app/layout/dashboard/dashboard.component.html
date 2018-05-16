@@ -1,15 +1,15 @@
 <div [@routerTransition]>
     <div class="col-12">
-        <img src="assets/images/LogoGeoTracking.png" class="img-responsive col-xs-5 col-sm-5 col-md-5 col-lg-5"/>
+        <img src="assets/images/LogoGeoTracking.png" class="img-responsive col-4"/>
     </div>
     <div class="row">
         <div class="col-md-12">
             <ngb-carousel>
                 <ng-template ngbSlide *ngFor="let slider of sliders">
                     <img class="img-fluid mx-auto d-block" [src]="slider.imagePath" alt="Random first slide" width="100%">
-                    <div class="carousel-caption">
-                        <h3>{{slider.label}}</h3>
-                        <p>{{slider.text}}</p>
+                    <div class="carousel-caption" style="color: white; text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black; font-style: bold; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+                        <h2>{{slider.label}}</h2>
+                        <h3>{{slider.text}}</h3>
                     </div>
                 </ng-template>
             </ngb-carousel>

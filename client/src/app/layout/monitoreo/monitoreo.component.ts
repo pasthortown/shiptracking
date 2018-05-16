@@ -136,11 +136,11 @@ export class MonitoreoComponent implements OnInit {
             this.OnlineServiceInfo.forEach(deviceInfo => {
                 if(unidad.placa == deviceInfo.alias.split('-')[1].trim()){
                     var image = {
-                        url: unidad.TipoUnidad,
-                        size: new google.maps.Size(20, 20),
+                        url: 'http://shiptracking.000webhostapp.com/images/marcador.png',
+                        size: new google.maps.Size(100, 30),
                         origin: new google.maps.Point(0, 0),
-                        anchor: new google.maps.Point(20, 20),
-                        scaledSize: new google.maps.Size(20, 20)
+                        anchor: new google.maps.Point(100, 30),
+                        scaledSize: new google.maps.Size(100, 30)
                     };
                     let location = new google.maps.LatLng(JSON.parse(deviceInfo.latitude) as number,JSON.parse(deviceInfo.longitude) as number);
                     let marker = new google.maps.Marker({
@@ -148,6 +148,7 @@ export class MonitoreoComponent implements OnInit {
                         map: this.map,
                         draggable: false,
                         icon: image,
+                        label: unidad.numero + '. ' + Math.floor(deviceInfo.speed).toString() + 'Km/h',
                         title: unidad.numero + '. ' + unidad.placa
                     });
                     let infowindow = new google.maps.InfoWindow({
@@ -176,10 +177,10 @@ export class MonitoreoComponent implements OnInit {
             geodesic: true,
             map: this.map
         });
-        this.marcadoresRutaMostrada.forEach(element => {
+        /*this.marcadoresRutaMostrada.forEach(element => {
             element.setMap(null);
         });
-        this.marcadoresRutaMostrada = [];
+        this.marcadoresRutaMostrada = [];*/
         this.OnlineServiceInfo.forEach(deviceInfo => {
             if(unidad.placa == deviceInfo.alias.split('-')[1].trim()){
                 this.map.setCenter(new google.maps.LatLng(deviceInfo.latitude, deviceInfo.longitude));
@@ -207,6 +208,7 @@ export class MonitoreoComponent implements OnInit {
                             if(unidad.placa == deviceInfo.alias.split('-')[1].trim()){
                                 let location = new google.maps.LatLng(JSON.parse(deviceInfo.latitude) as number,JSON.parse(deviceInfo.longitude) as number);
                                 marcador.setTitle(unidad.numero + '. ' + unidad.placa);
+                                marcador.setLabel(unidad.numero + '. ' + Math.floor(deviceInfo.speed).toString() + 'Km/h');
                                 let infowindow = new google.maps.InfoWindow({
                                     content: '<div><h4>' + marcador.getTitle() + '</h4>'+
                                              '<h5>' + Math.floor(deviceInfo.speed) + ' Km/h</h5>'+

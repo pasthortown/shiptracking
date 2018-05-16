@@ -16,17 +16,17 @@ export class DashboardComponent implements OnInit {
             {
                 imagePath: 'assets/images/slider1.png',
                 label: 'Rastreo satelital',
-                text: ' '
+                text: 'Mantenga su personal y vehículos seguros y a salvo.'
             },
             {
                 imagePath: 'assets/images/slider2.png',
-                label: 'Rastreo Satelital empresarial',
-                text: 'Mantenga su personal y vehículos seguros y  a salvo.'
+                label: 'Escalabilidad',
+                text: 'Implemente el monitoreo a todas sus unidades.'
             },
             {
                 imagePath: 'assets/images/slider3.png',
-                label: 'Rastreo satellital para su familia',
-                text: 'Seguridad y protección para tu familia'
+                label: 'Estadísticas',
+                text: 'Estadísticas y reportes confiables'
             }
         );
 
