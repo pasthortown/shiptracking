@@ -82,7 +82,7 @@ export class MonitoreoComponent implements OnInit {
     }
 
     getInformacionDiariaRutas(){
-        let fechaBuscar = new Date();
+        let fechaBuscar = new Date('2018-05-15');
         this.busy = this.locationService.getInformacionDiariaRutas(new Date(fechaBuscar.getFullYear().toString() + '-' + (fechaBuscar.getMonth() + 1).toString() + '-' + (fechaBuscar.getDate() - 5).toString()))
         .then(respuesta => {
             this.InformacionDiariaRutas = respuesta[0];
@@ -135,19 +135,96 @@ export class MonitoreoComponent implements OnInit {
         this.unidades.forEach(unidad=>{
             this.OnlineServiceInfo.forEach(deviceInfo => {
                 if(unidad.placa == deviceInfo.alias.split('-')[1].trim()){
-                    var image = {
-                        url: 'http://shiptracking.000webhostapp.com/images/marcador.png',
-                        size: new google.maps.Size(100, 30),
-                        origin: new google.maps.Point(0, 0),
-                        anchor: new google.maps.Point(100, 30),
-                        scaledSize: new google.maps.Size(100, 30)
+                    var iconBase = 'assets/images/';
+                    var icons = {
+                        0: {
+                            image : {
+                                url: iconBase + '0.png',
+                                size: new google.maps.Size(120, 30),
+                                origin: new google.maps.Point(0, 0),
+                                anchor: new google.maps.Point(120, 30),
+                                scaledSize: new google.maps.Size(120, 30)
+                            }
+                        },
+                        1: {
+                            image : {
+                                url: iconBase + '45.png',
+                                size: new google.maps.Size(120, 30),
+                                origin: new google.maps.Point(0, 0),
+                                anchor: new google.maps.Point(120, 30),
+                                scaledSize: new google.maps.Size(120, 30)
+                            }
+                        },
+                        2: {
+                            image : {
+                                url: iconBase + '90.png',
+                                size: new google.maps.Size(120, 30),
+                                origin: new google.maps.Point(0, 0),
+                                anchor: new google.maps.Point(120, 30),
+                                scaledSize: new google.maps.Size(120, 30)
+                            }
+                        },
+                        3: {
+                            image : {
+                                url: iconBase + '135.png',
+                                size: new google.maps.Size(120, 30),
+                                origin: new google.maps.Point(0, 0),
+                                anchor: new google.maps.Point(120, 30),
+                                scaledSize: new google.maps.Size(120, 30)
+                            }
+                        },
+                        4: {
+                            image : {
+                                url: iconBase + '180.png',
+                                size: new google.maps.Size(120, 30),
+                                origin: new google.maps.Point(0, 0),
+                                anchor: new google.maps.Point(120, 30),
+                                scaledSize: new google.maps.Size(120, 30)
+                            }
+                        },
+                        5: {
+                            image : {
+                                url: iconBase + '225.png',
+                                size: new google.maps.Size(120, 30),
+                                origin: new google.maps.Point(0, 0),
+                                anchor: new google.maps.Point(120, 30),
+                                scaledSize: new google.maps.Size(120, 30)
+                            }
+                        },
+                        6: {
+                            image : {
+                                url: iconBase + '270.png',
+                                size: new google.maps.Size(120, 30),
+                                origin: new google.maps.Point(0, 0),
+                                anchor: new google.maps.Point(120, 30),
+                                scaledSize: new google.maps.Size(120, 30)
+                            }
+                        },
+                        7: {
+                            image : {
+                                url: iconBase + '135.png',
+                                size: new google.maps.Size(120, 30),
+                                origin: new google.maps.Point(0, 0),
+                                anchor: new google.maps.Point(120, 30),
+                                scaledSize: new google.maps.Size(120, 30)
+                            }
+                        },
+                        8: {
+                            image : {
+                                url: iconBase + 'stop.png',
+                                size: new google.maps.Size(120, 30),
+                                origin: new google.maps.Point(0, 0),
+                                anchor: new google.maps.Point(120, 30),
+                                scaledSize: new google.maps.Size(120, 30)
+                            }
+                        }
                     };
                     let location = new google.maps.LatLng(JSON.parse(deviceInfo.latitude) as number,JSON.parse(deviceInfo.longitude) as number);
                     let marker = new google.maps.Marker({
                         position: location,
                         map: this.map,
                         draggable: false,
-                        icon: image,
+                        icon: Math.floor(deviceInfo.speed) !== 0 ? icons[unidad.id%8].image : icons[8].image,
                         label: unidad.numero + '. ' + Math.floor(deviceInfo.speed).toString() + 'Km/h',
                         title: unidad.numero + '. ' + unidad.placa
                     });
@@ -206,6 +283,91 @@ export class MonitoreoComponent implements OnInit {
                     if(marcador.getTitle() === unidad.numero + '. ' + unidad.placa){
                         this.OnlineServiceInfo.forEach(deviceInfo => {
                             if(unidad.placa == deviceInfo.alias.split('-')[1].trim()){
+                                var iconBase = 'assets/images/';
+                                var icons = {
+                                    0: {
+                                        image : {
+                                            url: iconBase + '0.png',
+                                            size: new google.maps.Size(120, 30),
+                                            origin: new google.maps.Point(0, 0),
+                                            anchor: new google.maps.Point(120, 30),
+                                            scaledSize: new google.maps.Size(120, 30)
+                                        }
+                                    },
+                                    1: {
+                                        image : {
+                                            url: iconBase + '45.png',
+                                            size: new google.maps.Size(120, 30),
+                                            origin: new google.maps.Point(0, 0),
+                                            anchor: new google.maps.Point(120, 30),
+                                            scaledSize: new google.maps.Size(120, 30)
+                                        }
+                                    },
+                                    2: {
+                                        image : {
+                                            url: iconBase + '90.png',
+                                            size: new google.maps.Size(120, 30),
+                                            origin: new google.maps.Point(0, 0),
+                                            anchor: new google.maps.Point(120, 30),
+                                            scaledSize: new google.maps.Size(120, 30)
+                                        }
+                                    },
+                                    3: {
+                                        image : {
+                                            url: iconBase + '135.png',
+                                            size: new google.maps.Size(120, 30),
+                                            origin: new google.maps.Point(0, 0),
+                                            anchor: new google.maps.Point(120, 30),
+                                            scaledSize: new google.maps.Size(120, 30)
+                                        }
+                                    },
+                                    4: {
+                                        image : {
+                                            url: iconBase + '180.png',
+                                            size: new google.maps.Size(120, 30),
+                                            origin: new google.maps.Point(0, 0),
+                                            anchor: new google.maps.Point(120, 30),
+                                            scaledSize: new google.maps.Size(120, 30)
+                                        }
+                                    },
+                                    5: {
+                                        image : {
+                                            url: iconBase + '225.png',
+                                            size: new google.maps.Size(120, 30),
+                                            origin: new google.maps.Point(0, 0),
+                                            anchor: new google.maps.Point(120, 30),
+                                            scaledSize: new google.maps.Size(120, 30)
+                                        }
+                                    },
+                                    6: {
+                                        image : {
+                                            url: iconBase + '270.png',
+                                            size: new google.maps.Size(120, 30),
+                                            origin: new google.maps.Point(0, 0),
+                                            anchor: new google.maps.Point(120, 30),
+                                            scaledSize: new google.maps.Size(120, 30)
+                                        }
+                                    },
+                                    7: {
+                                        image : {
+                                            url: iconBase + '135.png',
+                                            size: new google.maps.Size(120, 30),
+                                            origin: new google.maps.Point(0, 0),
+                                            anchor: new google.maps.Point(120, 30),
+                                            scaledSize: new google.maps.Size(120, 30)
+                                        }
+                                    },
+                                    8: {
+                                        image : {
+                                            url: iconBase + 'stop.png',
+                                            size: new google.maps.Size(120, 30),
+                                            origin: new google.maps.Point(0, 0),
+                                            anchor: new google.maps.Point(120, 30),
+                                            scaledSize: new google.maps.Size(120, 30)
+                                        }
+                                    }
+                                };
+                                marcador.setIcon(Math.floor(deviceInfo.speed) !== 0 ? icons[unidad.id%8].image : icons[8].image);
                                 let location = new google.maps.LatLng(JSON.parse(deviceInfo.latitude) as number,JSON.parse(deviceInfo.longitude) as number);
                                 marcador.setTitle(unidad.numero + '. ' + unidad.placa);
                                 marcador.setLabel(unidad.numero + '. ' + Math.floor(deviceInfo.speed).toString() + 'Km/h');
